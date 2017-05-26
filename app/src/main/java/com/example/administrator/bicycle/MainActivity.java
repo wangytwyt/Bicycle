@@ -1,11 +1,19 @@
 package com.example.administrator.bicycle;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
@@ -54,7 +62,9 @@ import com.amap.api.services.route.WalkRouteResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RouteSearch.OnRouteSearchListener, AMapNaviListener, AMapNaviViewListener {
     private AMap aMap;
@@ -87,6 +97,27 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private boolean calculateSuccess = false;
     private boolean chooseRouteSuccess = false;
 
+
+
+    /**
+     * 需要进行检测的权限数组
+     */
+    protected String[] needPermissions = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE
+    };
+
+    private static final int PERMISSON_REQUESTCODE = 0;
+
+    /**
+     * 判断是否需要检测，防止不停的弹框
+     */
+    private boolean isNeedCheck = true;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,27 +146,35 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //初始化控件
         init();
 
-        //利用Handler更新UI
-        final Handler h = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what == 0x123) {
 
-                }
-            }
-        };
+
 
         //开启地图
         mMapView.onCreate(savedInstanceState);
 
-        //初始化定位
-        setpositioning();
-
         //设置定位蓝点
         setBluePoint();
 
+        //        //利用Handler更新UI
+//        final Handler h = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                if (msg.what == 0x123) {
+//
+//                }
+//            }
+//        };
+
+
+
+
+        //初始化定位
+        setpositioning();
+
         //设置覆盖物
-//        setIcon();
+        setIcon();
+
+
 
         aMapNavi = AMapNavi.getInstance(getApplicationContext());
         aMapNavi.addAMapNaviListener(this);
@@ -173,9 +212,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         });
 
 
-
-
-
         /*
          * 使用说明点击事件
          */
@@ -193,6 +229,82 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     }
 
     /**
+     * 显示提示信息
+     *
+     * @since 2.5.0
+     *
+     */
+    private void showMissingPermissionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.notifyTitle);
+        builder.setMessage(R.string.notifyMsg);
+
+        // 拒绝, 退出应用
+        builder.setNegativeButton("拒绝",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+        builder.setPositiveButton("开启",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startAppSettings();
+                    }
+                });
+
+        builder.setCancelable(false);
+
+        builder.show();
+    }
+    /**
+     *  启动应用的设置
+     *
+     * @since 2.5.0
+     *
+     */
+    private void startAppSettings() {
+        Intent intent = new Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        startActivity(intent);
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] paramArrayOfInt) {
+        if (requestCode == PERMISSON_REQUESTCODE) {
+            if (!verifyPermissions(paramArrayOfInt)) {
+//              showMissingPermissionDialog();
+               isNeedCheck = false;
+            }
+        }
+    }
+
+    /**
+     * 检测是否所有的权限都已经授权
+     * @param grantResults
+     * @return
+     * @since 2.5.0
+     *
+     */
+    private boolean verifyPermissions(int[] grantResults) {
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false;
+          }
+      }
+        return true;
+    }
+
+
+
+    /**
      * 清除当前地图上算好的路线
      */
     private void clearRoute() {
@@ -202,6 +314,46 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         }
         routeOverlays.clear();
     }
+
+    /**
+     *
+     * @para
+     * @since 2.5.0
+     *
+     */
+    private void checkPermissions(String... permissions) {
+        List<String> needRequestPermissonList = findDeniedPermissions(permissions);
+        if (null != needRequestPermissonList
+                && needRequestPermissonList.size() > 0) {
+            ActivityCompat.requestPermissions(this,
+                    needRequestPermissonList.toArray(
+                            new String[needRequestPermissonList.size()]),
+                    PERMISSON_REQUESTCODE);
+        }
+    }
+
+    /**
+     * 获取权限集中需要申请权限的列表
+     *
+     * @param permissions
+     * @return
+     * @since 2.5.0
+     *
+     */
+    private List<String> findDeniedPermissions(String[] permissions) {
+        List<String> needRequestPermissonList = new ArrayList<String>();
+        for (String perm : permissions) {
+            if (ContextCompat.checkSelfPermission(this,
+                    perm) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.shouldShowRequestPermissionRationale(
+                    this, perm)) {
+                needRequestPermissonList.add(perm);
+            }
+        }
+        return needRequestPermissonList;
+    }
+
+
 
 
 
@@ -332,8 +484,11 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     protected void onDestroy() {
         super.onDestroy();
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
+
         mMapView.onDestroy();
+
         mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务
+
         /**
          * 当前页面只是展示地图，activity销毁后不需要再回调导航的状态
          */
@@ -341,9 +496,16 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         aMapNavi.destroy();
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(isNeedCheck){
+            checkPermissions(needPermissions);
+        }
+
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
     }

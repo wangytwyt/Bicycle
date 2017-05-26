@@ -14,4 +14,7 @@
     <string name="zhaobudaoche_four">定位受周围环境影响，有时候会有偏移。请环顾定位点四周，马路对面寻找单车。</string>
 
 
+    <string name="notifyTitle">温馨提示</string>
+<string name="notifyMsg">是否开启手机定位权限</string>
+
 </resources>
