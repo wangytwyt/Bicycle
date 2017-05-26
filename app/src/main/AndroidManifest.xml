@@ -78,10 +78,10 @@
         android:smallScreens="true" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="嘿车"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -92,13 +92,18 @@
 
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/splash"
+           >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".WalkRouteCalculateActivity" />
         <activity android:name=".RegisteredActivity" />
@@ -138,6 +143,7 @@
         <activity android:name=".Personal.qianbao.QianbaoActivity" />
         <activity android:name=".Personal.Guide.WeitingActivity" />
         <activity android:name=".Personal.zhaobudaoche.ZhaobudaocheActivity" />
+
     </application>
 
 </manifest>

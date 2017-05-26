@@ -17,8 +17,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -67,6 +69,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RouteSearch.OnRouteSearchListener, AMapNaviListener, AMapNaviViewListener {
+    private final int CAMERA_REQUEST_CODE = 1;
+
+    /**
+     * 判断是否点击小于1秒
+     */
+
+    private long exitTime = 0;
+
+
     private AMap aMap;
     private AMapNavi aMapNavi;
     private MapView mMapView;//地图
@@ -117,6 +128,17 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
      */
     private boolean isNeedCheck = true;
 
+    //        //利用Handler更新UI
+        final Handler mhandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+            switch (msg.what  ){
+
+
+            }
+
+            }
+        };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,21 +177,10 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //设置定位蓝点
         setBluePoint();
 
-        //        //利用Handler更新UI
-//        final Handler h = new Handler() {
-//            @Override
-//            public void handleMessage(Message msg) {
-//                if (msg.what == 0x123) {
-//
-//                }
-//            }
-//        };
-
-
 
 
         //初始化定位
-        setpositioning();
+        initMap();
 
         //设置覆盖物
         setIcon();
@@ -189,14 +200,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
-                    startActivity(intent);
-                } catch (Exception ex) {
-                    Log.e("二维码界面跳转错误", ex.getMessage());
-                    ex.printStackTrace();
-                }
-
+                toCapture();
             }
         });
 
@@ -226,6 +230,52 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         });
 
 
+    }
+
+    /*
+            * 去二维码扫描
+            */
+    private void toCapture(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // 第一次请求权限时，用户如果拒绝，下一次请求shouldShowRequestPermissionRationale()返回true
+            // 向用户解释为什么需要这个权限
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+//            } else {
+                //申请相机权限
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+//            }
+        } else {
+            toCaptureActivity();
+        }
+    }
+
+    private void toCaptureActivity(){
+        Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+        startActivity(intent);
+    }
+
+
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                        Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /**
@@ -282,6 +332,18 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             if (!verifyPermissions(paramArrayOfInt)) {
 //              showMissingPermissionDialog();
                isNeedCheck = false;
+            }
+        }else if (requestCode == CAMERA_REQUEST_CODE) {
+            if (paramArrayOfInt[0] == PackageManager.PERMISSION_GRANTED) {
+
+                toCaptureActivity();
+
+            } else {
+                //用户勾选了不再询问
+                //提示用户手动打开权限
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                    Toast.makeText(this, "相机权限已被禁止", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -361,7 +423,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     /*
      * 初始化定位
      */
-    private void setpositioning() {
+    private void initMap() {
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());
         //设置定位回调监听
@@ -396,12 +458,15 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //绘制marker
         Marker marker = aMap.addMarker(new MarkerOptions()
                 .position(new LatLng(39.986919, 116.353369))
+
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.mipmap.jqdw)))
                 .draggable(true));
         NaviLatLng naviLatLng = new NaviLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
 
+
         startLatlng = naviLatLng;
+
 
         // 绘制曲线
         aMap.addPolyline((new PolylineOptions())

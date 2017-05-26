@@ -5,7 +5,6 @@ import java.util.List;
 /**
  * Created by Administrator on 2017-04-25.
  */
-
 public class MessageOutEntity {
     List<MessageInEntity> list;
     int code;
@@ -26,3 +25,4 @@ public class MessageOutEntity {
         this.code = code;
     }
 }
+

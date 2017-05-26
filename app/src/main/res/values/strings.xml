@@ -15,6 +15,6 @@
 
 
     <string name="notifyTitle">温馨提示</string>
-<string name="notifyMsg">是否开启手机定位权限</string>
+    <string name="notifyMsg">是否开启手机定位权限</string>
 
 </resources>
