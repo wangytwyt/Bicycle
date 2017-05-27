@@ -108,13 +108,13 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/dw"
+            android:layout_above="@+id/iv_location"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
             android:background="@mipmap/shuaxinqian" />
 
         <ImageView
-            android:id="@+id/dw"
+            android:id="@+id/iv_location"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:layout_alignParentBottom="true"
@@ -147,7 +147,7 @@
             android:id="@+id/gif1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/dw"
+            android:layout_above="@+id/iv_location"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>

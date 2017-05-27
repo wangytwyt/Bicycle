@@ -34,6 +34,7 @@ import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private ImageView code;//二维码按钮
     private LinearLayout imgEnterToPersonalCenter;
     private AMapLocationClientOption mLocationOption;
-
+    private ImageView iv_location;
 
 
     /**
@@ -109,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private boolean chooseRouteSuccess = false;
 
 
-
     /**
      * 需要进行检测的权限数组
      */
@@ -129,16 +129,16 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private boolean isNeedCheck = true;
 
     //        //利用Handler更新UI
-        final Handler mhandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-            switch (msg.what  ){
+    final Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
 
 
             }
 
-            }
-        };
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,8 +169,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         init();
 
 
-
-
         //开启地图
         mMapView.onCreate(savedInstanceState);
 
@@ -178,18 +176,16 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         setBluePoint();
 
 
-
         //初始化定位
-        initMap();
+        initMapAndstartLocation();
 
         //设置覆盖物
         setIcon();
 
 
-
         aMapNavi = AMapNavi.getInstance(getApplicationContext());
         aMapNavi.addAMapNaviListener(this);
-        CameraUpdate mCameraUpdate = CameraUpdateFactory.zoomTo(17);//设置缩放级别
+        CameraUpdate mCameraUpdate = CameraUpdateFactory.zoomTo(15);//设置缩放级别
         aMap.moveCamera(mCameraUpdate);//把缩放级别放进摄像机
         UiSettings mUiSettings;//定义一个UiSettings对象
         mUiSettings = aMap.getUiSettings();//实例化UiSettings类对象
@@ -235,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     /*
             * 去二维码扫描
             */
-    private void toCapture(){
+    private void toCapture() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             // 第一次请求权限时，用户如果拒绝，下一次请求shouldShowRequestPermissionRationale()返回true
@@ -244,21 +240,19 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 //                ActivityCompat.requestPermissions(this,
 //                        new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
 //            } else {
-                //申请相机权限
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+            //申请相机权限
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
 //            }
         } else {
             toCaptureActivity();
         }
     }
 
-    private void toCaptureActivity(){
+    private void toCaptureActivity() {
         Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
         startActivity(intent);
     }
-
-
 
 
     @Override
@@ -282,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
      * 显示提示信息
      *
      * @since 2.5.0
-     *
      */
     private void showMissingPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -310,11 +303,11 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         builder.show();
     }
+
     /**
-     *  启动应用的设置
+     * 启动应用的设置
      *
      * @since 2.5.0
-     *
      */
     private void startAppSettings() {
         Intent intent = new Intent(
@@ -324,16 +317,15 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] paramArrayOfInt) {
         if (requestCode == PERMISSON_REQUESTCODE) {
             if (!verifyPermissions(paramArrayOfInt)) {
 //              showMissingPermissionDialog();
-               isNeedCheck = false;
+                isNeedCheck = false;
             }
-        }else if (requestCode == CAMERA_REQUEST_CODE) {
+        } else if (requestCode == CAMERA_REQUEST_CODE) {
             if (paramArrayOfInt[0] == PackageManager.PERMISSION_GRANTED) {
 
                 toCaptureActivity();
@@ -350,20 +342,19 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     /**
      * 检测是否所有的权限都已经授权
+     *
      * @param grantResults
      * @return
      * @since 2.5.0
-     *
      */
     private boolean verifyPermissions(int[] grantResults) {
         for (int result : grantResults) {
             if (result != PackageManager.PERMISSION_GRANTED) {
                 return false;
-          }
-      }
+            }
+        }
         return true;
     }
-
 
 
     /**
@@ -378,10 +369,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     }
 
     /**
-     *
      * @para
      * @since 2.5.0
-     *
      */
     private void checkPermissions(String... permissions) {
         List<String> needRequestPermissonList = findDeniedPermissions(permissions);
@@ -400,7 +389,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
      * @param permissions
      * @return
      * @since 2.5.0
-     *
      */
     private List<String> findDeniedPermissions(String[] permissions) {
         List<String> needRequestPermissonList = new ArrayList<String>();
@@ -416,35 +404,33 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     }
 
 
-
-
-
-
     /*
      * 初始化定位
      */
-    private void initMap() {
-        //初始化定位
-        mLocationClient = new AMapLocationClient(getApplicationContext());
-        //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
-        //初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //获取一次定位结果：
-        //该方法默认为false。
-        mLocationOption.setOnceLocation(true);
-        //获取最近3s内精度最高的一次定位结果：
-        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
-        mLocationOption.setOnceLocationLatest(true);
-        //设置是否允许模拟位置,默认为false，不允许模拟位置
-        mLocationOption.setMockEnable(false);
-        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        mLocationOption.setHttpTimeOut(10000);
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-        //启动定位
+    private void initMapAndstartLocation() {
+        if (mLocationClient == null) {
+            //初始化定位
+            mLocationClient = new AMapLocationClient(getApplicationContext());
+            //设置定位回调监听
+            mLocationClient.setLocationListener(mLocationListener);
+            //初始化AMapLocationClientOption对象
+            mLocationOption = new AMapLocationClientOption();
+            //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            //获取一次定位结果：
+            //该方法默认为false。
+            mLocationOption.setOnceLocation(true);
+            //获取最近3s内精度最高的一次定位结果：
+            //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+            mLocationOption.setOnceLocationLatest(true);
+            //设置是否允许模拟位置,默认为false，不允许模拟位置
+            mLocationOption.setMockEnable(false);
+            //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+            mLocationOption.setHttpTimeOut(10000);
+            //给定位客户端对象设置定位参数
+            mLocationClient.setLocationOption(mLocationOption);
+            //启动定位
+        }
         mLocationClient.startLocation();
     }
 
@@ -457,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         //绘制marker
         Marker marker = aMap.addMarker(new MarkerOptions()
-                .position(new LatLng(39.986919, 116.353369))
+                .position(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()))
 
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.mipmap.jqdw)))
@@ -484,13 +470,24 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 .decodeResource(getResources(), R.mipmap.dwmk)));
 
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
-        markerOption.setFlat(true);//设置marker平贴地图效果
-        final LatLng latLng = new LatLng(40.106901, 116.397972);
-        LatLng latLng1 = new LatLng(39.916901, 117.097972);
-        LatLng latLng2 = new LatLng(39.906901, 117.297932);
-        final Marker marker1 = aMap.addMarker(new MarkerOptions().position(latLng));//.title("导航").snippet("导航")
-        final Marker marker2 = aMap.addMarker(new MarkerOptions().position(latLng1));
-        final Marker marker3 = aMap.addMarker(new MarkerOptions().position(latLng2));
+        markerOption.setFlat(true);//设置marker平贴地图效果   109.109696,34.292366    109.11123,34.292818  109.110983,34.290115
+
+
+        final LatLng latLng = new LatLng(34.292366, 109.109696);
+        LatLng latLng1 = new LatLng(34.292818, 109.11123);
+        LatLng latLng2 = new LatLng(34.290115, 109.110983);
+
+//        final Marker marker1 = aMap.addMarker(new MarkerOptions().position(latLng));//.title("导航").snippet("导航")
+//        final Marker marker2 = aMap.addMarker(new MarkerOptions().position(latLng1));
+//        final Marker marker3 = aMap.addMarker(new MarkerOptions().position(latLng2));
+
+        BitmapDescriptor bt = BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                .decodeResource(getResources(), R.mipmap.dwmk));
+
+        final Marker marker1 = aMap.addMarker(new MarkerOptions().icon(bt).position(latLng));
+        final Marker marker2 = aMap.addMarker(new MarkerOptions().icon(bt).position(latLng1));
+        final Marker marker3 = aMap.addMarker(new MarkerOptions().icon(bt).position(latLng2));
+
 
         // 定义 Marker 点击事件监听
         AMap.OnMarkerClickListener mapClickListener = new AMap.OnMarkerClickListener() {
@@ -527,6 +524,13 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         Directions = (Button) findViewById(R.id.btn_Directions);//使用说明按钮
         code = (ImageView) findViewById(R.id.code);//二维码按钮
         imgEnterToPersonalCenter = (LinearLayout) findViewById(R.id.img_EnterToPersonalCenter);
+        iv_location = (ImageView) findViewById(R.id.iv_location);
+        iv_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initMapAndstartLocation();
+            }
+        });
     }
 
     /*
@@ -562,12 +566,11 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
 
-        if(isNeedCheck){
+        if (isNeedCheck) {
             checkPermissions(needPermissions);
         }
 
@@ -862,8 +865,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     public void onNaviViewLoaded() {
 
     }
-
-
 
 
 }
