@@ -36,10 +36,11 @@
                 android:gravity="center"
                 android:hint="请输入铭牌号"
                 android:padding="10dp"
-                android:text="50:8C:B1:87:7C:26"
+
+                android:text="D4:36:39:DB:1B:F5"
                 android:textCursorDrawable="@mipmap/guangbiao"
                 android:textSize="25dp" />
-
+            <!-- android:text="50:8C:B1:87:7C:26"-->
 
             <ImageView
                 android:id="@+id/go"

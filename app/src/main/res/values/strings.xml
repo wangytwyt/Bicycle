@@ -16,5 +16,15 @@
 
     <string name="notifyTitle">温馨提示</string>
     <string name="notifyMsg">是否开启手机定位权限</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="never">不再提醒</string>
+    <string name="ble_feature_tip">当前手机不支持蓝牙4.0</string>
+    <string name="ble_tip">蓝牙未开启，马上去打开？</string>
 
+    <string name="ble_login">蓝牙登录中…</string>
+    <string name="ble_disconnect">蓝牙未连接</string>
+    <string name="ble_login_success">蓝牙登录成功</string>
+    <string name="ble_login_fail">蓝牙登录失败</string>
+    <string name="message_denied">\"%1$s\" 权限被拒绝</string>
 </resources>

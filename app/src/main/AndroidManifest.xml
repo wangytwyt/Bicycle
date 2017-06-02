@@ -13,8 +13,10 @@
     <!-- 用于申请调用A-GPS模块 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!-- 用于申请获取蓝牙信息进行室内定位 -->
-    <!-- <uses-permission android:name="android.permission.BLUETOOTH" /> -->
-    <!-- <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> -->
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <!-- 允许程序打开网络套接字 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 允许程序设置内置sd卡的写权限 -->
@@ -56,6 +58,10 @@
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.READ_LOGS" />
 
+    <!-- Android6.0 蓝牙扫描才需要 -->
+    <!-- <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
@@ -94,27 +100,37 @@
 
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/splash"
-           >
+            android:theme="@style/splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
+        <!-- 行走路线 -->
         <activity android:name=".WalkRouteCalculateActivity" />
+        <!-- 注册 -->
         <activity android:name=".RegisteredActivity" />
+        <!-- 钱包 -->
         <activity android:name=".Personal.WalletActivity" />
+
+        <!-- 个人页面 -->
         <activity android:name=".Personal.InformationActivity" />
+        <!-- 旅行 -->
         <activity android:name=".Personal.TripActivity" />
+        <!-- 券 -->
         <activity android:name=".Personal.CouponsActivity" />
+        <!-- 消息 -->
         <activity android:name=".Personal.MessageActivity" />
+        <!-- 自行车问题提交 -->
         <activity android:name=".Personal.Guide.ReportActivity" />
+        <!-- HomeActivity -->
         <activity android:name=".HomeActivity" />
+        <!-- 当前手机 -->
         <activity android:name=".Personal.Replace.ReplaceNumActivity" />
+        <!-- 邀请好友 -->
         <activity android:name=".Personal.InvitationActivity" />
 
         <service
@@ -126,24 +142,36 @@
                 <action android:name="com.sofi.smartlocker.ble.BleService" />
             </intent-filter>
         </service>
-
+        <!-- 用户协议 -->
         <activity android:name=".Personal.yonhuxieyi.YhxyActivity" />
         <activity
             android:name=".zxing.utils.CaptureActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <!-- 开锁 -->
         <activity android:name=".Kaisuo.KaisuoActivity" />
-        <activity android:name=".zxing.camera.open.InputActivity" />
-        <activity android:name=".SouSuoActivity" />
-        <activity android:name=".Personal.XiugaiNameActivity" />
-        <activity android:name=".Personal.Guide.GuideActivity" />
-        <activity android:name=".Personal.Guide.CantOpenActivity" />
-        <activity android:name=".Personal.Shanliangfen.ShanliangActivity" />
-        <activity android:name=".Personal.Shanliangfen.GuizeActivity" />
-        <activity android:name=".Personal.qianbao.QianbaoActivity" />
-        <activity android:name=".Personal.Guide.WeitingActivity" />
-        <activity android:name=".Personal.zhaobudaoche.ZhaobudaocheActivity" />
 
+        <!-- 手动输入车铭牌号 -->
+        <activity android:name=".zxing.camera.open.InputActivity" />
+        <!-- 搜索 -->
+        <activity android:name=".SouSuoActivity" />
+        <!-- 修改名字 -->
+        <activity android:name=".Personal.XiugaiNameActivity" />
+        <!-- 热点问题指南 -->
+        <activity android:name=".Personal.Guide.GuideActivity" />
+        <!-- 问题反馈 -->
+        <activity android:name=".Personal.Guide.CantOpenActivity" />
+        <!-- 善良积分 -->
+        <activity android:name=".Personal.Shanliangfen.ShanliangActivity" />
+        <!-- 关于善良积分 -->
+        <activity android:name=".Personal.Shanliangfen.GuizeActivity" />
+        <!-- 钱包 -->
+        <activity android:name=".Personal.qianbao.QianbaoActivity" />
+        <!-- 违章反馈 -->
+        <activity android:name=".Personal.Guide.WeitingActivity" />
+        <!-- 找不到车 -->
+        <activity android:name=".Personal.zhaobudaoche.ZhaobudaocheActivity" />
+        <activity android:name=".AppGuideActivity"></activity>
     </application>
 
 </manifest>

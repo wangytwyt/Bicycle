@@ -15,13 +15,17 @@
  */
 package com.example.administrator.bicycle.zxing.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -60,6 +64,9 @@ import java.lang.reflect.Field;
 public final class CaptureActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
+
+
+
 
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
@@ -108,7 +115,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         shanguangdeng = (ImageView) findViewById(R.id.shanguangdeng);//闪光灯
         jisukaisuo = (ImageView) findViewById(R.id.jisu);
         image_inputNum = (ImageView) findViewById(R.id.image_inputNum);
-        fanhui= (LinearLayout) findViewById(R.id.btn_return);
+        fanhui = (LinearLayout) findViewById(R.id.btn_return);
 
 
         shanguangdeng.setOnClickListener(this);
@@ -124,6 +131,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         animation.setRepeatMode(Animation.RESTART);
         scanLine.startAnimation(animation);
     }
+
+
+
 
     @Override
     protected void onResume() {
