@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import com.example.administrator.bicycle.Personal.yonhuxieyi.YhxyActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
 import com.sofi.smartlocker.ble.util.LOG;
 import com.sofi.smartlocker.ble.util.StringUtils;
 
@@ -65,6 +67,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //    //声明AMapLocationClientOption对象
 //    public AMapLocationClientOption mLocationOption = null;
 
+
+    private ImageView iv_saomakaisuo;
 
     private TextView tv_city, tv_weather, tv_temperature;
 
@@ -131,6 +135,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tv_city = (TextView) findViewById(R.id.tv_city);
         tv_weather = (TextView) findViewById(R.id.tv_weather);
         tv_temperature = (TextView) findViewById(R.id.tv_temperature);
+        iv_saomakaisuo = (ImageView)findViewById(R.id.iv_saomakaisuo);
+
 
         one = (LinearLayout) findViewById(R.id.lin_one);
         two = (LinearLayout) findViewById(R.id.lin_two);
@@ -144,7 +150,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         four.setOnClickListener(this);
         five.setOnClickListener(this);
         six.setOnClickListener(this);
-
+        iv_saomakaisuo.setOnClickListener(this);
 
         tv_city.setText(MyApplication.city);
 
@@ -239,8 +245,9 @@ private void sendHandler(String str,int tem){
             case R.id.lin_six:
                 startActivity(new Intent(HomeActivity.this, QianbaoActivity.class));
                 break;
-            case R.id.btn_return:
-                startActivity(new Intent(HomeActivity.this, MainActivity.class));
+
+            case R.id.iv_saomakaisuo:
+                startActivity(new Intent(HomeActivity.this, CaptureActivity.class));
                 finish();
                 break;
 

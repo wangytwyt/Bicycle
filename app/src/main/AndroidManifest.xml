@@ -144,6 +144,7 @@
         </service>
         <!-- 用户协议 -->
         <activity android:name=".Personal.yonhuxieyi.YhxyActivity" />
+        <!-- 二维码 -->
         <activity
             android:name=".zxing.utils.CaptureActivity"
             android:screenOrientation="portrait"
@@ -176,7 +177,9 @@
         <!-- 充值说明 -->
         <activity android:name=".AnnualFeeActivity" />
         <!-- 我的善良分 -->
-        <activity android:name=".MyGoodPointsActivity"></activity>
+        <activity android:name=".MyGoodPointsActivity" />
+        <!-- 全部问题 -->
+        <activity android:name=".AllProblemActivity"></activity>
     </application>
 
 </manifest>

@@ -1,19 +1,26 @@
 package com.example.administrator.bicycle.Personal;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +31,8 @@ import com.example.administrator.bicycle.Personal.Shanliangfen.ShanliangActivity
 import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
 import com.example.administrator.bicycle.Personal.yonhuxieyi.OkHttp;
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.photo.utils.ImageUtils;
+import com.example.administrator.bicycle.photo.utils.SelectPicPopupWindow;
 import com.example.administrator.bicycle.view.RoundImageView;
 
 import java.io.ByteArrayInputStream;
@@ -50,7 +59,7 @@ import okhttp3.Response;
 
 
 public class InformationActivity extends AppCompatActivity implements View.OnClickListener {
-
+    private final int CAMERA_REQUEST_CODE = 0X1112;
     private RoundImageView iv_img;
     private Button bt_camera;
     private Button bt_xiangce;
@@ -64,6 +73,9 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     private SharedPreferences sharedPreferences;
     private LinearLayout one, two, three, four, five, six;
     private TextView tvNicheng, tvShiming, tvNum;
+
+    private SelectPicPopupWindow selectPicPopupWindow;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +122,7 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
         tvNicheng = (TextView) findViewById(R.id.tv_nicheng);
         tvShiming = (TextView) findViewById(R.id.tv_shiming);
         tvNum = (TextView) findViewById(R.id.tv_num);
-       iv_img = (RoundImageView) findViewById(R.id.iv_img);
+        iv_img = (RoundImageView) findViewById(R.id.iv_img);
 
         one.setOnClickListener(this);
         two.setOnClickListener(this);
@@ -124,13 +136,16 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.line_one:
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
 
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
 
-                // 激活系统图库，选择一张图片
-                Intent intent1 = new Intent(Intent.ACTION_PICK);
-                intent1.setType("image/*");
-                // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_GALLERY
-                startActivityForResult(intent1, PHOTO_REQUEST_GALLERY);
+                } else {
+                    setSelectPicPopupWindow();
+                }
+
                 break;
 
             case R.id.line_two:
@@ -149,6 +164,63 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                setSelectPicPopupWindow();
+
+            } else {
+                //用户勾选了不再询问
+                //提示用户手动打开权限
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                    Toast.makeText(this, "相机权限已被禁止", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void setSelectPicPopupWindow() {
+        selectPicPopupWindow = new SelectPicPopupWindow(InformationActivity.this, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 隐藏弹出窗口
+                selectPicPopupWindow.dismiss();
+                switch (v.getId()) {
+                    case R.id.takePhotoBtn:// 拍照
+                        takePhoto();
+                        break;
+                    case R.id.pickPhotoBtn:// 相册选择图片
+                        pickPhoto();
+                        break;
+                    case R.id.cancelBtn:// 取消
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        selectPicPopupWindow.showAtLocation(findViewById(R.id.ll_lin), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+
+    }
+
+
+    private void takePhoto() {
+        Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent2.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                "head.jpg")));
+        startActivityForResult(intent2, PHOTO_REQUEST_CAREMA);
+    }
+
+    private void pickPhoto() {
+        // 激活系统图库，选择一张图片
+        Intent intent1 = new Intent(Intent.ACTION_PICK);
+        intent1.setType("image/*");
+        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_GALLERY
+        startActivityForResult(intent1, PHOTO_REQUEST_GALLERY);
+    }
 
     /*
  * 判断sdcard是否被挂载
@@ -191,6 +263,8 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
         if (requestCode == PHOTO_REQUEST_GALLERY) {
             // 从相册返回的数据
             if (data != null) {
@@ -217,12 +291,11 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         } else if (requestCode == PHOTO_REQUEST_CAREMA) {
-            // 从相机返回的数据
-            if (hasSdcard()) {
-                crop(Uri.fromFile(tempFile));
-            } else {
-                Toast.makeText(InformationActivity.this, "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
-            }
+            File temp = new File(Environment.getExternalStorageDirectory()
+                    + "/head.jpg");
+
+            crop(Uri.fromFile(temp));
+
         } else if (requestCode == PHOTO_REQUEST_CUT) {
             // 从剪切图片返回的数据
             if (data != null) {
@@ -379,6 +452,8 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
 
             //第三步:利用ByteArrayInputStream生成Bitmap
+
+
             Bitmap bitmap = BitmapFactory.decodeStream(byteArrayInputStream);
             iv_img.setImageBitmap(bitmap);
         }

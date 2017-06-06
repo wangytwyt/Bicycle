@@ -1,31 +1,38 @@
 package com.example.administrator.bicycle.Personal.Guide;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.R;
+
 import com.example.administrator.bicycle.view.CheckBoxView;
 
-import java.util.ArrayList;
 
 public class ReportActivity extends AppCompatActivity implements View.OnClickListener {
 
 //    private Button one, two, three, four, five, six, seven, eight, nine;
 //    private boolean oneb, twob, threeb, fourb, fiveb, sixb, sevenb, eightb, nineb = false;
 
+
     private ImageView imageOne;
     private EditText edtOne, edtTwo;
-private CheckBoxView cbxv;
+    private CheckBoxView cbxv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_report);
 
         init();
@@ -45,8 +52,8 @@ private CheckBoxView cbxv;
         tvtitle.setText("车辆故障");
 
 
-        cbxv = (CheckBoxView)findViewById(R.id.cbxv);
-        cbxv.setDataResource(this,R.array.car_fault);
+        cbxv = (CheckBoxView) findViewById(R.id.cbxv);
+        cbxv.setDataResource(this, R.array.car_fault);
 
 
         edtOne = (EditText) findViewById(R.id.edt_one);
@@ -54,6 +61,8 @@ private CheckBoxView cbxv;
 
         edtOne.setOnClickListener(this);
         edtTwo.setOnClickListener(this);
+
+
     }
 
 
@@ -141,10 +150,6 @@ private CheckBoxView cbxv;
                 break;
         }
     }
-
-
-
-
 
 
 }

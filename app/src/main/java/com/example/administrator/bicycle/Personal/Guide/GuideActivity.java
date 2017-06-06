@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.administrator.bicycle.AllProblemActivity;
 import com.example.administrator.bicycle.AnnualFeeActivity;
 import com.example.administrator.bicycle.Personal.zhaobudaoche.ZhaobudaocheActivity;
 import com.example.administrator.bicycle.R;
@@ -74,7 +75,7 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(GuideActivity.this, ZhaobudaocheActivity.class));
                 break;
             case R.id.line_six:
-//                startActivity(new Intent(GuideActivity.this, CantOpenActivity.class));
+               startActivity(new Intent(GuideActivity.this, AllProblemActivity.class));
                 break;
 
         }
