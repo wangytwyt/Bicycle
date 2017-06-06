@@ -24,6 +24,7 @@ import com.example.administrator.bicycle.Personal.Shanliangfen.ShanliangActivity
 import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
 import com.example.administrator.bicycle.Personal.yonhuxieyi.OkHttp;
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.view.RoundImageView;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,7 +51,7 @@ import okhttp3.Response;
 
 public class InformationActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageView iv_img;
+    private RoundImageView iv_img;
     private Button bt_camera;
     private Button bt_xiangce;
     private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
@@ -87,6 +88,17 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void init() {
+
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        TextView tvtitle = (TextView) findViewById(R.id.tv_title);
+        tvtitle.setText("个人信息");
+
         one = (LinearLayout) findViewById(R.id.line_one);
         two = (LinearLayout) findViewById(R.id.line_two);
         three = (LinearLayout) findViewById(R.id.line_three);
@@ -98,7 +110,7 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
         tvNicheng = (TextView) findViewById(R.id.tv_nicheng);
         tvShiming = (TextView) findViewById(R.id.tv_shiming);
         tvNum = (TextView) findViewById(R.id.tv_num);
-        iv_img = (ImageView) findViewById(R.id.iv_img);
+       iv_img = (RoundImageView) findViewById(R.id.iv_img);
 
         one.setOnClickListener(this);
         two.setOnClickListener(this);

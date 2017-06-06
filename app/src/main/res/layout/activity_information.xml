@@ -8,31 +8,7 @@
     tools:context="com.example.administrator.bicycle.Personal.InformationActivity">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/title"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/image_return"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:background="@mipmap/ret"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="个人信息"
-            android:textColor="#ffffff"
-            android:textSize="25dp" />
-
-    </FrameLayout>
+   <include layout="@layout/public_layout_title"></include>
 
     <LinearLayout
         android:id="@+id/line_one"
@@ -55,11 +31,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <ImageView
+        <com.example.administrator.bicycle.view.RoundImageView
             android:id="@+id/iv_img"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@mipmap/ic_launcher_round" />
+            android:src="@mipmap/beijing1" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -73,6 +49,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="@mipmap/line" />
 
     <LinearLayout
@@ -117,6 +95,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="@mipmap/line" />
 
 
@@ -154,6 +134,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="@mipmap/line" />
 
     <LinearLayout
@@ -198,7 +180,7 @@
         android:id="@+id/line_five"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:background="#ffffff"
         android:orientation="horizontal"
         android:padding="16dp">
@@ -226,7 +208,7 @@
         android:id="@+id/line_six"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:background="#ffffff"
         android:orientation="horizontal"
         android:padding="16dp">
@@ -257,9 +239,9 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_margin="16dp"
-        android:background="@drawable/marker"
+        android:background="@mipmap/com_off"
         android:gravity="center"
         android:text="退出登录"
         android:textColor="#ffffff"

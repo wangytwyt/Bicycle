@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="car_fault">
+        <item>开不了锁</item>
+        <item>私锁私用</item>
+        <item>车牌缺损</item>
+        <item>轮胎坏了</item>
+        <item>车锁坏了</item>
+        <item>刹车坏了</item>
+        <item>举报违停</item>
+        <item>其他问题</item>
+
+    </array>
+</resources>

@@ -14,8 +14,6 @@ interface IRemoteService {
 
      void setLowMode();
 
-     void listenBleState(boolean listen);          //是否监听蓝牙打开关闭，并做相应
-     
      void startBleScan();
 
      void stopBleScan();
@@ -33,6 +31,10 @@ interface IRemoteService {
      void getLockRecord();
 
      void delLockRecord(String tradeId);
+
+     void openPassword(String password, String accountId, int time, double lon, double lat);
+
+     void setPassword(String password);
 
      void registerCallback(IRemoteCallback callback);
 

@@ -132,10 +132,7 @@ public class KaisuoActivity extends AppCompatActivity {
 
 
     IRemoteCallback.Stub mCallback = new IRemoteCallback.Stub() {
-        @Override
-        public void bleEnable(boolean enable) throws RemoteException {
 
-        }
 
 
         @Override
@@ -145,10 +142,26 @@ public class KaisuoActivity extends AppCompatActivity {
         }
 
         @Override
-        public void bleScanResult(String name, String address, int rssi) throws RemoteException {
+        public void bleScanResult(String name, final String address, int rssi) throws RemoteException {
             LOG.E(TAG, "bleScanResult name:" + name + " address:" + address + " bikeNo:" + Globals.bikeNo
                     + " rssi:" + rssi);
             //该函数用于扫描周边的蓝牙锁设备，找到后在回调函数bleScanResult中给出蓝牙锁的地址信息、信号强度信息
+              if(jisukaisuo != null && !jisukaisuo.equals("")){
+                  new Thread(new Runnable() {
+                      @Override
+                      public void run() {
+
+                          try {
+                              Constants.bleService.connectLock(address);
+                          } catch (RemoteException e) {
+                              e.printStackTrace();
+                          }
+
+
+                      }
+                  }).start();
+              }
+
 
 
         }
@@ -159,6 +172,7 @@ public class KaisuoActivity extends AppCompatActivity {
             //连接成功失败信息
 
             if (status) {
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -189,10 +203,24 @@ public class KaisuoActivity extends AppCompatActivity {
         @Override
         public void bleGetBike(String version, String keySerial, String mac, String vol) throws RemoteException {
             LOG.E(TAG, "bleGetBike version:" + version + " keySerial:" + keySerial + " mac:" + mac + " vol:" + vol);
-            try {
-                httpPostJson(mac, keySerial, DateToTimestamp(new Date()));
-            } catch (Exception e) {
+            if(jisukaisuo != null && !jisukaisuo.equals("")){
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Constants.bleService.setPassword("666666");
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
+            else {
+               try {
+                   httpPostJson(mac, keySerial, DateToTimestamp(new Date()));
+               } catch (Exception e) {
+               }
+           }
 
 
 
@@ -209,9 +237,11 @@ public class KaisuoActivity extends AppCompatActivity {
         public void bleCmdReply(int cmd) throws RemoteException {
             LOG.E(TAG, "bleCmdReply :" + cmd);
 
-          send("已开锁");
+            send("已开锁");
         }
     };
+
+
 private void send(String data){
     Message msg = h.obtainMessage();
     msg.what = 123;
@@ -274,7 +304,17 @@ private void send(String data){
                         @Override
                         public void run() {
                             try {
-                                Constants.bleService.startBleScan();
+                              //  Constants.bleService.startBleScan();
+
+                                if(Constants.bleService != null) {
+//                                   // Constants.bleService.setPassword("666666");
+//                                   if(Constants.bleService.isBleEnable()){
+//                                       Constants.bleService.setPassword("666666");
+//                                   }else {
+//                                       Constants.bleService.enableBle();
+//                                   }
+                                    Constants.bleService.startBleScan();
+                                }
 
                                 Log.d("执行成功", "执行成功");
                             } catch (RemoteException e) {
@@ -397,153 +437,6 @@ private void send(String data){
     }
 
 
-//    private void phonePermission() {
-//
-////        if (Build.VERSION.SDK_INT >= 23) {
-//            //校验是否已具有模糊定位权限
-//            if (ContextCompat.checkSelfPermission(KaisuoActivity.this,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(KaisuoActivity.this,
-//                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-//                        MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-//            } else {
-//                //具有权限
-//                initService();
-//            }
-////        } else {
-////            //系统不高于6.0直接执行
-////            initService();
-////        }
-//
-//    }
-
-//
-//   @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
-//            grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                //同意权限
-//                initService();
-//            } else {
-//                // 权限拒绝
-//                // 下面的方法最好写一个跳转，可以直接跳转到权限设置页面，方便用户
-//                Toast.makeText(this, "请打开手机蓝牙权限", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//
-//    }
-
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-////        unbindService(connection);
-//        finish();
-//        Log.d("finish", "ok");
-//    }
-
-    //888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
-    //88888888888888888888888888888888888888888开锁信息88888888888888888888888888888888888888888888888888888888888
-
-    //        public void yjks() {
-//
-//
-//        connection = new ServiceConnection() {
-//            @Override
-//            public void onServiceConnected(ComponentName name, IBinder service) {
-//                try {
-//                    iRemoteService = IRemoteService.Stub.asInterface(service);
-//                    iRemoteService.registerCallback(stub);
-//                    Intent intentt = getIntent();
-//                    str = intentt.getStringExtra("result");//str即为回传的值
-//                    String jisukaisuo = intentt.getStringExtra("jisukaisuo");
-//                    data = intentt.getStringExtra("data");
-//                    // isBleEnable该函数用于判断手机是否已经打开蓝牙功能，在IPhone手机上需要通过UI提醒用户打开蓝牙功能，否则不能租车，在Android手机上可以直接调用EnableBLE函数打开蓝牙
-//                    if (iRemoteService.isBleEnable()) {
-//                        connectLock(str, jisukaisuo, data);
-//                    } else {
-//                        //enableBle该函数用于打开手机的蓝牙通讯功能，IOS不支持该函数，必须由用户手工打开，在Android上执行该函数后打开蓝牙设备
-//                        iRemoteService.enableBle();
-//                        //该函数用于扫描周边的蓝牙锁设备，找到后在回调函数bleScanResult中给出蓝牙锁的地址信息、信号强度信息
-//                        iRemoteService.startBleScan();
-//                        connectLock(str, jisukaisuo, data);
-//                    }
-//
-//
-//                } catch (RemoteException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onServiceDisconnected(ComponentName name) {
-//
-//            }
-//        };
-//        initService();
-//    }
-//
-//    private void connectLock(final String str, String jisukaisuo, final String data) {
-//        try {
-//            if (str != null && !str.equals("")) {
-//                Log.d("straaa", str);
-//                type = 0;
-//                //                Login(str);
-//                if (iRemoteService != null) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                iRemoteService.connectLock(str);
-//                                Log.d("执行成功", "执行成功");
-//                            } catch (RemoteException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }).start();
-//                }
-//            }
-//            if (jisukaisuo != null && !jisukaisuo.equals("")) {
-//                type = 1;
-//                if (iRemoteService != null) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                iRemoteService.startBleScan();
-//                                Log.d("执行成功", "执行成功");
-//                            } catch (RemoteException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }).start();
-//                }
-//            }
-//
-//            if (data != null && !data.equals("")) {
-//                type = 0;
-//                if (iRemoteService != null) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                iRemoteService.connectLock(data);
-//                                Log.d("执行成功", "执行成功");
-//                            } catch (RemoteException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }).start();
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//
 
 
 
@@ -659,14 +552,6 @@ private void send(String data){
             public void onResponse(Call call, Response response) throws IOException {
                 String str = response.body().string();
                 Log.i("requestssssdenglu", str);
-                if (type == 0) {
-                    //子线程
-
-                }
-                if (type == 1) {
-
-                }
-
 
             }
         });
@@ -753,5 +638,17 @@ private void send(String data){
 
         }
     };
-
+    private void stopService() {
+        try {
+            if(Constants.bleService != null) {
+                Constants.bleService.unregisterCallback(mCallback);
+                Constants.bleService = null;
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        if(mConn != null) {
+            unbindService(mConn);
+        }
+    }
 }

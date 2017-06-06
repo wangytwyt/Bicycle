@@ -2,10 +2,13 @@ package com.example.administrator.bicycle;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -18,6 +21,12 @@ import com.example.administrator.bicycle.Personal.InvitationActivity;
 import com.example.administrator.bicycle.Personal.TripActivity;
 import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
 import com.example.administrator.bicycle.Personal.yonhuxieyi.YhxyActivity;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.sofi.smartlocker.ble.util.LOG;
+import com.sofi.smartlocker.ble.util.StringUtils;
 
 import java.io.IOException;
 
@@ -33,28 +42,41 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout return1;//标题栏返回
     private OkHttpClient okHttpClient = new OkHttpClient();
     //声明AMapLocationClient类对象
-    public AMapLocationClient mLocationClient = null;
-    //声明定位回调监听器
-    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+//    public AMapLocationClient mLocationClient = null;
+//    //声明定位回调监听器
+//    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+//        @Override
+//        public void onLocationChanged(AMapLocation amapLocation) {
+//            if (amapLocation != null) {
+//                if (amapLocation.getErrorCode() == 0) {
+//                    //可在其中解析amapLocation获取相应内容。
+//                    //通过经纬度获取天气
+//                    getw(amapLocation.getLatitude(), amapLocation.getLongitude());
+//                } else {
+//                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+//                    Log.e("AmapError", "location Error, ErrCode:"
+//                            + amapLocation.getErrorCode() + ", errInfo:"
+//                            + amapLocation.getErrorInfo());
+//                }
+//            }
+//        }
+//    };
+//
+//    //声明AMapLocationClientOption对象
+//    public AMapLocationClientOption mLocationOption = null;
+
+
+    private TextView tv_city, tv_weather, tv_temperature;
+
+    final Handler mhandler = new Handler() {
         @Override
-        public void onLocationChanged(AMapLocation amapLocation) {
-            if (amapLocation != null) {
-                if (amapLocation.getErrorCode() == 0) {
-                    //可在其中解析amapLocation获取相应内容。
-                    //通过经纬度获取天气
-                    getw(amapLocation.getLatitude(), amapLocation.getLongitude());
-                } else {
-                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    Log.e("AmapError", "location Error, ErrCode:"
-                            + amapLocation.getErrorCode() + ", errInfo:"
-                            + amapLocation.getErrorInfo());
-                }
-            }
+        public void handleMessage(Message msg) {
+
+            String dd = msg.what+"℃";
+            tv_weather.setText((String)msg.obj);
+            tv_temperature.setText(dd);
         }
     };
-
-    //声明AMapLocationClientOption对象
-    public AMapLocationClientOption mLocationOption = null;
 
 
     @Override
@@ -66,38 +88,50 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         init();
 
+//
+//        //初始化定位
+//        mLocationClient = new AMapLocationClient(getApplicationContext());
+//        //设置定位回调监听
+//        mLocationClient.setLocationListener(mLocationListener);
+//        //初始化AMapLocationClientOption对象
+//        mLocationOption = new AMapLocationClientOption();
+//        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+//        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+//        //获取一次定位结果：
+//        //该方法默认为false。
+//        mLocationOption.setOnceLocation(true);
+//
+//        //获取最近3s内精度最高的一次定位结果：
+//        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+//        mLocationOption.setOnceLocationLatest(true);
+//        //设置是否允许模拟位置,默认为false，不允许模拟位置
+//        mLocationOption.setMockEnable(true);
+//        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+//        mLocationOption.setHttpTimeOut(20000);
+//        //关闭缓存机制
+//        mLocationOption.setLocationCacheEnable(false);
+//        //给定位客户端对象设置定位参数
+//        mLocationClient.setLocationOption(mLocationOption);
+//        //启动定位
+//        mLocationClient.startLocation();
 
-        //初始化定位
-        mLocationClient = new AMapLocationClient(getApplicationContext());
-        //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
-        //初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //获取一次定位结果：
-        //该方法默认为false。
-        mLocationOption.setOnceLocation(true);
 
-        //获取最近3s内精度最高的一次定位结果：
-        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
-        mLocationOption.setOnceLocationLatest(true);
-        //设置是否允许模拟位置,默认为false，不允许模拟位置
-        mLocationOption.setMockEnable(true);
-        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        mLocationOption.setHttpTimeOut(20000);
-        //关闭缓存机制
-        mLocationOption.setLocationCacheEnable(false);
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-        //启动定位
-        mLocationClient.startLocation();
-
+        //      getw(MyApplication.getLatitude(), amapLocation.getLongitude());
+        getw(MyApplication.latitude, MyApplication.longitude);
     }
 
     private void init() {
-        return1 = (LinearLayout) findViewById(R.id.btn_return);
-        return1.setOnClickListener(this);
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        tv_city = (TextView) findViewById(R.id.tv_city);
+        tv_weather = (TextView) findViewById(R.id.tv_weather);
+        tv_temperature = (TextView) findViewById(R.id.tv_temperature);
+
         one = (LinearLayout) findViewById(R.id.lin_one);
         two = (LinearLayout) findViewById(R.id.lin_two);
         three = (LinearLayout) findViewById(R.id.lin_three);
@@ -111,13 +145,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         five.setOnClickListener(this);
         six.setOnClickListener(this);
 
+
+        tv_city.setText(MyApplication.city);
+
     }
 
 
     /*
      * 获取24小时天气信息
      */
-    String post(String url, String lat, String lon) throws IOException {
+    void post(String url, String lat, String lon) throws IOException {
         RequestBody formBody = new FormBody.Builder()
                 .add("lat", lat)
                 .add("lon", lon)
@@ -133,12 +170,37 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         Response response = okHttpClient.newCall(request).execute();
         if (response.isSuccessful()) {
-            return response.body().string();
+            String str = response.body().string();
+            JsonResponse(str);
+
         } else {
             throw new IOException("Unexpected code " + response);
         }
     }
 
+    private void JsonResponse(String str) {
+        try {
+            JSONObject JSONObject = new JSONObject(str);
+            String data = JSONObject.getString("data");
+            JSONObject jsondata = new JSONObject(data);
+            JSONArray hourly =jsondata.getJSONArray("hourly");
+            JSONObject jj = (JSONObject) hourly.get(0);
+            String wearher =  jj.getString("condition");
+            int temperature =jj.getInt("temp");
+            sendHandler(wearher,temperature);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+private void sendHandler(String str,int tem){
+    Message msg = new Message();
+    msg.what = tem;
+    msg.obj = str;
+    mhandler.sendMessage(msg);
+}
 
     private void getw(final double latitude, final double longitude) {
         new Thread(new Runnable() {
@@ -146,8 +208,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 try {
 
-                    String a = post("http://aliv8.data.moji.com/whapi/json/aliweather/forecast24hours", latitude + "", longitude + "");
-                    Log.d("***", a);
+                 post("http://aliv8.data.moji.com/whapi/json/aliweather/forecast24hours", latitude + "", longitude + "");
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

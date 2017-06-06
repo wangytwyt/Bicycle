@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="public_view">
+        <attr name="public_view_cols" format="integer" />
+        <attr name="public_item_background" format="integer" />
+    </declare-styleable>
+</resources>

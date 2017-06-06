@@ -13,10 +13,6 @@
         android:label="Tests for com.luopingelec.permission.test"
         android:targetPackage="com.luopingelec.permission.test" />
 
-    <meta-data
-        android:name="android.support.VERSION"
-        android:value="25.3.1" />
-
     <application>
         <uses-library android:name="android.test.runner" />
     </application>

@@ -18,7 +18,6 @@ public class SplashActivity extends Activity {
         SharedPreferences sp = getSharedPreferences(ContentValuse.dataBase, 0);
        boolean isGuide = sp.getBoolean(ContentValuse.AppGuide,true);
         if (isGuide) {
-
             startActivity(new Intent(this, AppGuideActivity.class));
         }else {
             startActivity(new Intent(this, MainActivity.class));

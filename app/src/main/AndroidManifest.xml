@@ -171,7 +171,12 @@
         <activity android:name=".Personal.Guide.WeitingActivity" />
         <!-- 找不到车 -->
         <activity android:name=".Personal.zhaobudaoche.ZhaobudaocheActivity" />
-        <activity android:name=".AppGuideActivity"></activity>
+        <!-- APP指南 -->
+        <activity android:name=".AppGuideActivity" />
+        <!-- 充值说明 -->
+        <activity android:name=".AnnualFeeActivity" />
+        <!-- 我的善良分 -->
+        <activity android:name=".MyGoodPointsActivity"></activity>
     </application>
 
 </manifest>

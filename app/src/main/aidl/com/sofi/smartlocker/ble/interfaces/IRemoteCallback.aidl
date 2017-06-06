@@ -6,8 +6,6 @@ package com.sofi.smartlocker.ble.interfaces;
 interface IRemoteCallback {
 
      void bleSupportFeature(boolean isFeature);    //是否支持蓝牙4.0：true支持,false不支持
-     
-     void bleEnable(boolean enable);        //蓝牙是否开启：true开启,false关闭
 
      void bleScanResult(String name, String address, int rssi);    //扫描到的蓝牙地址
 

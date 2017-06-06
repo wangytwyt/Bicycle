@@ -7,16 +7,36 @@
     android:orientation="vertical"
     tools:context="com.example.administrator.bicycle.Personal.XiugaiNameActivity">
 
+    <include layout="@layout/public_layout_title" />
 
-    <EditText
-        android:id="@+id/edt_name"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="50dp">
+
+        <EditText
+            android:id="@+id/edt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:imeOptions="actionDone"
+            />
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/cha"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+
+            />
+
+    </RelativeLayout>
 
 
-    <Button
-        android:id="@+id/btn_xiugai"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

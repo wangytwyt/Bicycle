@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.example.administrator.bicycle.Personal.Guide.GuideActivity">
 
-    <include layout="@layout/title"/>
+    <include layout="@layout/public_layout_title"/>
 
 
     <TextView

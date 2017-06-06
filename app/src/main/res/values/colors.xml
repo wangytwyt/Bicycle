@@ -33,6 +33,6 @@
     <color name="grgray">#686868</color>
 <color name="but_background">#ff7900</color>
     <color name="white">#ffffff</color>
-
+    <color name="view_background">#58567D</color>
 
 </resources>

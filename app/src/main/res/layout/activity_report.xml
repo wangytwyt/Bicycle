@@ -8,31 +8,7 @@
     tools:context="com.example.administrator.bicycle.Personal.Guide.ReportActivity">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/title"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/image_return"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:background="@mipmap/ret"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="嘿车"
-            android:textColor="#ffffff"
-            android:textSize="25dp" />
-
-    </FrameLayout>
+<include layout="@layout/public_layout_title"/>
 
 
     <ScrollView
@@ -55,117 +31,136 @@
                 android:textSize="15dp" />
 
 
-            <LinearLayout
+            <com.example.administrator.bicycle.view.CheckBoxView
+                android:id="@+id/cbxv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
-
-                <Button
-                    android:id="@+id/btn_one"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@mipmap/jx5"
-                    android:text="开不了锁" />
-
-                <Button
-                    android:id="@+id/btn_two"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:background="@mipmap/jx5"
-                    android:text="私锁私用" />
-
-            </LinearLayout>
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
-
-                <Button
-                    android:id="@+id/btn_three"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@mipmap/jx5"
-                    android:text="开不了锁" />
-
-                <Button
-                    android:id="@+id/btn_four"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:background="@mipmap/jx5"
-                    android:text="私锁私用" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
-
-                <Button
-                    android:id="@+id/btn_five"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@mipmap/jx5"
-                    android:text="开不了锁" />
-
-                <Button
-                    android:id="@+id/btn_six"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:background="@mipmap/jx5"
-                    android:text="私锁私用" />
-
-            </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
 
-                <Button
-                    android:id="@+id/btn_seven"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@mipmap/jx5"
-                    android:text="开不了锁" />
 
-                <Button
-                    android:id="@+id/btn_eight"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:background="@mipmap/jx5"
-                    android:text="私锁私用" />
 
-            </LinearLayout>
+
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingRight="16dp">-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btn_one"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@mipmap/jx5"-->
+                    <!--android:text="开不了锁" />-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btn_two"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@mipmap/jx5"-->
+                    <!--android:text="私锁私用" />-->
+
+            <!--</LinearLayout>-->
+
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingRight="16dp">-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btn_three"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@mipmap/jx5"-->
+                    <!--android:text="开不了锁" />-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btn_four"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@mipmap/jx5"-->
+                    <!--android:text="私锁私用" />-->
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingRight="16dp">-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btn_five"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@mipmap/jx5"-->
+                    <!--android:text="开不了锁" />-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btn_six"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@mipmap/jx5"-->
+                    <!--android:text="私锁私用" />-->
+
+            <!--</LinearLayout>-->
+
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:focusable="true"-->
+                <!--android:focusableInTouchMode="true"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingRight="16dp">-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btn_seven"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@mipmap/jx5"-->
+                    <!--android:text="开不了锁" />-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btn_eight"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@mipmap/jx5"-->
+                    <!--android:text="私锁私用" />-->
+
+            <!--</LinearLayout>-->
 
 
             <TextView
@@ -217,6 +212,9 @@
                 android:textSize="20dp" />
 
         </LinearLayout>
+
+
+
     </ScrollView>
 
 </LinearLayout>

@@ -207,7 +207,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         imgEnterToPersonalCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
+//             startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
+            startActivity(new Intent(MainActivity.this, HomeActivity.class));
             }
         });
 
@@ -219,7 +220,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             @Override
             public void onClick(View v) {
                 //实例化一个跳转意图
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+              Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+
                 //启动一个意图
                 startActivity(intent);
             }
@@ -605,7 +607,15 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                     double latitude = amapLocation.getLatitude();//精度
                     double longitude = amapLocation.getLongitude();//维度
 
+                    MyApplication.latitude = latitude;
+                    MyApplication.longitude = longitude;
+
                     startLatlng = new NaviLatLng(latitude, longitude);
+
+                    MyApplication.city = amapLocation.getCity();
+
+                    MyApplication.startLatlng = startLatlng;
+
                     Log.d("a1*", "sa");
                     mLocationClient.stopLocation();
 
