@@ -3,5 +3,6 @@
     <declare-styleable name="public_view">
         <attr name="public_view_cols" format="integer" />
         <attr name="public_item_background" format="integer" />
+        <attr name="public_text_color" format="integer" />
     </declare-styleable>
 </resources>

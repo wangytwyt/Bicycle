@@ -240,7 +240,7 @@ private void sendHandler(String str,int tem){
                 startActivity(new Intent(HomeActivity.this, GuideActivity.class));
                 break;
             case R.id.lin_five:
-                startActivity(new Intent(HomeActivity.this, ReportActivity.class));
+                startActivity(new Intent(HomeActivity.this, ReportingCenterActivity.class));
                 break;
             case R.id.lin_six:
                 startActivity(new Intent(HomeActivity.this, QianbaoActivity.class));

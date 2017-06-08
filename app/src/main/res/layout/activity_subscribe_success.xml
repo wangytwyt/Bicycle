@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_subscribe_success"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+android:orientation="vertical"
+    tools:context="com.example.administrator.bicycle.SubscribeSuccessActivity">
+    <include layout="@layout/public_layout_title" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginTop="40dp"
+        android:src="@mipmap/yueche"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您预约的车牌号是："
+            android:textSize="15dp"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/chepai"
+            android:text="1234423354452"
+            android:textSize="15dp"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3秒后自动跳转..."
+        android:textSize="14sp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        />
+
+</LinearLayout>

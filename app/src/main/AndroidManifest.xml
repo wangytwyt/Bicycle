@@ -86,7 +86,7 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="嘿车"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -179,7 +179,15 @@
         <!-- 我的善良分 -->
         <activity android:name=".MyGoodPointsActivity" />
         <!-- 全部问题 -->
-        <activity android:name=".AllProblemActivity"></activity>
+        <activity android:name=".AllProblemActivity" />
+        <!-- 举报中心 -->
+        <activity android:name=".ReportingCenterActivity" />
+        <!-- 行程详情 -->
+        <activity android:name=".Personal.TripDetailsActivity" />
+        <!-- 预约 -->
+        <activity android:name=".SubscribeActivity" />
+        <activity android:name=".SubscribeSuccessActivity" />
+        <activity android:name=".HelpActivity"></activity>
     </application>
 
 </manifest>

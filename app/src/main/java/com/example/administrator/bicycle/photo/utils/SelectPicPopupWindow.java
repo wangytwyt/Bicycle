@@ -11,6 +11,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.administrator.bicycle.R;
 /**
@@ -21,11 +22,11 @@ public class SelectPicPopupWindow extends PopupWindow {
 	/**
 	 * 图库选择
 	 */
-	private Button takePhotoBtn;
+	private TextView takePhotoBtn;
 	/**
 	 * 拍照
 	 */
-	private Button pickPhotoBtn;
+	private TextView pickPhotoBtn;
 	/**
 	 * 取消
 	 */
@@ -38,8 +39,8 @@ public class SelectPicPopupWindow extends PopupWindow {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mMenuView = inflater.inflate(R.layout.layout_popupwindow_pic, null);
-		takePhotoBtn = (Button) mMenuView.findViewById(R.id.takePhotoBtn);
-		pickPhotoBtn = (Button) mMenuView.findViewById(R.id.pickPhotoBtn);
+		takePhotoBtn = (TextView) mMenuView.findViewById(R.id.takePhotoBtn);
+		pickPhotoBtn = (TextView) mMenuView.findViewById(R.id.pickPhotoBtn);
 		cancelBtn = (Button) mMenuView.findViewById(R.id.cancelBtn);
 		// 设置按钮监听
 		cancelBtn.setOnClickListener(itemsOnClick);
@@ -55,7 +56,7 @@ public class SelectPicPopupWindow extends PopupWindow {
 		// 设置SelectPicPopupWindow弹出窗体可点击
 		this.setFocusable(true);
 		// 设置SelectPicPopupWindow弹出窗体动画效果
-		this.setAnimationStyle(R.style.PopupAnimation);
+	//	this.setAnimationStyle(R.style.PopupAnimation);
 		// 实例化一个ColorDrawable颜色为半透明
 		ColorDrawable dw = new ColorDrawable(0x80000000);
 		// 设置SelectPicPopupWindow弹出窗体的背景

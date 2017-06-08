@@ -10,7 +10,7 @@ public class TripInEntity {
     String id;
     String much;
     String time;
-    Date date;
+    String date;
 
     public String getId() {
         return id;
@@ -36,11 +36,11 @@ public class TripInEntity {
         this.time = time;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

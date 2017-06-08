@@ -7,11 +7,56 @@
     android:orientation="vertical"
     tools:context="com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity">
 
-    <include layout="@layout/title"/>
-
+    <include layout="@layout/public_layout_title" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="13dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@mipmap/nianfeitubiao" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:text="我的年费：" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="88元" />
+
+
+        <TextView
+            android:id="@+id/tv_refund"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center"
+            android:text="七天内，可点击退款"
+            android:textColor="#ff7900"/>
+
+
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@mipmap/fengexian" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="13dp">
 
         <ImageView
@@ -45,6 +90,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="13dp">
 
         <ImageView
@@ -65,92 +111,235 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:id="@+id/rg_one"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RadioButton
+            android:id="@+id/rb_one"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/select_radionbutton"
+            android:button="@null"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:padding="10dp"
+            android:text="10元"
+            android:textColor="@drawable/select_checkbox_text" />
+        />
 
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/qian30"
-                android:text="10元"
-                android:textColor="#ff750c" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@mipmap/qian30"
-                android:text="20元"
-                android:textColor="#ff750c" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@mipmap/qian30"
-                android:text="50元"
-                android:textColor="#ff750c" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RadioButton
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/select_radionbutton"
+            android:button="@null"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:padding="10dp"
+            android:text="20元"
+            android:textColor="@drawable/select_checkbox_text" />
+        />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/select_radionbutton"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="30元"
+            android:textColor="@drawable/select_checkbox_text" />
+        />
+
+    </RadioGroup>
 
 
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/qian30"
-                android:text="80元"
-                android:textColor="#ff750c" />
+    <RadioGroup
+        android:id="@+id/rg_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@mipmap/qian30"
-                android:text="100元"
-                android:textColor="#ff750c" />
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/select_radionbutton"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="50元"
+            android:textColor="@drawable/select_checkbox_text" />
+        />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@mipmap/qian30"
-                android:text="200元"
-                android:textColor="#ff750c" />
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
 
-        </LinearLayout>
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/select_radionbutton"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="100元"
+            android:textColor="@drawable/select_checkbox_text" />
+        />
 
-    </LinearLayout>
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/select_radionbutton"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="200元"
+            android:textColor="@drawable/select_checkbox_text" />
+        />
+
+    </RadioGroup>
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:background="@color/white"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="vertical"-->
+    <!--android:padding="10dp">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal">-->
+
+
+    <!--<Button-->
+    <!--android:id="@+id/but_one"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/seleect_checkbox"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="10元"-->
+    <!--android:textColor="@drawable/select_checkbox_text" />-->
+
+    <!--<View-->
+    <!--android:layout_width="10dp"-->
+    <!--android:layout_height="match_parent" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/but_two"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/seleect_checkbox"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="20元"-->
+    <!--android:textColor="@drawable/select_checkbox_text" />-->
+
+    <!--<View-->
+    <!--android:layout_width="10dp"-->
+    <!--android:layout_height="match_parent" />-->
+
+    <!--<Button-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/seleect_checkbox"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="50元"-->
+    <!--android:textColor="@drawable/select_checkbox_text" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal">-->
+
+
+    <!--<Button-->
+    <!--android:id="@+id/button4"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/seleect_checkbox"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="80元"-->
+    <!--android:textColor="@drawable/select_checkbox_text" />-->
+
+    <!--<View-->
+    <!--android:layout_width="10dp"-->
+    <!--android:layout_height="match_parent" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/button5"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/seleect_checkbox"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="100元"-->
+    <!--android:textColor="@drawable/select_checkbox_text" />-->
+
+    <!--<View-->
+    <!--android:layout_width="10dp"-->
+    <!--android:layout_height="match_parent" />-->
+
+    <!--<Button-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/seleect_checkbox"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="200元"-->
+    <!--android:textColor="@drawable/select_checkbox_text" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
 
 
     <LinearLayout
+        android:id="@+id/ll_weixin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="13dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -169,19 +358,29 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/iv_weinxin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/dh1" />
+            android:background="@drawable/selecte_ok" />
 
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:padding="10dp"
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@mipmap/fengexian" />
+
+    <LinearLayout
+        android:id="@+id/ll_zhifubao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="13dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -201,12 +400,11 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/iv_zhifubao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/dh1" />
+            android:background="@drawable/selecte_ok" />
     </LinearLayout>
-
-
 
 
     <TextView

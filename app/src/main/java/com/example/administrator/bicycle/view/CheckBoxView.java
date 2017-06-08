@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.util.PxToDpUtils;
 
 import java.util.ArrayList;
 
@@ -15,9 +16,10 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/6/5.
  */
 
-public class CheckBoxView extends LinearLayout implements View.OnClickListener{
+public class CheckBoxView extends LinearLayout {
     private HodlerView hodlerView;
     private int item_background;
+
     int cols ;
     private ArrayList<HodlerView> views = new ArrayList<HodlerView>();
     public CheckBoxView(Context context, AttributeSet attrs) {
@@ -27,7 +29,8 @@ public class CheckBoxView extends LinearLayout implements View.OnClickListener{
         TypedArray ta = context.obtainStyledAttributes(attrs,
                 R.styleable.public_view);
         cols = ta.getInt(R.styleable.public_view_public_view_cols, 2);
-        item_background = ta.getInt(R.styleable.public_view_public_item_background,R.mipmap.jx5);
+        item_background = ta.getInt(R.styleable.public_view_public_item_background,R.drawable.seleect_checkbox);
+
     }
 
 
@@ -55,7 +58,7 @@ public class CheckBoxView extends LinearLayout implements View.OnClickListener{
                 addView(layout);
             }
             hodlerView.id = i;
-            int h =   dip2px(context,40);
+            int h =   PxToDpUtils.dip2px(context,40);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
                     h);
             params.weight = 1;
@@ -66,20 +69,20 @@ public class CheckBoxView extends LinearLayout implements View.OnClickListener{
             hodlerView.view = View.inflate(context, R.layout.layout_button, null);
             hodlerView.but = (Button) hodlerView.view.findViewById(R.id.but_check);
             hodlerView.but.setBackgroundResource(item_background);
-            hodlerView.but.setTag(false);
+            hodlerView.but.setTextColor(0Xff404040);
+
             hodlerView.view.setLayoutParams(params);
             hodlerView.but.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean isCheck = (boolean) v.getTag();
-                    if (isCheck){
-                        v.setTag(false);
-                        v.setBackgroundResource(R.mipmap.jx5);
 
+                    Button but = (Button)v;
+                    if (v.isSelected()){
+                        v.setSelected(false);
+                        but.setTextColor(0Xff404040);
                     }else {
-                        v.setTag(true);
-                        v.setBackgroundResource(R.mipmap.com_off);
-
+                        v.setSelected(true);
+                        but.setTextColor(0Xffffffff);
                     }
                 }
             });
@@ -88,8 +91,6 @@ public class CheckBoxView extends LinearLayout implements View.OnClickListener{
             views.add(hodlerView);
             layout.addView(hodlerView.view);
         }
-
-
     }
 
 
@@ -104,6 +105,8 @@ public class CheckBoxView extends LinearLayout implements View.OnClickListener{
         return  texts;
     }
 
+
+
     public ArrayList<Integer> getCheckID(){
         ArrayList<Integer> mIDs = new ArrayList<Integer>();
         for (int i = 0; i < views.size() ; i++) {
@@ -116,25 +119,8 @@ public class CheckBoxView extends LinearLayout implements View.OnClickListener{
     }
 
 
-    /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
-    public static int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
 
-    /**
-     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
-     */
-    public static int px2dip(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
-    }
-    @Override
-    public void onClick(View v) {
 
-    }
 
     private class HodlerView {
         View view;

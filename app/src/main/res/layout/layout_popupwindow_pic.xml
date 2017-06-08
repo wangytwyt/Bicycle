@@ -3,44 +3,51 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/pop_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#312E3F"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/takePhotoBtn"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:layout_marginTop="10dp"
-            android:background="#373447"
-            android:padding="10dp"
-            android:text="拍照"
-            android:textColor="#CEC9E7"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:background="@mipmap/jinzhiqichebeijing"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <Button
-            android:id="@+id/pickPhotoBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:layout_marginTop="5dp"
-            android:background="#373447"
-            android:padding="10dp"
-            android:text="从相册选择"
-            android:textColor="#CEC9E7"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/takePhotoBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="拍照"
+                android:padding="10dp"
+                android:textColor="#373447"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@mipmap/xian"/>
+            <TextView
+                android:id="@+id/pickPhotoBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="从相册选择"
+                android:padding="10dp"
+                android:gravity="center"
+                android:textColor="#373447"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/cancelBtn"
@@ -49,8 +56,8 @@
             android:layout_marginBottom="15dip"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/white"
+            android:layout_marginTop="10dp"
+            android:background="@mipmap/jinzhiqichebeijing"
             android:padding="10dp"
             android:text="取消"
             android:textColor="#373447"

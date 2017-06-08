@@ -17,12 +17,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -63,6 +65,7 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
+import com.example.administrator.bicycle.util.TopPopupWindow;
 import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
 
 import java.util.ArrayList;
@@ -87,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private ImageView code;//二维码按钮
     private LinearLayout imgEnterToPersonalCenter;
     private AMapLocationClientOption mLocationOption;
-    private ImageView iv_location;
-
+    private TextView iv_location;
+private TopPopupWindow pop;
 
     /**
      * 选择终点Aciton标志位
@@ -185,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         aMapNavi = AMapNavi.getInstance(getApplicationContext());
         aMapNavi.addAMapNaviListener(this);
-        CameraUpdate mCameraUpdate = CameraUpdateFactory.zoomTo(15);//设置缩放级别
+        CameraUpdate mCameraUpdate = CameraUpdateFactory.zoomTo(16);//设置缩放级别
         aMap.moveCamera(mCameraUpdate);//把缩放级别放进摄像机
         UiSettings mUiSettings;//定义一个UiSettings对象
         mUiSettings = aMap.getUiSettings();//实例化UiSettings类对象
@@ -496,6 +499,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 if (startLatlng == null && endLatlng == null) {
                     Toast.makeText(MainActivity.this, "当前位置尚未获取成功，请稍后再试", Toast.LENGTH_SHORT).show();
                 } else {
+
                     aMapNavi.calculateWalkRoute(startLatlng, naviLatLng);
 
                 }
@@ -511,7 +515,19 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         marker3.showInfoWindow();
     }
 
+private void popwindow(){
+    pop= new TopPopupWindow(this, new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // 隐藏弹出窗口
+            pop.dismiss();
+       MainActivity.this.startActivity(new Intent(MainActivity.this,SubscribeActivity.class));
 
+
+        }
+    });
+    pop.showAsDropDown(findViewById(R.id.tltle));
+}
     /*
      * 初始化控件
      */
@@ -520,10 +536,11 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         Directions = (Button) findViewById(R.id.btn_Directions);//使用说明按钮
         code = (ImageView) findViewById(R.id.code);//二维码按钮
         imgEnterToPersonalCenter = (LinearLayout) findViewById(R.id.img_EnterToPersonalCenter);
-        iv_location = (ImageView) findViewById(R.id.iv_location);
+        iv_location = (TextView) findViewById(R.id.iv_location);
         iv_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mLocationClient = null;
                 initMapAndstartLocation();
             }
         });
@@ -607,7 +624,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                     startLatlng = new NaviLatLng(latitude, longitude);
 
                     MyApplication.city = amapLocation.getCity();
-
                     MyApplication.startLatlng = startLatlng;
 
                     Log.d("a1*", "sa");
@@ -631,6 +647,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     @Override
     public void onCalculateRouteSuccess() {
+        popwindow();
         /**
          * 清空上次计算的路径列表。
          */

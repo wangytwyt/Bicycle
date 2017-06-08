@@ -72,7 +72,7 @@ public class UploadImageAdapter extends BaseAdapter {
 		ImageView iv_image;
 		if (convertView == null) {//创建ImageView
 			iv_image = new ImageView(context);
-			iv_image.setLayoutParams(new AbsListView.LayoutParams(ImageUtils.getWidth(context) / 3 - 10, ImageUtils.getWidth(context) / 3 - 10) );
+			iv_image.setLayoutParams(new AbsListView.LayoutParams(ImageUtils.getWidth(context) / 3 - 15, ImageUtils.getWidth(context) / 3 - 15) );
 			iv_image.setScaleType(ImageButton.ScaleType.CENTER_CROP);
 			iv_image.setPadding(10,10,0,10);
 			convertView = iv_image;
@@ -84,7 +84,7 @@ public class UploadImageAdapter extends BaseAdapter {
 				iv_image.setImageResource(R.mipmap.paishe);
 			}else{
 				//获取图片缩略图，避免OOM
-				Bitmap bitmap = ImageUtils.getImageThumbnail((String)getItem(position), ImageUtils.getWidth(context) / 3 -10, ImageUtils.getWidth(context) / 3 - 10);
+				Bitmap bitmap = ImageUtils.getImageThumbnail((String)getItem(position), ImageUtils.getWidth(context) / 3 -15, ImageUtils.getWidth(context) / 3 - 15);
 				iv_image.setImageBitmap(bitmap);
 			}
 

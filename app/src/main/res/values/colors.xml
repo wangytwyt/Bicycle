@@ -32,7 +32,8 @@
     <color name="header">#58567D</color>
     <color name="grgray">#686868</color>
 <color name="but_background">#ff7900</color>
+    <color name="text">#ff7900</color>
     <color name="white">#ffffff</color>
-    <color name="view_background">#58567D</color>
+    <color name="view_background">#60000000</color>
 
 </resources>
