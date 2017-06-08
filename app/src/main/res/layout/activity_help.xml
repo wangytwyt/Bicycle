@@ -4,6 +4,7 @@
     android:id="@+id/activity_help"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.administrator.bicycle.HelpActivity">
 <include layout="@layout/public_layout_title"/>
     <ScrollView
@@ -15,6 +16,7 @@
             android:id="@+id/tv_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text=""
             android:textSize="16sp"
             android:layout_margin="5dp"
             />
