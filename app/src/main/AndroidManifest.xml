@@ -187,7 +187,10 @@
         <!-- 预约 -->
         <activity android:name=".SubscribeActivity" />
         <activity android:name=".SubscribeSuccessActivity" />
-        <activity android:name=".HelpActivity"></activity>
+        <activity android:name=".HelpActivity" />
+        <activity android:name=".AssistantActivity" />
+        <!--投诉-->
+        <activity android:name=".ComplaintsActivity"></activity>
     </application>
 
 </manifest>

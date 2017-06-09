@@ -39,6 +39,7 @@ private RadioGroup  rg_one,rg_two;
 
         rg_two = (RadioGroup)findViewById(R.id.rg_two);
         rg_one.setOnCheckedChangeListener(new MyRadioGroupOnCheckedChangedListener());
+        rg_one.check(R.id.rb_f);
         rg_two.setOnCheckedChangeListener(new MyRadioGroupOnCheckedChangedListener());
         iv_weixin.setSelected(true);
         findViewById(R.id.ll_weixin).setOnClickListener(new View.OnClickListener() {

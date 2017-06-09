@@ -81,18 +81,58 @@
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/btn_Directions"
+        <RelativeLayout
+            android:id="@+id/rl_layout"
             android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/tltle"
+            android:background="@mipmap/huodongdiban"
+            >
+          <ImageView
+              android:id="@+id/iv_liwu"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@mipmap/liwuhe"
+              android:layout_centerVertical="true"
+              android:layout_marginLeft="20dp"
+              />
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv_liwu"
+                android:layout_marginLeft="20dp"
+                android:textSize="15sp"
+                android:text="七月22日，优惠活动等你来！"
+                />
+            <ImageView
+                android:id="@+id/iv_lift"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@mipmap/youhua"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="20dp"
+                />
+
+
+        </RelativeLayout>
+
+
+        <ImageButton
+            android:id="@+id/btn_Directions"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tltle"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="10dp"
-            android:background="@mipmap/jinzhiqichebeijing"
-            android:text="嘿车使用说明"
-            android:textSize="20dp" />
+            android:background="@mipmap/huodongright"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            />
 
 
         <ImageView

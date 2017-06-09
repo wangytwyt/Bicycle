@@ -1,5 +1,7 @@
 package com.example.administrator.bicycle;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.example.administrator.bicycle.util.ContentValuse;
 
 public class SubscribeActivity extends AppCompatActivity {
 private RadioGroup rg_group;
@@ -30,9 +34,6 @@ private RadioGroup rg_group;
                 finish();
             }
         });
-        tv_submit =(TextView) findViewById(R.id.tv_submit);
-        tv_submit.setText("帮助");
-        tv_submit.setVisibility(View.VISIBLE);
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("预约");
         rg_group =(RadioGroup) findViewById(R.id.rg_group);
@@ -45,12 +46,7 @@ private RadioGroup rg_group;
                 SubscribeActivity.this.finish();
             }
         });
-        tv_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SubscribeActivity.this,HelpActivity.class));
-            }
-        });
+
     }
 
 }

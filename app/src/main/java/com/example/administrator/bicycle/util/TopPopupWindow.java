@@ -19,8 +19,9 @@ import com.example.administrator.bicycle.R;
 
 public class TopPopupWindow extends PopupWindow {
     private View mMenuView;
-    private TextView tv_address,tv_price;
+    private TextView tv_address, tv_price;
     private Button but_subscribe;
+
     @SuppressLint("InflateParams")
     public TopPopupWindow(Context context, View.OnClickListener itemsOnClick) {
         super(context);
@@ -67,6 +68,11 @@ public class TopPopupWindow extends PopupWindow {
         });
 
     }
+
+    public void setAddress(String Address) {
+        tv_address.setText(Address);
+    }
+
 
 }
 

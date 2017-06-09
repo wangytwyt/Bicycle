@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.SharedPreUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +66,12 @@ public class AppGuideActivity extends Activity {
         butGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences  sp= getSharedPreferences(ContentValuse.dataBase, 0);
-                SharedPreferences.Editor  editor = sp.edit();
-                editor.putBoolean(ContentValuse.AppGuide,false);
-                editor.commit();
+//                SharedPreferences  sp= getSharedPreferences(ContentValuse.dataBase, 0);
+//                SharedPreferences.Editor  editor = sp.edit();
+//                editor.putBoolean(ContentValuse.AppGuide,false);
+//                editor.commit();
+                SharedPreUtils.sharedPut(AppGuideActivity.this,ContentValuse.AppGuide,false);
+
                 Intent intent = new Intent(AppGuideActivity.this,MainActivity.class);
                 startActivity(intent);
                 AppGuideActivity.this.finish();

@@ -1,11 +1,15 @@
 package com.example.administrator.bicycle;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.SharedPreUtils;
 
 public class SubscribeSuccessActivity extends AppCompatActivity {
 
@@ -35,6 +39,9 @@ public class SubscribeSuccessActivity extends AppCompatActivity {
 
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("预约成功");
+
+        SharedPreUtils.sharedPut(this,ContentValuse.isSubscribe,true);
+
 
        new Thread(){
            @Override

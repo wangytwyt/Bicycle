@@ -22,8 +22,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,22 +61,32 @@ import com.amap.api.navi.model.AimLessModeStat;
 import com.amap.api.navi.model.NaviInfo;
 import com.amap.api.navi.model.NaviLatLng;
 import com.amap.api.navi.view.RouteOverLay;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
+import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.SharedPreUtils;
+import com.example.administrator.bicycle.util.TOPpopCancel;
 import com.example.administrator.bicycle.util.TopPopupWindow;
 import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
+import com.sofi.smartlocker.ble.util.LOG;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RouteSearch.OnRouteSearchListener, AMapNaviListener, AMapNaviViewListener {
+public class MainActivity extends AppCompatActivity implements RouteSearch.OnRouteSearchListener, AMapNaviListener, AMapNaviViewListener, View.OnClickListener {
     private final int CAMERA_REQUEST_CODE = 1;
-
+    private final int DENGDIA = 0X1245141;
+    private final int SETADDRESS = 0X1245181;
     /**
      * 判断是否点击小于1秒
      */
@@ -85,14 +97,14 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private AMap aMap;
     private AMapNavi aMapNavi;
     private MapView mMapView;//地图
-    private Button Directions;//使用说明按钮
+
     private Button navigation;//导航按钮，，，，，，，，，，，，，，，，，，
     private ImageView code;//二维码按钮
     private LinearLayout imgEnterToPersonalCenter;
     private AMapLocationClientOption mLocationOption;
     private TextView iv_location;
-private TopPopupWindow pop;
-
+    private TopPopupWindow pop;
+    private TOPpopCancel popCancel;
     /**
      * 选择终点Aciton标志位
      */
@@ -112,6 +124,12 @@ private TopPopupWindow pop;
     private boolean calculateSuccess = false;
     private boolean chooseRouteSuccess = false;
 
+    private String road;
+
+
+    private ImageButton butright;
+    private RelativeLayout lay_lift;
+    private ImageView iv_lift;
 
     /**
      * 需要进行检测的权限数组
@@ -135,13 +153,27 @@ private TopPopupWindow pop;
     final Handler mhandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
+            int what = msg.what;
+            switch (what) {
+                case DENGDIA:
+                    pop();
+                    break;
+                case SETADDRESS:
+                    String rosaad = (String) msg.obj;
+                    if (popCancel!= null) {
+                        popCancel.setAddress(rosaad);
+                    }
+                    if(pop != null){
+                        pop.setAddress(rosaad);
+                    }
 
-
+                    break;
             }
+
 
         }
     };
+    private GeocodeSearch geocoderSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,6 +217,8 @@ private TopPopupWindow pop;
         //设置覆盖物
         setIcon();
 
+        getBluePointLocation();
+
 
         aMapNavi = AMapNavi.getInstance(getApplicationContext());
         aMapNavi.addAMapNaviListener(this);
@@ -211,26 +245,34 @@ private TopPopupWindow pop;
             @Override
             public void onClick(View v) {
 //             startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
-            startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
             }
         });
 
 
-        /*
-         * 使用说明点击事件
-         */
-        Directions.setOnClickListener(new View.OnClickListener() {
+
+    }
+
+    //得到蓝点的位置信息 坐标转地址
+    public void getBluePointLocation() {
+        geocoderSearch = new GeocodeSearch(this);
+        geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
             @Override
-            public void onClick(View v) {
-                //实例化一个跳转意图
-              Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+//解析result获取地址描述信息
 
-                //启动一个意图
-                startActivity(intent);
+                ;
+                Message msg = new Message();
+                msg.what =SETADDRESS;
+                msg.obj = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
+                mhandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+
             }
         });
-
-
     }
 
     /*
@@ -515,35 +557,92 @@ private TopPopupWindow pop;
         marker3.showInfoWindow();
     }
 
-private void popwindow(){
-    pop= new TopPopupWindow(this, new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // 隐藏弹出窗口
-            pop.dismiss();
-       MainActivity.this.startActivity(new Intent(MainActivity.this,SubscribeActivity.class));
+    private void popwindow() {
+        pop = new TopPopupWindow(this, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 隐藏弹出窗口
+                pop.dismiss();
+                MainActivity.this.startActivity(new Intent(MainActivity.this, SubscribeActivity.class));
 
 
-        }
-    });
-    pop.showAsDropDown(findViewById(R.id.tltle));
-}
+            }
+        });
+        pop.showAsDropDown(findViewById(R.id.tltle));
+    }
+
+    private void pop() {
+
+        popCancel = new TOPpopCancel(this, road, "12312312", 0.5, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popCancel.dismiss();
+                SharedPreUtils.sharedPut(MainActivity.this, ContentValuse.isSubscribe, false);
+            }
+        });
+        popCancel.showAsDropDown(findViewById(R.id.tltle));
+
+    }
+
+
     /*
      * 初始化控件
      */
     protected void init() {
         mMapView = (MapView) findViewById(R.id.map);//获取地图控件引用
-        Directions = (Button) findViewById(R.id.btn_Directions);//使用说明按钮
+
         code = (ImageView) findViewById(R.id.code);//二维码按钮
         imgEnterToPersonalCenter = (LinearLayout) findViewById(R.id.img_EnterToPersonalCenter);
         iv_location = (TextView) findViewById(R.id.iv_location);
-        iv_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLocationClient = null;
-                initMapAndstartLocation();
-            }
-        });
+        iv_location.setOnClickListener(this);
+
+        findViewById(R.id.tv_zhushou).setOnClickListener(this);
+        findViewById(R.id.tv_suaxin).setOnClickListener(this);
+        findViewById(R.id.tv_tousu).setOnClickListener(this);
+        butright =(ImageButton) findViewById(R.id.btn_Directions);
+        butright.setOnClickListener(this);
+        iv_lift = (ImageView)findViewById(R.id.iv_lift);
+        iv_lift.setOnClickListener(this);
+        lay_lift =(RelativeLayout) findViewById(R.id.rl_layout);
+        lay_lift .setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_location:
+
+                //设置定位蓝点
+                setBluePoint();
+
+                break;
+            case R.id.tv_zhushou:
+                startActivity(new Intent(MainActivity.this, AssistantActivity.class));
+                break;
+            case R.id.tv_suaxin:
+
+                break;
+            case R.id.tv_tousu:
+                startActivity(new Intent(MainActivity.this, ComplaintsActivity.class));
+                break;
+            case R.id.btn_Directions:
+                butright.setVisibility(View.GONE);
+                lay_lift.setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.rl_layout:
+
+
+
+                break;
+            case R.id.iv_lift:
+                butright.setVisibility(View.VISIBLE);
+                lay_lift.setVisibility(View.GONE);
+
+
+                break;
+
+        }
     }
 
     /*
@@ -559,6 +658,7 @@ private void popwindow(){
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
         aMap.getUiSettings().setMyLocationButtonEnabled(true);//设置默认定位按钮是否显示，非必需设置。
         aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+
     }
 
 
@@ -589,6 +689,13 @@ private void popwindow(){
 
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
+        if (SharedPreUtils.sharedGet(this, ContentValuse.isSubscribe, false)) {
+
+            mhandler.sendEmptyMessageDelayed(DENGDIA,4000);
+
+        }
+
+
     }
 
     @Override
@@ -620,6 +727,8 @@ private void popwindow(){
 
                     MyApplication.latitude = latitude;
                     MyApplication.longitude = longitude;
+                    road = amapLocation.getRoad();
+
 
                     startLatlng = new NaviLatLng(latitude, longitude);
 
@@ -628,7 +737,11 @@ private void popwindow(){
 
                     Log.d("a1*", "sa");
                     mLocationClient.stopLocation();
-
+//                    System.out.println("省："+arg0.getProvince());
+//                    System.out.println("国家："+arg0.getCountry());
+//                    System.out.println("经度"+arg0.getLatitude());
+//                    System.out.println("纬度"+arg0.getLongitude());
+//                    System.out.println("路是："+arg0.getRoad());
                 } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:"
@@ -648,6 +761,7 @@ private void popwindow(){
     @Override
     public void onCalculateRouteSuccess() {
         popwindow();
+
         /**
          * 清空上次计算的路径列表。
          */
@@ -728,6 +842,13 @@ private void popwindow(){
 
     @Override
     public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
+////返回当前位置的经纬度坐标。
+        NaviLatLng naviLatLng = aMapNaviLocation.getCoord();
+        // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+        RegeocodeQuery query = new RegeocodeQuery(new LatLonPoint(naviLatLng.getLatitude(), naviLatLng.getLongitude()), 200, GeocodeSearch.AMAP);
+
+        geocoderSearch.getFromLocationAsyn(query);
+
 
     }
 

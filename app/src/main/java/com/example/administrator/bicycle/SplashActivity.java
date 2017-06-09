@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.SharedPreUtils;
 
 public class SplashActivity extends Activity {
 
@@ -15,9 +16,11 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        SharedPreferences sp = getSharedPreferences(ContentValuse.dataBase, 0);
-       boolean isGuide = sp.getBoolean(ContentValuse.AppGuide,true);
-        if (isGuide) {
+//        SharedPreferences sp = getSharedPreferences(ContentValuse.dataBase, 0);
+//       boolean isGuide = sp.getBoolean(ContentValuse.AppGuide,true);
+
+
+        if (SharedPreUtils.sharedGet(this,ContentValuse.AppGuide,true)) {
             startActivity(new Intent(this, AppGuideActivity.class));
         }else {
             startActivity(new Intent(this, MainActivity.class));
