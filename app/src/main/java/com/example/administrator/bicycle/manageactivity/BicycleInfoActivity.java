@@ -1,23 +1,22 @@
-package com.example.administrator.bicycle;
+package com.example.administrator.bicycle.manageactivity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.administrator.bicycle.util.TextUtiil;
+import com.example.administrator.bicycle.R;
 
-public class MyGoodPointsActivity extends AppCompatActivity {
+public class BicycleInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_my_good_points);
-
+        setContentView(R.layout.activity_bicycle_info);
+        init();
     }
-    private void initView() {
-
+    private void init() {
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -25,12 +24,8 @@ public class MyGoodPointsActivity extends AppCompatActivity {
             }
         });
 
+
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
-        tvtitle.setText("我的善良分");
-
-
-        TextView text = (TextView) findViewById(R.id.tv_text);
-
+        tvtitle.setText("车辆信息");
     }
-
-}
+    }

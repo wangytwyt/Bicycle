@@ -31,6 +31,8 @@ import com.example.administrator.bicycle.Personal.Shanliangfen.ShanliangActivity
 import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
 import com.example.administrator.bicycle.Personal.yonhuxieyi.OkHttp;
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.manageactivity.AllRepairBicycleActivity;
+import com.example.administrator.bicycle.manageactivity.CollectInformationActivity;
 import com.example.administrator.bicycle.photo.utils.ImageUtils;
 import com.example.administrator.bicycle.photo.utils.SelectPicPopupWindow;
 import com.example.administrator.bicycle.view.RoundImageView;
@@ -130,6 +132,12 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
         four.setOnClickListener(this);
         five.setOnClickListener(this);
         six.setOnClickListener(this);
+        findViewById(R.id.line_n).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(InformationActivity.this,AllRepairBicycleActivity.class));
+            }
+        });
     }
 
     @Override

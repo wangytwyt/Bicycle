@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_bicycle_info"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.administrator.bicycle.manageactivity.BicycleInfoActivity">
+
+    <include layout="@layout/public_layout_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@mipmap/gzbj"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@mipmap/guangbiao" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="车辆信息录入"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_gravity="center_horizontal"
+            >
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="车架号"
+                 android:background="@mipmap/info_text_select_off"
+                 android:gravity="center"
+                 android:layout_gravity="center_vertical"
+                 android:layout_centerVertical="true"
+                 android:textSize="15dp"
+                 />
+           <RelativeLayout
+               android:layout_width="250dp"
+               android:layout_height="wrap_content">
+               <EditText
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="10dp"
+                   android:padding="5dp"
+                   android:hint="请输入车架号"
+                   android:background="@mipmap/shurukuang"
+                   />
+
+               <ImageView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@mipmap/cha"
+                   android:layout_centerVertical="true"
+                   android:layout_marginRight="10dp"
+                   android:layout_alignParentRight="true"
+                   />
+           </RelativeLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_gravity="center_horizontal"
+            >
+            <TextView
+                android:id="@+id/tv_che"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="锁 号"
+                android:background="@mipmap/info_text_select_off"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:textSize="15dp"
+                />
+            <RelativeLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:padding="5dp"
+                    android:hint="请输入锁号"
+                    android:background="@mipmap/shurukuang"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/cha"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_gravity="center_horizontal"
+            >
+            <TextView
+                android:id="@+id/tv_che"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="铭牌号"
+                android:background="@mipmap/info_text_select_off"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:textSize="15dp"
+                />
+            <RelativeLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:padding="5dp"
+                    android:hint="请输入铭牌号"
+                    android:background="@mipmap/shurukuang"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/cha"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_background"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/info_saomaluru"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="提交"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/dianzizhuangtai"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

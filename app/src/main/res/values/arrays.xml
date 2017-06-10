@@ -11,4 +11,20 @@
         <item>其他问题</item>
 
     </array>
+    <array name="bicycle_repair">
+        <item>开不了锁</item>
+        <item>车铃坏了</item>
+        <item>私锁私用</item>
+        <item>车牌缺损</item>
+        <item>车链掉了</item>
+        <item>轮胎坏了</item>
+        <item>座位坏了</item>
+        <item>刹车坏了</item>
+        <item>脚踏坏了</item>
+        <item>举报违停</item>
+        <item>车灯坏了</item>
+        <item>其他问题</item>
+    </array>
+
+
 </resources>

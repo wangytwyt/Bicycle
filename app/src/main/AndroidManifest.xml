@@ -176,8 +176,7 @@
         <activity android:name=".AppGuideActivity" />
         <!-- 充值说明 -->
         <activity android:name=".AnnualFeeActivity" />
-        <!-- 我的善良分 -->
-        <activity android:name=".MyGoodPointsActivity" />
+
         <!-- 全部问题 -->
         <activity android:name=".AllProblemActivity" />
         <!-- 举报中心 -->
@@ -189,8 +188,21 @@
         <activity android:name=".SubscribeSuccessActivity" />
         <activity android:name=".HelpActivity" />
         <activity android:name=".AssistantActivity" />
-        <!--投诉-->
-        <activity android:name=".ComplaintsActivity"></activity>
+        <!-- 投诉 -->
+        <activity android:name=".ComplaintsActivity" />
+
+        <!-- 管理员界面 -->
+        <!-- 单独车辆维修 -->
+        <activity android:name=".manageactivity.RepairBicycleActivity" />
+        <!-- 全部车辆维修 -->
+        <activity android:name=".manageactivity.AllRepairBicycleActivity" />
+        <!-- 车辆信息汇整 -->
+        <activity android:name=".manageactivity.CollectInformationActivity" />
+        <!-- 车辆信息 -->
+        <activity android:name=".manageactivity.BicycleInfoActivity" />
+        <!-- 车辆发放 -->
+        <activity android:name=".manageactivity.BatchIssueActivity" />
+        <activity android:name=".manageactivity.ManageActivity"></activity>
     </application>
 
 </manifest>

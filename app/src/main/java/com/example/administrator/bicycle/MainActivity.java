@@ -17,11 +17,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,12 +70,12 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
+import com.example.administrator.bicycle.manageactivity.RepairBicycleActivity;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.SharedPreUtils;
 import com.example.administrator.bicycle.util.TOPpopCancel;
 import com.example.administrator.bicycle.util.TopPopupWindow;
 import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
-import com.sofi.smartlocker.ble.util.LOG;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -658,7 +656,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
         aMap.getUiSettings().setMyLocationButtonEnabled(true);//设置默认定位按钮是否显示，非必需设置。
         aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
-
     }
 
 
@@ -690,9 +687,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
         if (SharedPreUtils.sharedGet(this, ContentValuse.isSubscribe, false)) {
-
             mhandler.sendEmptyMessageDelayed(DENGDIA,4000);
-
         }
 
 
