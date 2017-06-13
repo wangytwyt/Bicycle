@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ import com.sofi.smartlocker.ble.BleService;
 import com.sofi.smartlocker.ble.interfaces.IRemoteCallback;
 import com.sofi.smartlocker.ble.interfaces.IRemoteService;
 import com.sofi.smartlocker.ble.util.LOG;
+import com.sofi.smartlocker.ble.util.VerifyUtil;
 import com.squareup.otto.Subscribe;
 
 
@@ -98,7 +100,7 @@ public class KaisuoActivity extends AppCompatActivity {
     private BluetoothDevice device;
     private double lontitude = 0, latitude = 0;
 
-
+    private String bi;
     private ServiceConnection mConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -134,11 +136,33 @@ public class KaisuoActivity extends AppCompatActivity {
     IRemoteCallback.Stub mCallback = new IRemoteCallback.Stub() {
 
 
-
         @Override
         public void bleSupportFeature(boolean isFeature) throws RemoteException {
-//            Globals.isBleFeature = isFeature;
-//            showBleTipDialog();
+            Globals.isBleFeature = isFeature;
+            showBleTipDialog();
+        }
+
+        @Override
+        public void bleGetParams(String batteryVol, String solarVol, boolean open) throws RemoteException {
+            LOG.E(TAG, "bleGetParams batteryVol:" + batteryVol + " solarVol:" + solarVol + " open:" +open);
+//            if(open){
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            LOG.E("-------ddd","kaisuo");
+//
+//                            Constants.bleService.openLock("666666");
+//                            //  Constants.bleService.getLockStatus(lontitude, latitude);
+//                        } catch (RemoteException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//
+//                    }
+//                }).start();
+//
+//            }
         }
 
         @Override
@@ -146,22 +170,21 @@ public class KaisuoActivity extends AppCompatActivity {
             LOG.E(TAG, "bleScanResult name:" + name + " address:" + address + " bikeNo:" + Globals.bikeNo
                     + " rssi:" + rssi);
             //该函数用于扫描周边的蓝牙锁设备，找到后在回调函数bleScanResult中给出蓝牙锁的地址信息、信号强度信息
-              if(jisukaisuo != null && !jisukaisuo.equals("")){
-                  new Thread(new Runnable() {
-                      @Override
-                      public void run() {
+            if (jisukaisuo != null && !jisukaisuo.equals("")) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                          try {
-                              Constants.bleService.connectLock(address);
-                          } catch (RemoteException e) {
-                              e.printStackTrace();
-                          }
+                        try {
+                            Constants.bleService.connectLock(address);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
 
 
-                      }
-                  }).start();
-              }
-
+                    }
+                }).start();
+            }
 
 
         }
@@ -172,15 +195,13 @@ public class KaisuoActivity extends AppCompatActivity {
             //连接成功失败信息
 
             if (status) {
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
 
 
                         try {
-
-                            Constants.bleService.getLockStatus(lontitude, latitude);
+                            Constants.bleService.openLock("123456");
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -190,67 +211,100 @@ public class KaisuoActivity extends AppCompatActivity {
                 }).start();
 
             }
-
         }
 
         @Override
         public void bleCmdError(int cmd, String errorMsg) throws RemoteException {
             LOG.E(TAG, "bleCmdError :" + cmd + " msg:" + errorMsg);
+            if (errorMsg.equals("内存空间不足")) {
+
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                //查询订单
+//                                Constants.bleService.getLockRecord();
+//
+//                            } catch (RemoteException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }).start();
+
+
+            }
+
 
             send(errorMsg);
         }
 
-        @Override
-        public void bleGetBike(String version, String keySerial, String mac, String vol) throws RemoteException {
-            LOG.E(TAG, "bleGetBike version:" + version + " keySerial:" + keySerial + " mac:" + mac + " vol:" + vol);
-            if(jisukaisuo != null && !jisukaisuo.equals("")){
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Constants.bleService.setPassword("666666");
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-            }
-            else {
-               try {
-                   httpPostJson(mac, keySerial, DateToTimestamp(new Date()));
-               } catch (Exception e) {
-               }
-           }
 
+//        @Override
+//        public void bleGetBike(String version, String keySerial, String mac, String vol) throws RemoteException {
+//            LOG.E(TAG, "bleGetBike version:" + version + " keySerial:" + keySerial + " mac:" + mac + " vol:" + vol);
+//            if (jisukaisuo != null && !jisukaisuo.equals("")) {
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            Constants.bleService.openLock("666666");
+//                        } catch (RemoteException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }).start();
+//            } else {
+//                try {
+//                    httpPostJson(mac, keySerial, DateToTimestamp(new Date()));
+//                } catch (Exception e) {
+//                }
+//            }
+//
+//
+//        }
 
-
-        }
-
-        @Override
-        public void bleGetRecord(String phone, String bikeTradeNo, String timestamp, String transType,
-                                 String mackey, String index, String Cap, String Vol) throws RemoteException {
-            LOG.E(TAG, "bleGetRecord");
-
-        }
+//        @Override
+//        public void bleGetRecord(String phone, String bikeTradeNo, String timestamp, String transType,
+//                                 String mackey, String index, String Cap, String Vol) throws RemoteException {
+//            LOG.E(TAG, "bleGetRecord");
+//            bi = bikeTradeNo;
+////            new Thread(new Runnable() {
+////                @Override
+////                public void run() {
+////                    try {
+////                        //删除订单
+////                        Constants.bleService.delLockRecord(bi);
+////                    } catch (RemoteException e) {
+////                        e.printStackTrace();
+////                    }
+////                }
+////            }).start();
+//        }
 
         @Override
         public void bleCmdReply(int cmd) throws RemoteException {
             LOG.E(TAG, "bleCmdReply :" + cmd);
+            switch (cmd) {
+                case VerifyUtil.CMD_CLOSE_BIKE://关锁
+                    send("已关锁");
+                    break;
+                case VerifyUtil.CMD_OPEN_LOCK://开锁
+                    send("已开锁");
+                    break;
+            }
 
-            send("已开锁");
         }
     };
 
 
-private void send(String data){
-    Message msg = h.obtainMessage();
-    msg.what = 123;
-    msg.obj = data;
-    h.sendMessage(msg);
-}
+    private void send(String data) {
+        Message msg = h.obtainMessage();
+        msg.what = 123;
+        msg.obj = data;
+        h.sendMessage(msg);
+    }
 
-
-
+private EditText xiu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -259,13 +313,14 @@ private void send(String data){
         tvDate = (TextView) findViewById(R.id.tv_date);
         text = (TextView) findViewById(R.id.text);
         jindutiao = (ProgressBar) findViewById(R.id.jindutiao);
-
+        xiu = (EditText) findViewById(R.id.tv_xiu);
         getintent();
-        try {
-            Login();
-        } catch (Exception e) {
 
-        }
+//        try {
+//            Login();
+//        } catch (Exception e) {
+//
+//        }
 
 
     }
@@ -304,9 +359,9 @@ private void send(String data){
                         @Override
                         public void run() {
                             try {
-                              //  Constants.bleService.startBleScan();
+                                //  Constants.bleService.startBleScan();
 
-                                if(Constants.bleService != null) {
+                                if (Constants.bleService != null) {
 //                                   // Constants.bleService.setPassword("666666");
 //                                   if(Constants.bleService.isBleEnable()){
 //                                       Constants.bleService.setPassword("666666");
@@ -364,17 +419,27 @@ private void send(String data){
         bindService(intent, mConn, BIND_AUTO_CREATE);
     }
 
-
     private void showBleTipDialog() {
         try {
-//            if (Globals.BLE_INIT && Globals.isBleFeature) {
-            if (!Constants.bleService.isBleEnable()) {
-                Dialog.showBleDialog(this, R.string.ble_tip, bleListener, bleNeverListener);
+            if (Globals.BLE_INIT && Globals.isBleFeature) {
+                if (!Constants.bleService.isBleEnable()) {
+                    Dialog.showBleDialog(this, R.string.ble_tip, bleListener, bleNeverListener);
+                } else {
+                    rentCar();
+                }
+            } else if (Globals.BLE_INIT) {
+                Dialog.showAlertDialog(this, R.string.ble_feature_tip);
             }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
-//            } else if (Globals.BLE_INIT) {
-//                Dialog.showAlertDialog(this, R.string.ble_feature_tip);
-//            }
+    private void rentCar() {
+        try {
+            if (Constants.bleService != null) {
+                Constants.bleService.startBleScan();
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -437,188 +502,184 @@ private void send(String data){
     }
 
 
-
-
-
-
-    private CookieManager cookieManager = new CookieManager();
-    OkHttpClient client;
-    IRemoteService iRemoteService;
-    ServiceConnection connection;
-    public static final MediaType JSON1 = MediaType.parse("application/json; charset=utf-8");
-
-
-    //   String url = "http://42.159.113.21/heibike/lock/getlock.mvc";
-
-    private void httpPostJson(String macKey, String keySource, int timestamp) throws Exception {
-
-        //client对象，核心类
-
-        PRent p = new PRent(macKey, keySource, timestamp);
-        RequestBody requestbody = RequestBody.create(JSON1, p.getPStr());
-        Log.i("requestssss", p.getPStr());
-
-
-//        //post表单参数
-//        FormBody.Builder builder = new FormBody.Builder();
-//        builder.add("MAC", macKey);
-//        builder.add("keySource", keySource);
-//        builder.add("timestamp", timestamp + "");
-        //创建请求
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .post(builder.build())
-//                .build();
-
-
-        Request.Builder requestBuilder = new Request.Builder().url(url).post(requestbody);
-
-
-        OkHttpClient client = provideOkHttpClient(KaisuoActivity.this, cookieManager);
-
-
+//    private CookieManager cookieManager = new CookieManager();
+//    OkHttpClient client;
+//    IRemoteService iRemoteService;
+//    ServiceConnection connection;
+//    public static final MediaType JSON1 = MediaType.parse("application/json; charset=utf-8");
 //
+//
+//    //   String url = "http://42.159.113.21/heibike/lock/getlock.mvc";
+//
+//    private void httpPostJson(String macKey, String keySource, int timestamp) throws Exception {
+//
+//        //client对象，核心类
+//
+//        PRent p = new PRent(macKey, keySource, timestamp);
+//        RequestBody requestbody = RequestBody.create(JSON1, p.getPStr());
+//        Log.i("requestssss", p.getPStr());
+//
+//
+////        //post表单参数
+////        FormBody.Builder builder = new FormBody.Builder();
+////        builder.add("MAC", macKey);
+////        builder.add("keySource", keySource);
+////        builder.add("timestamp", timestamp + "");
+//        //创建请求
+////        Request request = new Request.Builder()
+////                .url(url)
+////                .post(builder.build())
+////                .build();
+//
+//
+//        Request.Builder requestBuilder = new Request.Builder().url(url).post(requestbody);
+//
+//
+//        OkHttpClient client = provideOkHttpClient(KaisuoActivity.this, cookieManager);
+//
+//
+////
+////        //用requestBuilder可以添加header
+////        Request.Builder requestBuilder = new Request.Builder().url(url).post(requestbody);
+//
+////        final Request request = requestBuilder.build();
+//
+//
+//        final Request request = requestBuilder.build();
+//
+//        client.newCall(request).enqueue(new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                //子线程中
+//                LOG.E("requestssssErr", e + "");
+//
+//            }
+//
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String str = response.body().string();
+//                LOG.E("requestssss1", str);
+//                //子线程中
+//
+//
+//                try {
+//                    JSONObject ob = new JSONObject(str);
+//                    if (ob.getInt("result") == 0) {
+//                        String ss = ob.getString("info");
+//                        JSONObject object = new JSONObject(ss);
+//                        String tradeId = object.getString("tradeId");
+//                        final int encryptionKey = object.getInt("encryptionKey");
+//                        final String keys = object.getString("keys");
+//                        final int serverTime = object.getInt("serverTime");
+//
+//
+//                        //     Constants.bleService.openLock("12345678999", serverTime, keys, encryptionKey);
+//                        Log.d("openLock", "执行");
+//
+//                    } else {
+//                        Toast.makeText(KaisuoActivity.this, "开锁失败", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//        });
+//    }
+//
+//    //登录
+//    private void Login() throws Exception {
+//        client = provideOkHttpClient(KaisuoActivity.this, cookieManager);
+//        //登录
+//
+//        PUserLogin login = new PUserLogin("12345678999", "aaaaaa");
+//        RequestBody requestbody = RequestBody.create(JSON1, login.getPStr());
 //        //用requestBuilder可以添加header
 //        Request.Builder requestBuilder = new Request.Builder().url(url).post(requestbody);
-
+//
+//
 //        final Request request = requestBuilder.build();
-
-
-        final Request request = requestBuilder.build();
-
-        client.newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                //子线程中
-                LOG.E("requestssssErr", e + "");
-
-            }
-
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String str = response.body().string();
-                LOG.E("requestssss1", str);
-                //子线程中
-
-
-                try {
-                    JSONObject ob = new JSONObject(str);
-                    if (ob.getInt("result") == 0) {
-                        String ss = ob.getString("info");
-                        JSONObject object = new JSONObject(ss);
-                        String tradeId = object.getString("tradeId");
-                        final int encryptionKey = object.getInt("encryptionKey");
-                        final String keys = object.getString("keys");
-                        final int serverTime = object.getInt("serverTime");
-
-
-                        Constants.bleService.openLock("12345678999", serverTime, keys, encryptionKey);
-                        Log.d("openLock", "执行");
-
-                    } else {
-                        Toast.makeText(KaisuoActivity.this, "开锁失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-    }
-
-    //登录
-    private void Login() throws Exception {
-        client = provideOkHttpClient(KaisuoActivity.this, cookieManager);
-        //登录
-
-        PUserLogin login = new PUserLogin("12345678999", "aaaaaa");
-        RequestBody requestbody = RequestBody.create(JSON1, login.getPStr());
-        //用requestBuilder可以添加header
-        Request.Builder requestBuilder = new Request.Builder().url(url).post(requestbody);
-
-
-        final Request request = requestBuilder.build();
-        client.newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                //子线程中
-                Log.d("requestssssErr", e + "");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String str = response.body().string();
-                Log.i("requestssssdenglu", str);
-
-            }
-        });
-
-    }
-
-
-    public OkHttpClient provideOkHttpClient(Context context, CookieManager cookieManager) {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
-        builder.connectTimeout(Constants.CONNECT_TIME_OUT, TimeUnit.SECONDS);
-        builder.readTimeout(Constants.SOCKET_TIME_OUT, TimeUnit.SECONDS);
-        builder.writeTimeout(Constants.SOCKET_TIME_OUT, TimeUnit.SECONDS);
-        builder.cookieJar(cookieManager);
-
-        X509TrustManager trustManager = provideTrustManager();
-        SSLSocketFactory sslSocketFactory = provideSSLFactory(trustManager);
-        if (sslSocketFactory != null) {
-            builder.sslSocketFactory(sslSocketFactory, trustManager);
-            builder.hostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String s, SSLSession sslSession) {
-                    return true;
-                }
-            });
-        }
-
-        File cacheDirectory = new File(context.getCacheDir(), Constants.DEFAULT_CACHE_DIR);
-        Cache cache = new Cache(cacheDirectory, Constants.cachSize);
-        builder.cache(cache);
-
-        return builder.build();
-    }
-
-
-    private X509TrustManager provideTrustManager() {
-        return new X509TrustManager() {
-            @Override
-            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
-            }
-
-            @Override
-            public void checkServerTrusted(
-                    java.security.cert.X509Certificate[] chain,
-                    String authType) {
-            }
-
-            @Override
-            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                X509Certificate[] x509Certificates = new X509Certificate[0];
-                return x509Certificates;
-            }
-        };
-    }
-
-    private SSLSocketFactory provideSSLFactory(TrustManager trustManager) {
-        // Create a trust manager that does not validate certificate chains
-        try {
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, new TrustManager[]{trustManager}, new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
-            return sslContext.getSocketFactory();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//        client.newCall(request).enqueue(new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                //子线程中
+//                Log.d("requestssssErr", e + "");
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String str = response.body().string();
+//                Log.i("requestssssdenglu", str);
+//
+//            }
+//        });
+//
+//    }
+//
+//
+//    public OkHttpClient provideOkHttpClient(Context context, CookieManager cookieManager) {
+//        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+//
+//        builder.connectTimeout(Constants.CONNECT_TIME_OUT, TimeUnit.SECONDS);
+//        builder.readTimeout(Constants.SOCKET_TIME_OUT, TimeUnit.SECONDS);
+//        builder.writeTimeout(Constants.SOCKET_TIME_OUT, TimeUnit.SECONDS);
+//        builder.cookieJar(cookieManager);
+//
+//        X509TrustManager trustManager = provideTrustManager();
+//        SSLSocketFactory sslSocketFactory = provideSSLFactory(trustManager);
+//        if (sslSocketFactory != null) {
+//            builder.sslSocketFactory(sslSocketFactory, trustManager);
+//            builder.hostnameVerifier(new HostnameVerifier() {
+//                @Override
+//                public boolean verify(String s, SSLSession sslSession) {
+//                    return true;
+//                }
+//            });
+//        }
+//
+//        File cacheDirectory = new File(context.getCacheDir(), Constants.DEFAULT_CACHE_DIR);
+//        Cache cache = new Cache(cacheDirectory, Constants.cachSize);
+//        builder.cache(cache);
+//
+//        return builder.build();
+//    }
+//
+//
+//    private X509TrustManager provideTrustManager() {
+//        return new X509TrustManager() {
+//            @Override
+//            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+//            }
+//
+//            @Override
+//            public void checkServerTrusted(
+//                    java.security.cert.X509Certificate[] chain,
+//                    String authType) {
+//            }
+//
+//            @Override
+//            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+//                X509Certificate[] x509Certificates = new X509Certificate[0];
+//                return x509Certificates;
+//            }
+//        };
+//    }
+//
+//    private SSLSocketFactory provideSSLFactory(TrustManager trustManager) {
+//        // Create a trust manager that does not validate certificate chains
+//        try {
+//            final SSLContext sslContext = SSLContext.getInstance("SSL");
+//            sslContext.init(null, new TrustManager[]{trustManager}, new java.security.SecureRandom());
+//            // Create an ssl socket factory with our all-trusting manager
+//            return sslContext.getSocketFactory();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
 
     //
@@ -638,17 +699,25 @@ private void send(String data){
 
         }
     };
+
     private void stopService() {
         try {
-            if(Constants.bleService != null) {
+            if (Constants.bleService != null) {
                 Constants.bleService.unregisterCallback(mCallback);
                 Constants.bleService = null;
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        if(mConn != null) {
+        if (mConn != null) {
             unbindService(mConn);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Globals.BLE_INIT = true;
+        stopService();
+        super.onDestroy();
     }
 }

@@ -160,6 +160,8 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
                 startActivity(new Intent(InformationActivity.this, XiugaiNameActivity.class));
                 break;
             case R.id.line_three:
+                startActivity(new Intent(InformationActivity.this,   CertificationActivity.class));
+
                 break;
             case R.id.line_four:
                 break;

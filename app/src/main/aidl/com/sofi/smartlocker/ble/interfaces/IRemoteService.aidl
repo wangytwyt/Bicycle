@@ -24,17 +24,11 @@ interface IRemoteService {
 
      void disconnectLock();
 
-     void getLockStatus(double lon, double lat);
+     void getParams(String key);
 
-     void openLock(String accountId, int time, String keys, int encryptionKey);
+     void openLock(String key);
 
-     void getLockRecord();
-
-     void delLockRecord(String tradeId);
-
-     void openPassword(String password, String accountId, int time, double lon, double lat);
-
-     void setPassword(String password);
+     void updateKey(String oldKey, String newkey);
 
      void registerCallback(IRemoteCallback callback);
 

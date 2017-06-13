@@ -26,6 +26,7 @@ import com.example.administrator.bicycle.Personal.yonhuxieyi.YhxyActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.example.administrator.bicycle.manageactivity.ManageActivity;
 import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
 import com.sofi.smartlocker.ble.util.LOG;
 import com.sofi.smartlocker.ble.util.StringUtils;
@@ -231,10 +232,13 @@ private void sendHandler(String str,int tem){
                 startActivity(new Intent(HomeActivity.this, TripActivity.class));
                 break;
             case R.id.lin_two:
-                startActivity(new Intent(HomeActivity.this, InformationActivity.class));
+                //           startActivity(new Intent(HomeActivity.this, InformationActivity.class));
+        startActivity(new Intent(HomeActivity.this, ManageActivity.class));
                 break;
             case R.id.lin_three:
+
                 startActivity(new Intent(HomeActivity.this, InvitationActivity.class));
+
                 break;
             case R.id.lin_four:
                 startActivity(new Intent(HomeActivity.this, GuideActivity.class));

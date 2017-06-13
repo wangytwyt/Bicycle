@@ -72,6 +72,7 @@ import com.amap.api.services.route.WalkRouteResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.example.administrator.bicycle.manageactivity.RepairBicycleActivity;
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.CustomProgressDialog;
 import com.example.administrator.bicycle.util.SharedPreUtils;
 import com.example.administrator.bicycle.util.TOPpopCancel;
 import com.example.administrator.bicycle.util.TopPopupWindow;

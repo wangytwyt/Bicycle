@@ -9,15 +9,12 @@ interface IRemoteCallback {
 
      void bleScanResult(String name, String address, int rssi);    //扫描到的蓝牙地址
 
-     void bleStatus(boolean status, String address);    //蓝牙连接状态：false关闭，true连接
+     void bleStatus(boolean status, String address);    //蓝牙连接状态：0:断开,1:连接,2:重连,3:连接异常,4:发现服务异常,5:开通主动通知异常，6连接超时
 
-     void bleCmdError(int cmd, String msg);    //读取锁状态、开锁、读取交易记录、删除交易记录命令失败回调，cmd参考CmdUtil, msg错误信息
+     void bleGetParams(String batteryVol, String solarVol, boolean open);    //锁参数、开关状态
 
-     void bleGetBike(String version, String keySerial, String mac, String vol);    //读取锁状态成功的回调
+     void bleCmdError(int cmd, String msg);    //所有命令失败回调，cmd参考CmdUtil, msg错误信息
 
-     void bleGetRecord(String phone, String bikeTradeNo, String timestamp, String transType,
-                                           String mackey, String index, String Cap, String Vol);
-
-     void bleCmdReply(int cmd);    //开锁、读取交易记录的成功回调
+     void bleCmdReply(int cmd);    //开锁、更改密码、关锁的成功回调
 
 }

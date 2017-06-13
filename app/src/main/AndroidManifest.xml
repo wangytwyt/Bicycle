@@ -190,6 +190,9 @@
         <activity android:name=".AssistantActivity" />
         <!-- 投诉 -->
         <activity android:name=".ComplaintsActivity" />
+        <!-- 实名认证 -->
+        <activity android:name=".Personal.CertificationActivity"></activity>
+
 
         <!-- 管理员界面 -->
         <!-- 单独车辆维修 -->
@@ -202,7 +205,8 @@
         <activity android:name=".manageactivity.BicycleInfoActivity" />
         <!-- 车辆发放 -->
         <activity android:name=".manageactivity.BatchIssueActivity" />
-        <activity android:name=".manageactivity.ManageActivity"></activity>
+        <activity android:name=".manageactivity.ManageActivity" />
+
     </application>
 
 </manifest>
