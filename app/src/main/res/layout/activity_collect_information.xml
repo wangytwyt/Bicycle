@@ -39,11 +39,13 @@
     <!--android:orientation="vertical">-->
 
     <RadioGroup
+        android:id="@+id/rg_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <RadioButton
+            android:id="@+id/rb_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -59,6 +61,7 @@
             android:textSize="15sp" />
 
         <RadioButton
+            android:id="@+id/tb_bicycleID"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,6 +77,7 @@
             android:textSize="15sp" />
 
         <RadioButton
+            android:id="@+id/rb_states"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -141,6 +145,16 @@
             android:text="状态"
             android:textSize="15sp" />
     </LinearLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_loadfail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/wangluozhongduan"
+        android:visibility="gone"
+        />
 
     <com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout
         android:id="@+id/refresh_view"
@@ -159,6 +173,9 @@
         <include layout="@layout/load_more" />
 
     </com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout>
+
+
+</RelativeLayout>
 
 
 

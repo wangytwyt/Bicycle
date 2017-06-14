@@ -36,7 +36,7 @@
                 android:gravity="center"
                 android:hint="请输入铭牌号"
                 android:padding="10dp"
-                android:text="6399723FA"
+                android:text="6399723FAN379"
                 android:textCursorDrawable="@mipmap/guangbiao"
                 android:textSize="25dp" />
             <!-- android:text="50:8C:B1:86:EF:29"        D4:36:39:97:23:FA-->

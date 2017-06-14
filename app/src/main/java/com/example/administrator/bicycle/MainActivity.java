@@ -32,6 +32,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private final int CAMERA_REQUEST_CODE = 1;
     private final int DENGDIA = 0X1245141;
     private final int SETADDRESS = 0X1245181;
+    private final int DIALOG = 0X124521;
     /**
      * 判断是否点击小于1秒
      */
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private NaviLatLng endLatlng = new NaviLatLng(39.955846, 116.352765);
     private NaviLatLng startLatlng = new NaviLatLng();
 
+    private int second;
 
     /**
      * 保存当前算好的路线
@@ -159,13 +162,17 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                     break;
                 case SETADDRESS:
                     String rosaad = (String) msg.obj;
-                    if (popCancel!= null) {
+                    if (popCancel != null) {
                         popCancel.setAddress(rosaad);
                     }
-                    if(pop != null){
+                    if (pop != null) {
                         pop.setAddress(rosaad);
                     }
 
+                    break;
+
+                case DIALOG:
+                    dialog.dismiss();
                     break;
             }
 
@@ -173,6 +180,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         }
     };
     private GeocodeSearch geocoderSearch;
+
+    private CustomProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,7 +258,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         });
 
 
-
     }
 
     //得到蓝点的位置信息 坐标转地址
@@ -262,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
                 ;
                 Message msg = new Message();
-                msg.what =SETADDRESS;
+                msg.what = SETADDRESS;
                 msg.obj = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
                 mhandler.sendMessage(msg);
             }
@@ -540,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 if (startLatlng == null && endLatlng == null) {
                     Toast.makeText(MainActivity.this, "当前位置尚未获取成功，请稍后再试", Toast.LENGTH_SHORT).show();
                 } else {
-
+                    endLatlng = naviLatLng;
                     aMapNavi.calculateWalkRoute(startLatlng, naviLatLng);
 
                 }
@@ -563,11 +571,15 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 // 隐藏弹出窗口
                 pop.dismiss();
                 MainActivity.this.startActivity(new Intent(MainActivity.this, SubscribeActivity.class));
-
-
             }
         });
+        pop.setData(road, calculateLineDistance() + "", getMin(second));
         pop.showAsDropDown(findViewById(R.id.tltle));
+    }
+
+    private double calculateLineDistance() {
+
+        return Math.floor(AMapUtils.calculateLineDistance(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()), new LatLng(endLatlng.getLatitude(), endLatlng.getLongitude())));
     }
 
     private void pop() {
@@ -598,12 +610,21 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         findViewById(R.id.tv_zhushou).setOnClickListener(this);
         findViewById(R.id.tv_suaxin).setOnClickListener(this);
         findViewById(R.id.tv_tousu).setOnClickListener(this);
-        butright =(ImageButton) findViewById(R.id.btn_Directions);
+        butright = (ImageButton) findViewById(R.id.btn_Directions);
         butright.setOnClickListener(this);
-        iv_lift = (ImageView)findViewById(R.id.iv_lift);
+        iv_lift = (ImageView) findViewById(R.id.iv_lift);
         iv_lift.setOnClickListener(this);
-        lay_lift =(RelativeLayout) findViewById(R.id.rl_layout);
-        lay_lift .setOnClickListener(this);
+        lay_lift = (RelativeLayout) findViewById(R.id.rl_layout);
+        lay_lift.setOnClickListener(this);
+
+
+        dialog = CustomProgressDialog.createDialog(this);
+        dialog.show();
+    }
+
+
+    public String getMin(long mss) {
+        return mss / 60 + "";
     }
 
     @Override
@@ -630,7 +651,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
                 break;
             case R.id.rl_layout:
-
 
 
                 break;
@@ -680,7 +700,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     @Override
     protected void onResume() {
         super.onResume();
-
+        mhandler.sendEmptyMessageDelayed(DIALOG, 4000);
         if (isNeedCheck) {
             checkPermissions(needPermissions);
         }
@@ -688,7 +708,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
         if (SharedPreUtils.sharedGet(this, ContentValuse.isSubscribe, false)) {
-            mhandler.sendEmptyMessageDelayed(DENGDIA,4000);
+            mhandler.sendEmptyMessageDelayed(DENGDIA, 4000);
         }
 
 
@@ -756,17 +776,19 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     @Override
     public void onCalculateRouteSuccess() {
-        popwindow();
+
 
         /**
          * 清空上次计算的路径列表。
          */
         routeOverlays.clear();
         AMapNaviPath path = aMapNavi.getNaviPath();
+        second = path.getAllTime();
         /**
          * 单路径不需要进行路径选择，直接传入－1即可
          */
         drawRoutes(-1, path);
+        popwindow();
     }
 
     @Override

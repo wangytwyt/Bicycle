@@ -19,7 +19,7 @@ import com.example.administrator.bicycle.R;
 
 public class TopPopupWindow extends PopupWindow {
     private View mMenuView;
-    private TextView tv_address, tv_price;
+    private TextView tv_address, tv_price,tv_m,tv_time;
     private Button but_subscribe;
 
     @SuppressLint("InflateParams")
@@ -30,6 +30,8 @@ public class TopPopupWindow extends PopupWindow {
         mMenuView = inflater.inflate(R.layout.layout_popupwindow_subscribe, null);
         tv_address = (TextView) mMenuView.findViewById(R.id.tv_address);
         tv_price = (TextView) mMenuView.findViewById(R.id.tv_price);
+        tv_m = (TextView) mMenuView.findViewById(R.id.tv_m);
+        tv_time= (TextView) mMenuView.findViewById(R.id.tv_time);
         but_subscribe = (Button) mMenuView.findViewById(R.id.but_subscribe);
         // 设置按钮监听
         but_subscribe.setOnClickListener(itemsOnClick);
@@ -50,27 +52,31 @@ public class TopPopupWindow extends PopupWindow {
         // 设置SelectPicPopupWindow弹出窗体的背景
         this.setBackgroundDrawable(dw);
         // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
-        mMenuView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            @SuppressLint("ClickableViewAccessibility")
-            public boolean onTouch(View v, MotionEvent event) {
-
-                int height = mMenuView.findViewById(R.id.pop_layout).getTop();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height) {
-                        dismiss();
-                    }
-                }
-                return true;
-            }
-        });
+//        mMenuView.setOnTouchListener(new View.OnTouchListener() {
+//
+//            @Override
+//            @SuppressLint("ClickableViewAccessibility")
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                int height = mMenuView.findViewById(R.id.pop_layout).getTop();
+//                int y = (int) event.getY();
+//                if (event.getAction() == MotionEvent.ACTION_UP) {
+//                    if (y < height) {
+//                        dismiss();
+//                    }
+//                }
+//                return true;
+//            }
+//        });
 
     }
-
-    public void setAddress(String Address) {
-        tv_address.setText(Address);
+    public void setAddress(String addres) {
+        tv_address.setText(addres);
+    }
+    public void setData(String addres,String m,String time) {
+        tv_address.setText(addres);
+        tv_m.setText(m);
+        tv_time.setText(time);
     }
 
 

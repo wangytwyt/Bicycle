@@ -201,7 +201,7 @@ public class KaisuoActivity extends AppCompatActivity {
 
 
                         try {
-                            Constants.bleService.openLock("123456");
+                            Constants.bleService.openLock("666666");
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -336,7 +336,7 @@ private EditText xiu;
     private void connectLock(final String str, String jisukaisuo, final String data) {
         try {
             if (str != null && !str.equals("")) {
-                Log.d("straaa", str);
+
                 type = 0;
                 //                Login(str);
                 if (Constants.bleService != null) {
@@ -344,6 +344,7 @@ private EditText xiu;
                         @Override
                         public void run() {
                             try {
+                                LOG.E("-------",str);
                                 Constants.bleService.connectLock(str);
 
                             } catch (RemoteException e) {
@@ -385,6 +386,7 @@ private EditText xiu;
                         @Override
                         public void run() {
                             try {
+                                LOG.E("-------",data);
                                 Constants.bleService.connectLock(data);
 
                                 Log.d("执行成功", "执行成功");

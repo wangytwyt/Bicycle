@@ -70,14 +70,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:text="我的余额：" />
+            android:text="我的嘿币：" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="0.00元" />
-
+            android:text="  0枚" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center"
+            android:text="(1嘿币 = 1元 RMB)" />
     </LinearLayout>
 
 
@@ -105,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:text="充值金额：" />
+            android:text="购买嘿币：" />
 
 
     </LinearLayout>
@@ -114,7 +119,7 @@
     <RadioGroup
         android:id="@+id/rg_one"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/white"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
@@ -130,7 +135,24 @@
             android:button="@null"
             android:gravity="center"
             android:padding="10dp"
-            android:text="10元"
+            android:text="20枚"
+            android:textColor="@drawable/select_checkbox_text" />
+        />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <RadioButton
+            android:id="@+id/rb_30"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/select_radionbutton"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="30枚"
             android:textColor="@drawable/select_checkbox_text" />
         />
 
@@ -146,23 +168,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="10dp"
-            android:text="20元"
-            android:textColor="@drawable/select_checkbox_text" />
-        />
-
-        <View
-            android:layout_width="10dp"
-            android:layout_height="match_parent" />
-
-        <RadioButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/select_radionbutton"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="30元"
+            android:text="50枚"
             android:textColor="@drawable/select_checkbox_text" />
         />
 
@@ -172,7 +178,7 @@
     <RadioGroup
         android:id="@+id/rg_two"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/white"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
@@ -188,7 +194,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="10dp"
-            android:text="50元"
+            android:text="80枚"
             android:textColor="@drawable/select_checkbox_text" />
         />
 
@@ -204,7 +210,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="10dp"
-            android:text="100元"
+            android:text="100枚"
             android:textColor="@drawable/select_checkbox_text" />
         />
 
@@ -220,7 +226,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="10dp"
-            android:text="200元"
+            android:text="200枚"
             android:textColor="@drawable/select_checkbox_text" />
         />
 
