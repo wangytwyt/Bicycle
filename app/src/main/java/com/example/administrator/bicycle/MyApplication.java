@@ -9,12 +9,13 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.navi.model.NaviLatLng;
+import com.mob.MobApplication;
 
 /**
  * Created by Administrator on 2017/5/26.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MobApplication {
     public static NaviLatLng startLatlng = new NaviLatLng();
 
     public static double latitude, longitude;
