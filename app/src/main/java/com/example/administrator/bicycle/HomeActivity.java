@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.administrator.bicycle.manageactivity.ManageActivity;
+import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
 import com.sofi.smartlocker.ble.util.LOG;
 import com.sofi.smartlocker.ble.util.StringUtils;
@@ -77,8 +78,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void handleMessage(Message msg) {
 
-            String dd = msg.what+"℃";
-            tv_weather.setText((String)msg.obj);
+            String dd = msg.what + "℃";
+            tv_weather.setText((String) msg.obj);
             tv_temperature.setText(dd);
         }
     };
@@ -136,7 +137,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tv_city = (TextView) findViewById(R.id.tv_city);
         tv_weather = (TextView) findViewById(R.id.tv_weather);
         tv_temperature = (TextView) findViewById(R.id.tv_temperature);
-        iv_saomakaisuo = (ImageView)findViewById(R.id.iv_saomakaisuo);
+        iv_saomakaisuo = (ImageView) findViewById(R.id.iv_saomakaisuo);
 
 
         one = (LinearLayout) findViewById(R.id.lin_one);
@@ -190,11 +191,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             JSONObject JSONObject = new JSONObject(str);
             String data = JSONObject.getString("data");
             JSONObject jsondata = new JSONObject(data);
-            JSONArray hourly =jsondata.getJSONArray("hourly");
+            JSONArray hourly = jsondata.getJSONArray("hourly");
             JSONObject jj = (JSONObject) hourly.get(0);
-            String wearher =  jj.getString("condition");
-            int temperature =jj.getInt("temp");
-            sendHandler(wearher,temperature);
+            String wearher = jj.getString("condition");
+            int temperature = jj.getInt("temp");
+            sendHandler(wearher, temperature);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,12 +203,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-private void sendHandler(String str,int tem){
-    Message msg = new Message();
-    msg.what = tem;
-    msg.obj = str;
-    mhandler.sendMessage(msg);
-}
+
+    private void sendHandler(String str, int tem) {
+        Message msg = new Message();
+        msg.what = tem;
+        msg.obj = str;
+        mhandler.sendMessage(msg);
+    }
 
     private void getw(final double latitude, final double longitude) {
         new Thread(new Runnable() {
@@ -215,7 +217,7 @@ private void sendHandler(String str,int tem){
             public void run() {
                 try {
 
-                 post("http://aliv8.data.moji.com/whapi/json/aliweather/forecast24hours", latitude + "", longitude + "");
+                    post("http://aliv8.data.moji.com/whapi/json/aliweather/forecast24hours", latitude + "", longitude + "");
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -232,8 +234,8 @@ private void sendHandler(String str,int tem){
                 startActivity(new Intent(HomeActivity.this, TripActivity.class));
                 break;
             case R.id.lin_two:
-                //           startActivity(new Intent(HomeActivity.this, InformationActivity.class));
-        startActivity(new Intent(HomeActivity.this, ManageActivity.class));
+  //              startActivity(new Intent(HomeActivity.this, InformationActivity.class));
+                  startActivity(new Intent(HomeActivity.this, ManageActivity.class));
                 break;
             case R.id.lin_three:
 
@@ -251,12 +253,26 @@ private void sendHandler(String str,int tem){
                 break;
 
             case R.id.iv_saomakaisuo:
-                startActivity(new Intent(HomeActivity.this, CaptureActivity.class));
-                finish();
+                if (PermissionUtils.checkPermissionCamera(this)) {
+                    toCaptureActivity();
+                }
                 break;
 
         }
 
+
+    }
+
+    private void toCaptureActivity() {
+        startActivity(new Intent(HomeActivity.this, CaptureActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] paramArrayOfInt) {
+        if (PermissionUtils.onRequestPermissionsResultCamera(this, requestCode, permissions, paramArrayOfInt)) {
+            toCaptureActivity();
+        }
 
     }
 }

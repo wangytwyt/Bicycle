@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.administrator.bicycle.photo.utils.SelectPicPopupWindow;
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.util.PermissionUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -150,31 +151,35 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void permission(int rid) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+//                != PackageManager.PERMISSION_GRANTED) {
+//
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+//
+//        } else {
+        if (PermissionUtils.checkPermissionCamera(this)) {
 
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
-
-        } else {
             showPicturePopupWindow(rid);
         }
     }
 
-    public void onRequestPermissionsResult (int requestCode, int[] paramArrayOfInt,int rid) {
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            if (paramArrayOfInt[0] == PackageManager.PERMISSION_GRANTED) {
-
-                showPicturePopupWindow(rid);
-
-            } else {
-                //用户勾选了不再询问
-                //提示用户手动打开权限
-                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                    Toast.makeText(this, "相机权限已被禁止", Toast.LENGTH_SHORT).show();
-                }
-            }
+    public void onRequestPermissionsResult(int requestCode,  String[] permissions,int[] paramArrayOfInt, int rid) {
+//        if (requestCode == CAMERA_REQUEST_CODE) {
+//            if (paramArrayOfInt[0] == PackageManager.PERMISSION_GRANTED) {
+        if (PermissionUtils.onRequestPermissionsResultCamera(this, requestCode, permissions, paramArrayOfInt)) {
+            showPicturePopupWindow(rid);
         }
 
+
+//            } else {
+//                //用户勾选了不再询问
+//                //提示用户手动打开权限
+//                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+//                    Toast.makeText(this, "相机权限已被禁止", Toast.LENGTH_SHORT).show();
+//                }
+//            }
     }
+
+
 }

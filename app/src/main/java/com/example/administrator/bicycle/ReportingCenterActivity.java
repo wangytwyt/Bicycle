@@ -82,7 +82,7 @@ private CheckBoxView cbxv;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        onRequestPermissionsResult(requestCode,grantResults,R.id.activity_reporting_center);
+        onRequestPermissionsResult(requestCode,permissions,grantResults,R.id.activity_reporting_center);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 

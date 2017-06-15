@@ -39,6 +39,7 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -74,6 +75,7 @@ import com.autonavi.tbt.TrafficFacilityInfo;
 import com.example.administrator.bicycle.manageactivity.RepairBicycleActivity;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.CustomProgressDialog;
+import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.util.SharedPreUtils;
 import com.example.administrator.bicycle.util.TOPpopCancel;
 import com.example.administrator.bicycle.util.TopPopupWindow;
@@ -84,10 +86,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RouteSearch.OnRouteSearchListener, AMapNaviListener, AMapNaviViewListener, View.OnClickListener {
-    private final int CAMERA_REQUEST_CODE = 1;
+
     private final int DENGDIA = 0X1245141;
     private final int SETADDRESS = 0X1245181;
-    private final int DIALOG = 0X124521;
+
+    private final int LOCATION = 0X12654;
     /**
      * 判断是否点击小于1秒
      */
@@ -133,23 +136,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private RelativeLayout lay_lift;
     private ImageView iv_lift;
 
-    /**
-     * 需要进行检测的权限数组
-     */
-    protected String[] needPermissions = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE
-    };
-
-    private static final int PERMISSON_REQUESTCODE = 0;
-
-    /**
-     * 判断是否需要检测，防止不停的弹框
-     */
-    private boolean isNeedCheck = true;
 
     //        //利用Handler更新UI
     final Handler mhandler = new Handler() {
@@ -171,9 +157,12 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
                     break;
 
-                case DIALOG:
+                case LOCATION:
+                    CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()), 17, 0, 0));
+                    aMap.moveCamera(mCameraUpdate);//把缩放级别放进摄像机
                     dialog.dismiss();
                     break;
+
             }
 
 
@@ -230,8 +219,9 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         aMapNavi = AMapNavi.getInstance(getApplicationContext());
         aMapNavi.addAMapNaviListener(this);
-        CameraUpdate mCameraUpdate = CameraUpdateFactory.zoomTo(16);//设置缩放级别
+        CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(34.26984294, 108.94729614), 16, 0, 0));
         aMap.moveCamera(mCameraUpdate);//把缩放级别放进摄像机
+//
         UiSettings mUiSettings;//定义一个UiSettings对象
         mUiSettings = aMap.getUiSettings();//实例化UiSettings类对象
         mUiSettings.setZoomControlsEnabled(false);
@@ -286,15 +276,11 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             * 去二维码扫描
             */
     private void toCapture() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
-
-        } else {
+        if (PermissionUtils.checkPermissionCamera(this)) {
             toCaptureActivity();
         }
+
     }
 
     private void toCaptureActivity() {
@@ -368,24 +354,13 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] paramArrayOfInt) {
-        if (requestCode == PERMISSON_REQUESTCODE) {
-            if (!verifyPermissions(paramArrayOfInt)) {
-//              showMissingPermissionDialog();
-                isNeedCheck = false;
-            }
-        } else if (requestCode == CAMERA_REQUEST_CODE) {
-            if (paramArrayOfInt[0] == PackageManager.PERMISSION_GRANTED) {
 
-                toCaptureActivity();
+        PermissionUtils.onRequestPermissionsResultPermissions(requestCode, paramArrayOfInt);
 
-            } else {
-                //用户勾选了不再询问
-                //提示用户手动打开权限
-                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                    Toast.makeText(this, "相机权限已被禁止", Toast.LENGTH_SHORT).show();
-                }
-            }
+        if (PermissionUtils.onRequestPermissionsResultCamera(MainActivity.this, requestCode, permissions, paramArrayOfInt)) {
+            toCaptureActivity();
         }
+
     }
 
     /**
@@ -416,46 +391,12 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         routeOverlays.clear();
     }
 
-    /**
-     * @para
-     * @since 2.5.0
-     */
-    private void checkPermissions(String... permissions) {
-        List<String> needRequestPermissonList = findDeniedPermissions(permissions);
-        if (null != needRequestPermissonList
-                && needRequestPermissonList.size() > 0) {
-            ActivityCompat.requestPermissions(this,
-                    needRequestPermissonList.toArray(
-                            new String[needRequestPermissonList.size()]),
-                    PERMISSON_REQUESTCODE);
-        }
-    }
-
-    /**
-     * 获取权限集中需要申请权限的列表
-     *
-     * @param permissions
-     * @return
-     * @since 2.5.0
-     */
-    private List<String> findDeniedPermissions(String[] permissions) {
-        List<String> needRequestPermissonList = new ArrayList<String>();
-        for (String perm : permissions) {
-            if (ContextCompat.checkSelfPermission(this,
-                    perm) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.shouldShowRequestPermissionRationale(
-                    this, perm)) {
-                needRequestPermissonList.add(perm);
-            }
-        }
-        return needRequestPermissonList;
-    }
-
 
     /*
      * 初始化定位
      */
     private void initMapAndstartLocation() {
+
         if (mLocationClient == null) {
             //初始化定位
             mLocationClient = new AMapLocationClient(getApplicationContext());
@@ -490,16 +431,16 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         aMap = mMapView.getMap();
 
         //绘制marker
-        Marker marker = aMap.addMarker(new MarkerOptions()
-                .position(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()))
-
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                        .decodeResource(getResources(), R.mipmap.jqdw)))
-                .draggable(true));
-        NaviLatLng naviLatLng = new NaviLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
-
-
-        startLatlng = naviLatLng;
+//        Marker marker = aMap.addMarker(new MarkerOptions()
+//              .position(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()))
+//
+//                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+//                       .decodeResource(getResources(), R.mipmap.jqdw)))
+//                .draggable(true));
+//        NaviLatLng naviLatLng = new NaviLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
+//
+//
+//        startLatlng = naviLatLng;
 
 
         // 绘制曲线
@@ -507,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 .add(new LatLng(43.828, 87.621), new LatLng(45.808, 126.55))
                 .geodesic(true).color(Color.RED));
         //设置地图中间的覆盖物
-        marker.setPositionByPixels(360, 640);
+        //      marker.setPositionByPixels(360, 640);
 
 
         MarkerOptions markerOption = new MarkerOptions();
@@ -651,7 +592,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
                 break;
             case R.id.rl_layout:
-
+                startActivity(new Intent(MainActivity.this, WebActivity.class));
 
                 break;
             case R.id.iv_lift:
@@ -700,10 +641,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     @Override
     protected void onResume() {
         super.onResume();
-        mhandler.sendEmptyMessageDelayed(DIALOG, 4000);
-        if (isNeedCheck) {
-            checkPermissions(needPermissions);
-        }
+        PermissionUtils.checkPermissionneedPermissions(this);
 
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
@@ -751,6 +689,9 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                     MyApplication.city = amapLocation.getCity();
                     MyApplication.startLatlng = startLatlng;
 
+
+                    mhandler.sendEmptyMessage(LOCATION);
+
                     Log.d("a1*", "sa");
                     mLocationClient.stopLocation();
 //                    System.out.println("省："+arg0.getProvince());
@@ -763,6 +704,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                     Log.e("AmapError", "location Error, ErrCode:"
                             + amapLocation.getErrorCode() + ", errInfo:"
                             + amapLocation.getErrorInfo());
+                    mLocationClient.startLocation();
                 }
             }
         }
@@ -776,8 +718,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     @Override
     public void onCalculateRouteSuccess() {
-
-
         /**
          * 清空上次计算的路径列表。
          */
@@ -794,7 +734,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     @Override
     public void onCalculateRouteFailure(int i) {
         calculateSuccess = false;
-        Toast.makeText(getApplicationContext(), "计算路线失败，errorcode＝" + i, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "计算路线失败，" + i, Toast.LENGTH_SHORT).show();
     }
 
     @Override

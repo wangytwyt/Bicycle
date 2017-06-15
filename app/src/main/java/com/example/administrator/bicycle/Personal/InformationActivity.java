@@ -33,8 +33,10 @@ import com.example.administrator.bicycle.Personal.yonhuxieyi.OkHttp;
 import com.example.administrator.bicycle.R;
 import com.example.administrator.bicycle.manageactivity.AllRepairBicycleActivity;
 import com.example.administrator.bicycle.manageactivity.CollectInformationActivity;
+import com.example.administrator.bicycle.photo.utils.HeadImagePop;
 import com.example.administrator.bicycle.photo.utils.ImageUtils;
 import com.example.administrator.bicycle.photo.utils.SelectPicPopupWindow;
+import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.view.RoundImageView;
 
 import java.io.ByteArrayInputStream;
@@ -65,9 +67,9 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     private RoundImageView iv_img;
     private Button bt_camera;
     private Button bt_xiangce;
-    private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
-    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
-    private static final int PHOTO_REQUEST_CUT = 3;// 结果
+//    private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
+//    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
+//    private static final int PHOTO_REQUEST_CUT = 3;// 结果
     /* 头像名称 */
     private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
     private File tempFile;
@@ -135,7 +137,7 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.line_n).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(InformationActivity.this,AllRepairBicycleActivity.class));
+                startActivity(new Intent(InformationActivity.this, AllRepairBicycleActivity.class));
             }
         });
     }
@@ -144,14 +146,16 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.line_one:
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
-
-                } else {
-                    setSelectPicPopupWindow();
+//                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//
+//                    ActivityCompat.requestPermissions(this,
+//                            new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+//
+//                } else {
+                if (PermissionUtils.checkPermissionCamera(this)) {
+                    //setSelectPicPopupWindow();
+                    HeadImagePop.setSelectPicPopupWindow(this, findViewById(R.id.ll_lin));
                 }
 
                 break;
@@ -160,7 +164,7 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
                 startActivity(new Intent(InformationActivity.this, XiugaiNameActivity.class));
                 break;
             case R.id.line_three:
-                startActivity(new Intent(InformationActivity.this,   CertificationActivity.class));
+                startActivity(new Intent(InformationActivity.this, CertificationActivity.class));
 
                 break;
             case R.id.line_four:
@@ -176,95 +180,87 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                setSelectPicPopupWindow();
-
-            } else {
-                //用户勾选了不再询问
-                //提示用户手动打开权限
-                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                    Toast.makeText(this, "相机权限已被禁止", Toast.LENGTH_SHORT).show();
-                }
-            }
+        if (PermissionUtils.onRequestPermissionsResultCamera(this, requestCode, permissions, grantResults)) {
+            // setSelectPicPopupWindow();
+            HeadImagePop.setSelectPicPopupWindow(this, findViewById(R.id.ll_lin));
         }
+
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private void setSelectPicPopupWindow() {
-        selectPicPopupWindow = new SelectPicPopupWindow(InformationActivity.this, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 隐藏弹出窗口
-                selectPicPopupWindow.dismiss();
-                switch (v.getId()) {
-                    case R.id.takePhotoBtn:// 拍照
-                        takePhoto();
-                        break;
-                    case R.id.pickPhotoBtn:// 相册选择图片
-                        pickPhoto();
-                        break;
-                    case R.id.cancelBtn:// 取消
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-        selectPicPopupWindow.showAtLocation(findViewById(R.id.ll_lin), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+//    private void setSelectPicPopupWindow() {
+//        selectPicPopupWindow = new SelectPicPopupWindow(InformationActivity.this, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // 隐藏弹出窗口
+//                selectPicPopupWindow.dismiss();
+//                switch (v.getId()) {
+//                    case R.id.takePhotoBtn:// 拍照
+//                        takePhoto();
+//                        break;
+//                    case R.id.pickPhotoBtn:// 相册选择图片
+//                        pickPhoto();
+//                        break;
+//                    case R.id.cancelBtn:// 取消
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        });
+//        selectPicPopupWindow.showAtLocation(findViewById(R.id.ll_lin), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+//
+//    }
 
-    }
 
-
-    private void takePhoto() {
-        Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent2.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                "head.jpg")));
-        startActivityForResult(intent2, PHOTO_REQUEST_CAREMA);
-    }
-
-    private void pickPhoto() {
-        // 激活系统图库，选择一张图片
-        Intent intent1 = new Intent(Intent.ACTION_PICK);
-        intent1.setType("image/*");
-        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_GALLERY
-        startActivityForResult(intent1, PHOTO_REQUEST_GALLERY);
-    }
-
-    /*
- * 判断sdcard是否被挂载
- */
-    private boolean hasSdcard() {
-        //判断ＳＤ卡手否是安装好的　　　media_mounted
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /*
-     * 剪切图片
-     */
-    private void crop(Uri uri) {
-        // 裁剪图片意图
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("crop", "true");
-        // 裁剪框的比例，1：1
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        // 裁剪后输出图片的尺寸大小
-        intent.putExtra("outputX", 250);
-        intent.putExtra("outputY", 250);
-
-        intent.putExtra("outputFormat", "JPEG");// 图片格式
-        intent.putExtra("noFaceDetection", true);// 取消人脸识别
-        intent.putExtra("return-data", true);
-        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
-        startActivityForResult(intent, PHOTO_REQUEST_CUT);
-    }
+//    private void takePhoto() {
+//        Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        intent2.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+//                "head.jpg")));
+//        startActivityForResult(intent2, PHOTO_REQUEST_CAREMA);
+//    }
+//
+//    private void pickPhoto() {
+//        // 激活系统图库，选择一张图片
+//        Intent intent1 = new Intent(Intent.ACTION_PICK);
+//        intent1.setType("image/*");
+//        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_GALLERY
+//        startActivityForResult(intent1, PHOTO_REQUEST_GALLERY);
+//    }
+//
+//    /*
+// * 判断sdcard是否被挂载
+// */
+//    private boolean hasSdcard() {
+//        //判断ＳＤ卡手否是安装好的　　　media_mounted
+//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    /*
+//     * 剪切图片
+//     */
+//    private void crop(Uri uri) {
+//        // 裁剪图片意图
+//        Intent intent = new Intent("com.android.camera.action.CROP");
+//        intent.setDataAndType(uri, "image/*");
+//        intent.putExtra("crop", "true");
+//        // 裁剪框的比例，1：1
+//        intent.putExtra("aspectX", 1);
+//        intent.putExtra("aspectY", 1);
+//        // 裁剪后输出图片的尺寸大小
+//        intent.putExtra("outputX", 250);
+//        intent.putExtra("outputY", 250);
+//
+//        intent.putExtra("outputFormat", "JPEG");// 图片格式
+//        intent.putExtra("noFaceDetection", true);// 取消人脸识别
+//        intent.putExtra("return-data", true);
+//        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
+//        startActivityForResult(intent, PHOTO_REQUEST_CUT);
+//    }
 
     /**
      * @param requestCode
@@ -274,56 +270,11 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
-        if (requestCode == PHOTO_REQUEST_GALLERY) {
-            // 从相册返回的数据
-            if (data != null) {
-                // 得到图片的全路径
-                Uri uri = data.getData();
-                crop(uri);
-                // 这里开始的第二部分，获取图片的路径：
-                String[] proj = {MediaStore.Images.Media.DATA};
-                // 好像是android多媒体数据库的封装接口，具体的看Android文档
-                Cursor cursor = managedQuery(uri, proj, null, null,
-                        null);
-                // 按我个人理解 这个是获得用户选择的图片的索引值
-                int column_index = cursor
-                        .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                // 将光标移至开头 ，这个很重要，不小心很容易引起越界
-                cursor.moveToFirst();
-                // 最后根据索引值获取图片路径
-                String path = cursor.getString(column_index);
-                File file = new File(path);
-                try {
-                    setImgByStr("", file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (requestCode == PHOTO_REQUEST_CAREMA) {
-            File temp = new File(Environment.getExternalStorageDirectory()
-                    + "/head.jpg");
-
-            crop(Uri.fromFile(temp));
-
-        } else if (requestCode == PHOTO_REQUEST_CUT) {
-            // 从剪切图片返回的数据
-            if (data != null) {
-                Bitmap bitmap = data.getParcelableExtra("data");
-                /**
-                 * 获得图片
-                 */
-                iv_img.setImageBitmap(bitmap);
-                //保存到SharedPreferences
-                saveBitmapToSharedPreferences(bitmap);
-            }
-            try {
-                // 将临时文件删除
-                tempFile.delete();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Bitmap bitmap = HeadImagePop.onActivityResult(this, requestCode, resultCode, data);
+        if (bitmap != null) {
+            iv_img.setImageBitmap(bitmap);
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

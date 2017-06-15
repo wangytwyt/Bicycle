@@ -77,7 +77,7 @@ public class WeitingActivity extends BaseActivity{
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        onRequestPermissionsResult(requestCode,grantResults,R.id.ll_lin);
+        onRequestPermissionsResult(requestCode,permissions,grantResults,R.id.ll_lin);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 

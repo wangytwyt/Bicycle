@@ -89,7 +89,7 @@
                 android:id="@+id/tv_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="17℃"
                 android:layout_below="@+id/tv_weather"
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
