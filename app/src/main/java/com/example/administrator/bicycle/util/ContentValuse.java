@@ -10,19 +10,17 @@ public class ContentValuse {
     public static final String Text = "TEXT";
 
 
-    public static final  String isSubscribe = "SUBSCRIBE";
+    public static final String isSubscribe = "SUBSCRIBE";
 
 
+    public static final int bicyInfoToCaptureID = 0X451235;
+    public static final int bicyInfoToCaptureback = 555555;
+    public static final String bicyInfoToCapture = "bicyInfoToCapture";
+    public static final String getLock = "getLock";
 
-
-
-
-
-
-
-
-
-
+    public static String Chassisnumber = "" ;
+    public static String lockname = "" ;
+    public static String lockaddress = "" ;
 
 
 

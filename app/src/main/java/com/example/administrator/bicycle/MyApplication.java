@@ -3,6 +3,7 @@ package com.example.administrator.bicycle;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -10,6 +11,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.navi.model.NaviLatLng;
 import com.mob.MobApplication;
+import com.sofi.smartlocker.ble.util.LOG;
 
 /**
  * Created by Administrator on 2017/5/26.
@@ -80,11 +82,15 @@ public class MyApplication extends MobApplication {
 
 
                     mLocationClient.stopLocation();
+
+                    LOG.E("-------------------","定位成功");
+
 //                    System.out.println("省："+arg0.getProvince());
 //                    System.out.println("国家："+arg0.getCountry());
 //                    System.out.println("经度"+arg0.getLatitude());
 //                    System.out.println("纬度"+arg0.getLongitude());
 //                    System.out.println("路是："+arg0.getRoad());
+
                 } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:"

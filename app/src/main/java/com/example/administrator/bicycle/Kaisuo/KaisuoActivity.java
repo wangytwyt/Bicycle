@@ -24,15 +24,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.administrator.bicycle.MainActivity;
+import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.Post.PostUtil;
 import com.example.administrator.bicycle.R;
 
+import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.Dialog;
 import com.example.administrator.bicycle.util.Globals;
 
@@ -83,10 +86,12 @@ public class KaisuoActivity extends AppCompatActivity {
     private final String TAG = "---------------------";
     String url = "https://alabike.luopingelec.com/alabike/ab_mapp";
     private final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 11002;
-    TextView tvDate, text;
+    TextView tvDate, text, but_set;
     ProgressBar jindutiao;
-    String data, str, jisukaisuo;
+    String data, str, jisukaisuo, getLock;
 
+    private LinearLayout ll_setpassword;
+    private EditText et_xiu;
 
     int type = 100;
     int i = 0;
@@ -107,10 +112,10 @@ public class KaisuoActivity extends AppCompatActivity {
             LOG.E(TAG, "onServiceConnected");
             try {
                 Constants.bleService = IRemoteService.Stub.asInterface(service);
-                //   Constants.bleService.startBleScan();
+                //  Constants.bleService.startBleScan();
                 Constants.bleService.registerCallback(mCallback);
 
-                connectLock(str, jisukaisuo, data);
+                connectLock(str, jisukaisuo, data, getLock);
 
                 Constants.bleService.setHighMode();
             } catch (RemoteException e) {
@@ -144,7 +149,7 @@ public class KaisuoActivity extends AppCompatActivity {
 
         @Override
         public void bleGetParams(String batteryVol, String solarVol, boolean open) throws RemoteException {
-            LOG.E(TAG, "bleGetParams batteryVol:" + batteryVol + " solarVol:" + solarVol + " open:" +open);
+            LOG.E(TAG, "bleGetParams batteryVol:" + batteryVol + " solarVol:" + solarVol + " open:" + open);
 //            if(open){
 //                new Thread(new Runnable() {
 //                    @Override
@@ -170,20 +175,15 @@ public class KaisuoActivity extends AppCompatActivity {
             LOG.E(TAG, "bleScanResult name:" + name + " address:" + address + " bikeNo:" + Globals.bikeNo
                     + " rssi:" + rssi);
             //该函数用于扫描周边的蓝牙锁设备，找到后在回调函数bleScanResult中给出蓝牙锁的地址信息、信号强度信息
-            if (jisukaisuo != null && !jisukaisuo.equals("")) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        try {
-                            Constants.bleService.connectLock(address);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
 
 
-                    }
-                }).start();
+            if ((jisukaisuo != null && !jisukaisuo.equals(""))) {
+                connectLock(address);
+            }
+            if (getLock != null && !getLock.equals("")) {
+                ContentValuse.lockname = name;
+                ContentValuse.lockaddress = address;
+                connectLock(address);
             }
 
 
@@ -199,9 +199,9 @@ public class KaisuoActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-
+//456842
                         try {
-                            Constants.bleService.openLock("666666");
+                            Constants.bleService.openLock("123456");
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -286,11 +286,31 @@ public class KaisuoActivity extends AppCompatActivity {
             LOG.E(TAG, "bleCmdReply :" + cmd);
             switch (cmd) {
                 case VerifyUtil.CMD_CLOSE_BIKE://关锁
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Constants.bleService.disconnectLock();
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }).start();
+                    MyApplication.startLocation(KaisuoActivity.this);
                     send("已关锁");
                     break;
                 case VerifyUtil.CMD_OPEN_LOCK://开锁
                     send("已开锁");
                     break;
+                case VerifyUtil.CMD_UPDATE_KEY:
+                    send("密码修改成功");
+
+                    KaisuoActivity.this.finish();
+
+                    break;
+
             }
 
         }
@@ -304,7 +324,25 @@ public class KaisuoActivity extends AppCompatActivity {
         h.sendMessage(msg);
     }
 
-private EditText xiu;
+    private void connectLock(final String address) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Constants.bleService.connectLock(address);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }).start();
+    }
+
+
+    private EditText xiu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -313,14 +351,33 @@ private EditText xiu;
         tvDate = (TextView) findViewById(R.id.tv_date);
         text = (TextView) findViewById(R.id.text);
         jindutiao = (ProgressBar) findViewById(R.id.jindutiao);
-        xiu = (EditText) findViewById(R.id.tv_xiu);
-        getintent();
+        xiu = (EditText) findViewById(R.id.et_xiu);
+        ll_setpassword = (LinearLayout) findViewById(R.id.ll_setpassword);
+        et_xiu = (EditText) findViewById(R.id.et_xiu);
 
-//        try {
-//            Login();
-//        } catch (Exception e) {
-//
-//        }
+
+        findViewById(R.id.but_set).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            if (Constants.bleService != null) {
+                                Constants.bleService.updateKey("456842", et_xiu.getText().toString().trim());
+                            }
+
+                            Log.d("执行成功", "执行成功");
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+
+        getintent();
 
 
     }
@@ -330,23 +387,22 @@ private EditText xiu;
         str = intentt.getStringExtra("result");//str即为回传的值
         jisukaisuo = intentt.getStringExtra("jisukaisuo");
         data = intentt.getStringExtra("data");
+        getLock = intentt.getStringExtra(ContentValuse.getLock);
     }
 
 
-    private void connectLock(final String str, String jisukaisuo, final String data) {
+    private void connectLock(final String str, String jisukaisuo, final String data, String getlock) {
         try {
             if (str != null && !str.equals("")) {
 
                 type = 0;
-                //                Login(str);
+
                 if (Constants.bleService != null) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                LOG.E("-------",str);
                                 Constants.bleService.connectLock(str);
-
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
@@ -360,15 +416,8 @@ private EditText xiu;
                         @Override
                         public void run() {
                             try {
-                                //  Constants.bleService.startBleScan();
 
                                 if (Constants.bleService != null) {
-//                                   // Constants.bleService.setPassword("666666");
-//                                   if(Constants.bleService.isBleEnable()){
-//                                       Constants.bleService.setPassword("666666");
-//                                   }else {
-//                                       Constants.bleService.enableBle();
-//                                   }
                                     Constants.bleService.startBleScan();
                                 }
 
@@ -386,8 +435,29 @@ private EditText xiu;
                         @Override
                         public void run() {
                             try {
-                                LOG.E("-------",data);
                                 Constants.bleService.connectLock(data);
+
+                                Log.d("执行成功", "执行成功");
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                }
+            } else if (getLock != null && !getLock.equals("")) {
+
+                ll_setpassword.setVisibility(View.VISIBLE);
+
+                type = 1;
+                if (Constants.bleService != null) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+
+                                if (Constants.bleService != null) {
+                                    Constants.bleService.startBleScan();
+                                }
 
                                 Log.d("执行成功", "执行成功");
                             } catch (RemoteException e) {
@@ -472,19 +542,6 @@ private EditText xiu;
     };
 
 
-    /**
-     * Date类型转换为10位时间戳
-     *
-     * @param time
-     * @return
-     */
-    public static Integer DateToTimestamp(Date time) {
-        Timestamp ts = new Timestamp(time.getTime());
-
-        return (int) ((ts.getTime()) / 1000);
-    }
-
-
     private void requestLocationPermission() {
         PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionsResultAction() {
@@ -502,186 +559,6 @@ private EditText xiu;
                 }
         );
     }
-
-
-//    private CookieManager cookieManager = new CookieManager();
-//    OkHttpClient client;
-//    IRemoteService iRemoteService;
-//    ServiceConnection connection;
-//    public static final MediaType JSON1 = MediaType.parse("application/json; charset=utf-8");
-//
-//
-//    //   String url = "http://42.159.113.21/heibike/lock/getlock.mvc";
-//
-//    private void httpPostJson(String macKey, String keySource, int timestamp) throws Exception {
-//
-//        //client对象，核心类
-//
-//        PRent p = new PRent(macKey, keySource, timestamp);
-//        RequestBody requestbody = RequestBody.create(JSON1, p.getPStr());
-//        Log.i("requestssss", p.getPStr());
-//
-//
-////        //post表单参数
-////        FormBody.Builder builder = new FormBody.Builder();
-////        builder.add("MAC", macKey);
-////        builder.add("keySource", keySource);
-////        builder.add("timestamp", timestamp + "");
-//        //创建请求
-////        Request request = new Request.Builder()
-////                .url(url)
-////                .post(builder.build())
-////                .build();
-//
-//
-//        Request.Builder requestBuilder = new Request.Builder().url(url).post(requestbody);
-//
-//
-//        OkHttpClient client = provideOkHttpClient(KaisuoActivity.this, cookieManager);
-//
-//
-////
-////        //用requestBuilder可以添加header
-////        Request.Builder requestBuilder = new Request.Builder().url(url).post(requestbody);
-//
-////        final Request request = requestBuilder.build();
-//
-//
-//        final Request request = requestBuilder.build();
-//
-//        client.newCall(request).enqueue(new okhttp3.Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                //子线程中
-//                LOG.E("requestssssErr", e + "");
-//
-//            }
-//
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String str = response.body().string();
-//                LOG.E("requestssss1", str);
-//                //子线程中
-//
-//
-//                try {
-//                    JSONObject ob = new JSONObject(str);
-//                    if (ob.getInt("result") == 0) {
-//                        String ss = ob.getString("info");
-//                        JSONObject object = new JSONObject(ss);
-//                        String tradeId = object.getString("tradeId");
-//                        final int encryptionKey = object.getInt("encryptionKey");
-//                        final String keys = object.getString("keys");
-//                        final int serverTime = object.getInt("serverTime");
-//
-//
-//                        //     Constants.bleService.openLock("12345678999", serverTime, keys, encryptionKey);
-//                        Log.d("openLock", "执行");
-//
-//                    } else {
-//                        Toast.makeText(KaisuoActivity.this, "开锁失败", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//            }
-//        });
-//    }
-//
-//    //登录
-//    private void Login() throws Exception {
-//        client = provideOkHttpClient(KaisuoActivity.this, cookieManager);
-//        //登录
-//
-//        PUserLogin login = new PUserLogin("12345678999", "aaaaaa");
-//        RequestBody requestbody = RequestBody.create(JSON1, login.getPStr());
-//        //用requestBuilder可以添加header
-//        Request.Builder requestBuilder = new Request.Builder().url(url).post(requestbody);
-//
-//
-//        final Request request = requestBuilder.build();
-//        client.newCall(request).enqueue(new okhttp3.Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                //子线程中
-//                Log.d("requestssssErr", e + "");
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String str = response.body().string();
-//                Log.i("requestssssdenglu", str);
-//
-//            }
-//        });
-//
-//    }
-//
-//
-//    public OkHttpClient provideOkHttpClient(Context context, CookieManager cookieManager) {
-//        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-//
-//        builder.connectTimeout(Constants.CONNECT_TIME_OUT, TimeUnit.SECONDS);
-//        builder.readTimeout(Constants.SOCKET_TIME_OUT, TimeUnit.SECONDS);
-//        builder.writeTimeout(Constants.SOCKET_TIME_OUT, TimeUnit.SECONDS);
-//        builder.cookieJar(cookieManager);
-//
-//        X509TrustManager trustManager = provideTrustManager();
-//        SSLSocketFactory sslSocketFactory = provideSSLFactory(trustManager);
-//        if (sslSocketFactory != null) {
-//            builder.sslSocketFactory(sslSocketFactory, trustManager);
-//            builder.hostnameVerifier(new HostnameVerifier() {
-//                @Override
-//                public boolean verify(String s, SSLSession sslSession) {
-//                    return true;
-//                }
-//            });
-//        }
-//
-//        File cacheDirectory = new File(context.getCacheDir(), Constants.DEFAULT_CACHE_DIR);
-//        Cache cache = new Cache(cacheDirectory, Constants.cachSize);
-//        builder.cache(cache);
-//
-//        return builder.build();
-//    }
-//
-//
-//    private X509TrustManager provideTrustManager() {
-//        return new X509TrustManager() {
-//            @Override
-//            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
-//            }
-//
-//            @Override
-//            public void checkServerTrusted(
-//                    java.security.cert.X509Certificate[] chain,
-//                    String authType) {
-//            }
-//
-//            @Override
-//            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-//                X509Certificate[] x509Certificates = new X509Certificate[0];
-//                return x509Certificates;
-//            }
-//        };
-//    }
-//
-//    private SSLSocketFactory provideSSLFactory(TrustManager trustManager) {
-//        // Create a trust manager that does not validate certificate chains
-//        try {
-//            final SSLContext sslContext = SSLContext.getInstance("SSL");
-//            sslContext.init(null, new TrustManager[]{trustManager}, new java.security.SecureRandom());
-//            // Create an ssl socket factory with our all-trusting manager
-//            return sslContext.getSocketFactory();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
 
 
     //

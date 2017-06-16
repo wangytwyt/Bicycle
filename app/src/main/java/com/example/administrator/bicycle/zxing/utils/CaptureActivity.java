@@ -44,6 +44,7 @@ import com.example.administrator.bicycle.MainActivity;
 import com.example.administrator.bicycle.R;
 
 
+import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.zxing.camera.CameraManager;
 import com.example.administrator.bicycle.zxing.camera.open.InputActivity;
 import com.example.administrator.bicycle.zxing.decode.DecodeThread;
@@ -64,8 +65,6 @@ import java.lang.reflect.Field;
 public final class CaptureActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
-
-
 
 
     private CameraManager cameraManager;
@@ -96,6 +95,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private ImageView image_inputNum;//输入铭牌
     private LinearLayout fanhui;//返回
 
+
+    private int bicyInfoToCaptureID;//获取车号
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -104,6 +106,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_capture);
 
+
+        bicyInfoToCaptureID = getIntent().getIntExtra(ContentValuse.bicyInfoToCapture, -1);
 
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
         scanContainer = (RelativeLayout) findViewById(R.id.capture_container);
@@ -124,6 +128,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         fanhui.setOnClickListener(this);
 
 
+        if (bicyInfoToCaptureID != -1) {
+            shanguangdeng.setVisibility(View.GONE);
+            jisukaisuo.setVisibility(View.GONE);
+            image_inputNum.setVisibility(View.GONE);
+
+        }
+
+
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT,
                 0.9f);
         animation.setDuration(4500);
@@ -131,8 +143,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         animation.setRepeatMode(Animation.RESTART);
         scanLine.startAnimation(animation);
     }
-
-
 
 
     @Override
@@ -226,11 +236,19 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (resultString.equals("")) {
             Toast.makeText(CaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
         } else {
+            if (bicyInfoToCaptureID == -1) {
+                Intent intent = new Intent(CaptureActivity.this, KaisuoActivity.class);
+                intent.putExtra("result", resultString);
+                startActivity(intent);
+            }else {
+//                Intent intent =  new Intent();
+//                intent.putExtra(ContentValuse.result, resultString);
+//                setResult(RESULT_OK, intent);
+               ContentValuse.Chassisnumber = resultString;
 
-            Intent intent = new Intent(CaptureActivity.this, KaisuoActivity.class);
-            intent.putExtra("result", resultString);
-            startActivity(intent);
 
+                finish();
+            }
 //			Intent resultIntent = new Intent();
 ////			Bundle bundle = new Bundle();
 //			bundle.putString("result", resultString);
