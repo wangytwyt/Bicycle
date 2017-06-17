@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:padding="10dp"
-    android:background="@color/white"
+    android:background="@drawable/shap_dialog_background"
     android:orientation="vertical">
 
     <ImageView

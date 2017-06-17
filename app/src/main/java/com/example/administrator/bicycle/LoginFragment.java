@@ -168,8 +168,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         start = (Button) view.findViewById(R.id.btn_start);//登录
         edtPhoneNum = (EditText) view.findViewById(R.id.edt_PhoneNum);//手机号输入框
         edtValidation = (EditText) view.findViewById(R.id.edt_validation);//验证码输入框
-        tvYy = (TextView) view.findViewById(R.id.tv_yy);
-        tvYy.setOnClickListener(this);
+//        tvYy = (TextView) view.findViewById(R.id.tv_yy);
+//        tvYy.setOnClickListener(this);
         imgDel = (ImageView) view.findViewById(R.id.img_del);//删除图标
         obtain.setOnClickListener(this);
         start.setOnClickListener(this);
@@ -182,13 +182,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_obtain://获取验证码
                 //获取用户填写的电话号码
                 PhoneNum = edtPhoneNum.getText().toString();
-                //初始化BmobSMS
-                BmobSMS.initialize(getContext(), "9b51b1be5b452012fe06d5557eb34592", new SMSCodeListener() {
-                    @Override
-                    public void onReceive(String s) {
-                        edtValidation.setText(s);
-                    }
-                });
                 //发送短信
                 BmobSMS.requestSMSCode(getContext(), PhoneNum, "验证码", new RequestSMSCodeListener() {
                     @Override
@@ -247,11 +240,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.img_del:
                 edtPhoneNum.setText("");
                 break;
-            case R.id.tv_yy:
-                Random random = new Random();
-                int yzm = random.nextInt(8999) + 1000;
-                new Thread(new AccessNetwork("POST", "http://op.juhe.cn/yuntongxun/voice", "valicode=" + yzm + "&to=13020778812&playtimes=&key=50a8f12a35991688610e0ca0490684ba&dtype=", h, 004)).start();
-                break;
+//            case R.id.tv_yy:
+//                Random random = new Random();
+//                int yzm = random.nextInt(8999) + 1000;
+//                new Thread(new AccessNetwork("POST", "http://op.juhe.cn/yuntongxun/voice", "valicode=" + yzm + "&to=13020778812&playtimes=&key=50a8f12a35991688610e0ca0490684ba&dtype=", h, 004)).start();
+//                break;
         }
     }
 

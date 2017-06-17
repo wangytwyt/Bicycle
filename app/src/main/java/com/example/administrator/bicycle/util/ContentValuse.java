@@ -15,14 +15,22 @@ public class ContentValuse {
 
     public static final int bicyInfoToCaptureID = 0X451235;
     public static final int bicyInfoToCaptureback = 555555;
+    public static final int bicyInfoToKaisuo = 0X666666;
     public static final String bicyInfoToCapture = "bicyInfoToCapture";
     public static final String getLock = "getLock";
 
-    public static String Chassisnumber = "" ;
-    public static String lockname = "" ;
-    public static String lockaddress = "" ;
+    public static final String Chassisnumber = "Chassisnumber";
+    public static final String lockname = "lockname";
+    public static final String lockaddress = "lockaddress";
 
 
+    public static final String nickname = "nickname";
+    public static final String Realname = "Realname";
+    public static final String phone = "phone";
+
+    public static final int requestCodeNickname = 0X0011111;
+    public static final int requestCodeRealname = 0X0011112;
+    public static final int requestCodePhone = 0X0011113;
 
     public static final int SubscribeHelp = 0X11221122;
     public static final int PHelp = 0X11221123;

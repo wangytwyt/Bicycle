@@ -86,7 +86,7 @@ public class KaisuoActivity extends AppCompatActivity {
     private final String TAG = "---------------------";
     String url = "https://alabike.luopingelec.com/alabike/ab_mapp";
     private final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 11002;
-    TextView tvDate, text, but_set;
+    TextView tvDate, text;
     ProgressBar jindutiao;
     String data, str, jisukaisuo, getLock;
 
@@ -95,6 +95,9 @@ public class KaisuoActivity extends AppCompatActivity {
 
     int type = 100;
     int i = 0;
+
+    private String mname,maddress;
+
 
     // protected  ApplicationState mState;
 
@@ -181,8 +184,8 @@ public class KaisuoActivity extends AppCompatActivity {
                 connectLock(address);
             }
             if (getLock != null && !getLock.equals("")) {
-                ContentValuse.lockname = name;
-                ContentValuse.lockaddress = address;
+                mname =name;
+                maddress = address;
                 connectLock(address);
             }
 
@@ -306,7 +309,10 @@ public class KaisuoActivity extends AppCompatActivity {
                     break;
                 case VerifyUtil.CMD_UPDATE_KEY:
                     send("密码修改成功");
-
+                    Intent intent = new Intent();
+                    intent.putExtra(ContentValuse.lockname,mname);
+                    intent.putExtra(ContentValuse.lockaddress,maddress);
+                    setResult(1,intent);
                     KaisuoActivity.this.finish();
 
                     break;

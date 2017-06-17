@@ -10,8 +10,17 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.navi.model.NaviLatLng;
+import com.example.administrator.bicycle.util.AccountKey;
 import com.mob.MobApplication;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.sofi.smartlocker.ble.util.LOG;
+
+import cn.bmob.newsmssdk.BmobSMS;
 
 /**
  * Created by Administrator on 2017/5/26.
@@ -24,16 +33,38 @@ public class MyApplication extends MobApplication {
     public static String city;
     private static AMapLocationClientOption mLocationOption;
 
+
     //声明AMapLocationClient类对象 29.810044 102.684203
     public static AMapLocationClient mLocationClient = null;
     //声明定位回调监听器
-   public  static String road;
+    public static String road;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
+        //短信验证码初始化
+        BmobSMS.initialize(this, AccountKey.Bmob_Application_ID);
 
+        initImageLoader(getApplicationContext());
     }
+
+    /**
+     * 初始化图片加载类配置信息
+     **/
+    public static void initImageLoader(Context context) {
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .threadPriority(Thread.NORM_PRIORITY - 2)//加载图片的线程数
+                .denyCacheImageMultipleSizesInMemory() //解码图像的大尺寸将在内存中缓存先前解码图像的小尺寸。
+                .discCacheFileNameGenerator(new Md5FileNameGenerator())//设置磁盘缓存文件名称
+                .tasksProcessingOrder(QueueProcessingType.LIFO)//设置加载显示图片队列进程
+                .writeDebugLogs() // Remove for release app
+                .build();
+        // Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(config);
+    }
+
     public static void startLocation(Context context) {
         if (mLocationClient == null) {
             //初始化定位
@@ -73,7 +104,7 @@ public class MyApplication extends MobApplication {
 
                     MyApplication.latitude = latitude;
                     MyApplication.longitude = longitude;
-                   road = amapLocation.getRoad();
+                    road = amapLocation.getRoad();
 
 
                     startLatlng = new NaviLatLng(latitude, longitude);
@@ -83,7 +114,7 @@ public class MyApplication extends MobApplication {
 
                     mLocationClient.stopLocation();
 
-                    LOG.E("-------------------","定位成功");
+                    LOG.E("-------------------", "定位成功");
 
 //                    System.out.println("省："+arg0.getProvince());
 //                    System.out.println("国家："+arg0.getCountry());

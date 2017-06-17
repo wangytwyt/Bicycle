@@ -1,26 +1,29 @@
 package com.example.administrator.bicycle.manageactivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.Kaisuo.KaisuoActivity;
 import com.example.administrator.bicycle.MainActivity;
+import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.R;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
 
-public class BicycleInfoActivity extends AppCompatActivity implements View.OnClickListener {
+public class BicycleInfoActivity extends Activity implements View.OnClickListener {
     private TextView tv_carid, tv_lock, tv_address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_bicycle_info);
         init();
     }
@@ -47,19 +50,6 @@ public class BicycleInfoActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.but).setOnClickListener(this);
     }
 
-    @Override
-    protected void onResume() {
-        if(!ContentValuse.Chassisnumber .equals("")){
-            tv_carid.setText(ContentValuse.Chassisnumber );
-        }
-        if(!ContentValuse.lockname .equals("")){
-            tv_lock.setText(ContentValuse.lockname );
-        }
-        if(!ContentValuse.lockaddress .equals("")){
-            tv_address.setText(ContentValuse.lockaddress );
-        }
-        super.onResume();
-    }
 
     @Override
     public void onClick(View v) {
@@ -68,14 +58,11 @@ public class BicycleInfoActivity extends AppCompatActivity implements View.OnCli
                 if (PermissionUtils.checkPermissionCamera(this)) {
                     toCaptureActivity();
                 }
-
                 break;
             case R.id.tv_getlock:
                 Intent intent = new Intent(BicycleInfoActivity.this, KaisuoActivity.class);
                 intent.putExtra(ContentValuse.getLock, ContentValuse.getLock);
-                startActivity(intent);
-
-
+                startActivityForResult(intent, ContentValuse.bicyInfoToKaisuo);
                 break;
             case R.id.but:
 
@@ -86,8 +73,7 @@ public class BicycleInfoActivity extends AppCompatActivity implements View.OnCli
     private void toCaptureActivity() {
         Intent intent = new Intent(BicycleInfoActivity.this, CaptureActivity.class);
         intent.putExtra(ContentValuse.bicyInfoToCapture, ContentValuse.bicyInfoToCaptureID);
-        startActivity(intent);
-   //   startActivityForResult (intent, ContentValuse.bicyInfoToCaptureback);
+        startActivityForResult(intent, ContentValuse.bicyInfoToCaptureback);
     }
 
     @Override
@@ -100,17 +86,32 @@ public class BicycleInfoActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case ContentValuse.bicyInfoToCaptureback:
-//                String result = data.getStringExtra(ContentValuse.result);
-//                if (result != null) {
-//                    tv_carid.setText(result);
-//                }
-//
-//                break;
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == 0) {
+            return;
+        }
+
+        switch (requestCode) {
+            case ContentValuse.bicyInfoToCaptureback:
+
+                String result = data.getStringExtra(ContentValuse.bicyInfoToCapture);
+                if (result != null) {
+                    tv_carid.setText(result);
+                }
+
+                break;
+            case ContentValuse.bicyInfoToKaisuo:
+                String name = data.getStringExtra(ContentValuse.lockname);
+                String address = data.getStringExtra(ContentValuse.lockaddress);
+                if (name != null && address != null) {
+                    tv_lock.setText(name);
+                    tv_address.setText(address);
+                }
+
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

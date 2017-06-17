@@ -1,6 +1,7 @@
 package com.example.administrator.bicycle.Personal;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,6 +38,7 @@ import com.example.administrator.bicycle.manageactivity.CollectInformationActivi
 import com.example.administrator.bicycle.photo.utils.HeadImagePop;
 import com.example.administrator.bicycle.photo.utils.ImageUtils;
 import com.example.administrator.bicycle.photo.utils.SelectPicPopupWindow;
+import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.view.RoundImageView;
 
@@ -62,12 +65,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class InformationActivity extends AppCompatActivity implements View.OnClickListener {
+public class InformationActivity extends Activity implements View.OnClickListener {
     private final int CAMERA_REQUEST_CODE = 0X1112;
     private RoundImageView iv_img;
     private Button bt_camera;
     private Button bt_xiangce;
-//    private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
+    //    private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
 //    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
 //    private static final int PHOTO_REQUEST_CUT = 3;// 结果
     /* 头像名称 */
@@ -84,7 +87,8 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+  //      getSupportActionBar().hide();
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_information);
         init();
 
@@ -161,13 +165,18 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.line_two:
-                startActivity(new Intent(InformationActivity.this, XiugaiNameActivity.class));
+                String nich = tvNicheng.getText().toString().trim();
+                Intent intent = new Intent(InformationActivity.this, XiugaiNameActivity.class);
+                intent.putExtra(ContentValuse.nickname, nich);
+                startActivityForResult(intent, ContentValuse.requestCodeNickname);
                 break;
             case R.id.line_three:
-                startActivity(new Intent(InformationActivity.this, CertificationActivity.class));
+                startActivityForResult(new Intent(InformationActivity.this, CertificationActivity.class),ContentValuse.requestCodeRealname);
 
                 break;
             case R.id.line_four:
+                Intent intent2 = new Intent(InformationActivity.this, SetPhoneActivity.class);
+                startActivityForResult(intent2, ContentValuse.requestCodePhone);
                 break;
             case R.id.line_five:
                 startActivity(new Intent(InformationActivity.this, QianbaoActivity.class));
@@ -274,6 +283,32 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
         if (bitmap != null) {
             iv_img.setImageBitmap(bitmap);
         }
+
+        if (resultCode == 0) {
+            return;
+        }
+
+        switch (requestCode){
+            case ContentValuse.requestCodeNickname:
+                String nickname = data.getStringExtra(ContentValuse.nickname);
+                if (nickname != null){
+                    tvNicheng.setText(nickname);
+                }
+                break;
+            case ContentValuse.requestCodeRealname:
+                boolean isREalname = data.getBooleanExtra(ContentValuse.Realname,false);
+                if (isREalname){
+                    tvShiming.setText("已认证");
+                }
+                break;
+            case  ContentValuse.requestCodePhone:
+
+
+
+                break;
+
+        }
+
 
         super.onActivityResult(requestCode, resultCode, data);
     }

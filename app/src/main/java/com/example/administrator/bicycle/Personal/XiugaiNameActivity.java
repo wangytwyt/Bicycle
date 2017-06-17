@@ -2,6 +2,7 @@ package com.example.administrator.bicycle.Personal;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +19,9 @@ import android.widget.Toast;
 
 import com.example.administrator.bicycle.Post.AccessNetwork;
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.util.ContentValuse;
 
-public class XiugaiNameActivity extends AppCompatActivity {
+public class XiugaiNameActivity extends Activity {
     EditText name;
 
     String nameT;
@@ -47,9 +50,9 @@ public class XiugaiNameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+      //  getSupportActionBar().hide();
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_xiugai_name);
-
 
 
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
@@ -80,26 +83,53 @@ public class XiugaiNameActivity extends AppCompatActivity {
                 name.setText("");
             }
         });
-name.setOnKeyListener(new View.OnKeyListener() {
-    @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-       if (keyCode == KeyEvent.KEYCODE_ENTER){
 
-            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getApplicationWindowToken(),0 );
-
-
-               return true;
-        }
-        return false;
-    }
-});
+        name.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    return true;
+                }
+                return false;
+            }
+        });
 
 
     }
 
-    private void submit(){
-        nameT = name.getText().toString();
+    private void submit() {
+
+
+        nameT = name.getText().toString().trim();
+
+        Intent intent = new Intent();
+        intent.putExtra(ContentValuse.nickname,nameT);
+
+        setResult(1,intent);
+        finish();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //同样，在读取SharedPreferences数据前要实例化出一个SharedPreferences对象
         sharedPreferences = getSharedPreferences("login", Activity.MODE_PRIVATE);

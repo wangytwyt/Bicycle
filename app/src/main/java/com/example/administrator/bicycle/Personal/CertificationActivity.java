@@ -1,5 +1,6 @@
 package com.example.administrator.bicycle.Personal;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.administrator.bicycle.Post.Juhe;
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.util.ContentValuse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,10 +42,11 @@ public class CertificationActivity extends AppCompatActivity {
 
 
         ed_Certification = (EditText) findViewById(R.id.ed_Certification);
-        cardID = ed_Certification.getText().toString().trim();
+
         findViewById(R.id.but_certification).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cardID = ed_Certification.getText().toString().trim();
                 if (cardID != null) {
                     new CertificationAsty(cardID).execute();
                 }
@@ -66,6 +69,10 @@ public class CertificationActivity extends AppCompatActivity {
                 if (object.getInt("error_code") == 0) {
                     System.out.println(object.get("result"));
                     Toast.makeText(CertificationActivity.this,"验证成功",Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent();
+                    intent.putExtra(ContentValuse.Realname,true);
+                    setResult(1,intent);
                     CertificationActivity.this.finish();
                 } else {
                     Toast.makeText(CertificationActivity.this,"验证失败"+object.get("error_code") + ":" + object.get("reason"),Toast.LENGTH_SHORT).show();

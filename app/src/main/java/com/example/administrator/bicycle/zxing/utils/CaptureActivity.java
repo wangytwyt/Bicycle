@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.example.administrator.bicycle.Kaisuo.KaisuoActivity;
 import com.example.administrator.bicycle.MainActivity;
+import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.R;
 
 
@@ -241,19 +242,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 intent.putExtra("result", resultString);
                 startActivity(intent);
             }else {
-//                Intent intent =  new Intent();
-//                intent.putExtra(ContentValuse.result, resultString);
-//                setResult(RESULT_OK, intent);
-               ContentValuse.Chassisnumber = resultString;
+                Intent intent =  new Intent();
+                intent.putExtra(ContentValuse.bicyInfoToCapture, resultString);
+                setResult(1, intent);
 
-
-                finish();
             }
-//			Intent resultIntent = new Intent();
-////			Bundle bundle = new Bundle();
-//			bundle.putString("result", resultString);
-//			resultIntent.putExtras(bundle);
-//			this.setResult(RESULT_OK, resultIntent);
+
         }
         CaptureActivity.this.finish();
     }

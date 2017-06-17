@@ -33,14 +33,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class ManageActivity extends AppCompatActivity implements View.OnClickListener {
-    private final int CAMERA_REQUEST_CODE = 0X1112;
-    private RoundImageView iv_img;
-    private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
-    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
-    private static final int PHOTO_REQUEST_CUT = 3;// 结果
 
-    private SelectPicPopupWindow selectPicPopupWindow;
-    private File tempFile;
+    private RoundImageView iv_img;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +56,10 @@ public class ManageActivity extends AppCompatActivity implements View.OnClickLis
 
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("管理员");
+
+
+
+
 
 
         findViewById(R.id.ll_manage).setOnClickListener(this);
@@ -102,29 +101,6 @@ public class ManageActivity extends AppCompatActivity implements View.OnClickLis
     super.onActivityResult(requestCode, resultCode, data);
 }
 
-//    //保存图片到SharedPreferences
-//    private void saveBitmapToSharedPreferences(Bitmap bitmap) {
-//        // Bitmap bitmap=BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-//        //第一步:将Bitmap压缩至字节数组输出流ByteArrayOutputStream
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
-//        //第二步:利用Base64将字节数组输出流中的数据转换成字符串String
-//        byte[] byteArray = byteArrayOutputStream.toByteArray();
-//        String imageString = new String(Base64.encodeToString(byteArray, Base64.DEFAULT));
-//        //第三步:将String保持至SharedPreferences
-////        SharedPreferences sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString("image", imageString);
-//        editor.commit();
-//
-//        //上传头像
-////        try {
-////            setImgByStr(imageString, "");
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        }
-//
-//    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

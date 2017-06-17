@@ -1,5 +1,6 @@
 package com.example.administrator.bicycle.Personal;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -56,9 +57,9 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
     private void showShareQZone() {
         Platform.ShareParams sp = new Platform.ShareParams();
         sp.setTitle("测试分享的标题");
-        sp.setTitleUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021"); // 标题的超链接
+        //sp.setTitleUrl(""); // 标题的超链接
         sp.setText("测试分享的文本");
-        sp.setImageUrl("http://www.someserver.com/测试图片网络地址.jpg");
+        sp.setImageData(BitmapFactory.decodeResource(this.getResources(),R.mipmap.logo));
         sp.setSite("玩");
         sp.setSiteUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021");
 
@@ -174,7 +175,6 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
     private Platform.ShareParams initShareParams() {
         Platform.ShareParams sp = new Platform.ShareParams();
         sp.setText("测试分享的文本");
-        sp.setImagePath(" 测试分享的图片");
         return sp;
     }
 

@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                     break;
 
                 case LOCATION:
-                    CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()), 16, 0, 0));
+                    CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()), 15, 0, 0));
                     aMap.moveCamera(mCameraUpdate);//把缩放级别放进摄像机
                     dialog.dismiss();
                     break;
@@ -581,7 +581,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 startActivity(new Intent(MainActivity.this, AssistantActivity.class));
                 break;
             case R.id.tv_suaxin:
-
+                startActivity(new Intent(MainActivity.this,RegisteredActivity.class));
                 break;
             case R.id.tv_tousu:
                 startActivity(new Intent(MainActivity.this, ComplaintsActivity.class));

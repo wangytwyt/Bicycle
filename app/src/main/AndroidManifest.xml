@@ -114,7 +114,7 @@
 
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/splash">
+            android:theme="@style/AppSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -266,7 +266,10 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".WebActivity"></activity>
+
+
+        <activity android:name=".WebActivity" />
+        <activity android:name=".Personal.SetPhoneActivity"></activity>
     </application>
 
 </manifest>

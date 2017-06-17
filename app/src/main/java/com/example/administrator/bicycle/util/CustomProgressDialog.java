@@ -32,7 +32,7 @@ public class CustomProgressDialog extends Dialog {
         customProgressDialog = new CustomProgressDialog(context,R.style.CustomProgressDialog);
         customProgressDialog.setContentView(R.layout.layout_customprogressdialog);
         customProgressDialog.getWindow().getAttributes().gravity = Gravity.CENTER;
-
+        customProgressDialog.setCancelable(false);
         return customProgressDialog;
     }
 

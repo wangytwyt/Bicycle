@@ -1,6 +1,8 @@
 package com.example.administrator.bicycle.Post;
 
 
+import com.example.administrator.bicycle.util.AccountKey;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -31,7 +33,7 @@ public class Juhe {
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
 
     //配置您申请的KEY
-    public static final String APPKEY = "de2b95384b5271c741b58722a7412bd2";
+ //   public static final String APPKEY = "";
 
     //1.身份证信息查询
 
@@ -41,7 +43,7 @@ public class Juhe {
         Map params = new HashMap();//请求参数
         params.put("cardno", cardNoID);//身份证号码
         params.put("dtype", "json");//返回数据格式：json或xml,默认json
-        params.put("key", APPKEY);//你申请的key
+        params.put("key", AccountKey.identityAPPKEY);//你申请的key
 
         try {
             result = net(url, params, "GET");
