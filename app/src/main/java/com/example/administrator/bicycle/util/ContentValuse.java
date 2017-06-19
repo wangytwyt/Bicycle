@@ -9,14 +9,18 @@ public class ContentValuse {
     public static final String AppGuide = "appguide";
     public static final String Text = "TEXT";
 
+    public static final String registered = "registered";
+    public static final String token = "token";
+    public static final String vipuser = "vipuser";
+public static final String idcard ="idcard";
 
     public static final String isSubscribe = "SUBSCRIBE";
 
 
-    public static final int bicyInfoToCaptureID = 0X451235;
-    public static final int bicyInfoToCaptureback = 555555;
+    public static final int getbid = 0X451235;
+    public static final int getbikeback = 555555;
     public static final int bicyInfoToKaisuo = 0X666666;
-    public static final String bicyInfoToCapture = "bicyInfoToCapture";
+    public static final String getbike = "getbikeid";
     public static final String getLock = "getLock";
 
     public static final String Chassisnumber = "Chassisnumber";

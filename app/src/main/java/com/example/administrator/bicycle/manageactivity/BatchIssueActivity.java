@@ -32,13 +32,13 @@ private   TextView text;
         tvtitle.setText("发放车辆");
 
         text  = (TextView) findViewById(R.id.tv_text);
-        text.setMovementMethod(new ScrollingMovementMethod());
-
-         findViewById(R.id.tv_cleaner).setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 text.setText("");
-             }
-         });
+//        text.setMovementMethod(new ScrollingMovementMethod());
+//
+//         findViewById(R.id.tv_cleaner).setOnClickListener(new View.OnClickListener() {
+//             @Override
+//             public void onClick(View v) {
+//                 text.setText("");
+//             }
+//         });
     }
 }

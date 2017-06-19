@@ -4,6 +4,7 @@ package com.example.administrator.bicycle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,7 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.example.administrator.bicycle.Personal.CertificationActivity;
 import com.example.administrator.bicycle.Post.AccessNetwork;
+import com.example.administrator.bicycle.Post.Juhe;
+import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.RegularExpressionsUtils;
+import com.example.administrator.bicycle.util.SharedPreUtils;
+import com.example.administrator.bicycle.util.TimeUtils;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,41 +44,6 @@ public class IdentityFragment extends Fragment {
     SharedPreferences sharedPreferences;
     String Sname;
     TextView tvTost;
-    Handler h = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            if (msg.what == 005) {
-                String result = (String) msg.obj;
-                Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
-
-                if (!result.equals("") && result != null) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("idcard", SidCard);
-                    editor.commit();
-                    tvTost.setText("实名成功");
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
-                }
-            }
-            if (msg.what == 007) {
-                String result = (String) msg.obj;
-                ShenfenzhengEntity entity = JSON.parseObject(result, ShenfenzhengEntity.class);
-                if (entity != null) {
-                    if (entity.getResultcode().equals("200")) {
-                        new Thread(new AccessNetwork("POST", "http://42.159.113.21/heibike/user/shiming", "vip_username=" + Sname + "&&vip_idcard=" + SidCard + "&&vip_token=" + token + "&&vip_phone=" + phone, h, 005)).start();
-                    } else {
-                        tvTost.setText("请输入正确的身份证信息");
-                    }
-                } else {
-                    Toast.makeText(getContext(), "请求失败", Toast.LENGTH_SHORT).show();
-                }
-
-
-            }
-
-            return false;
-        }
-    });
 
     public IdentityFragment() {
         // Required empty public constructor
@@ -103,54 +77,71 @@ public class IdentityFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Sname = name.getText().toString();
-                SidCard = IdCard.getText().toString();
-                if (SidCard.length() < 17) {
-                    if (SidCard.length() < 15) {
-                        tvTost.setText("请输入正确的身份证信息");
-                    } else {
-//                        String SidCardT = SidCard.substring(6, 12);//年月日
-                        String SidCardT = SidCard.substring(6, 8);//年
-                        int date1 = Integer.parseInt("19" + SidCardT);
-                        //获取当前日期
-                        Date date = new Date();
-                        //设置显示格式
-                        SimpleDateFormat fmtrq = new SimpleDateFormat("yyyy", Locale.CHINA);
-                        //转为String类型
-                        String SDate = fmtrq.format(date.getTime());
-                        //转为int
-                        int nowDate = Integer.parseInt(SDate);
-                        if ((nowDate - date1) < 12) {
-                            tvTost.setText("12岁以下禁止骑行");
-                        } else {
-                            new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
-                        }
+                Sname = name.getText().toString().trim();
+                SidCard = IdCard.getText().toString().trim();
+                if (!RegularExpressionsUtils.isIdnumber(SidCard)) {
+                    tvTost.setText("输入身份证位数不足");
+                    return;
+                }
 
+                if (SidCard.length() < 17) {
+
+                    if (!RegularExpressionsUtils.isIdcard15(SidCard)) {
+                        tvTost.setText("请输入正确的身份证信息");
+                        return;
                     }
 
 
-                } else {
-                    String SidCardT = SidCard.substring(6, 10);
-
-                    int date1 = Integer.parseInt(SidCardT);
-                    //获取当前日期
-                    Date date = new Date();
-                    //设置显示格式
-                    SimpleDateFormat fmtrq = new SimpleDateFormat("yyyy", Locale.CHINA);
-                    //转为String类型
-                    String SDate = fmtrq.format(date.getTime());
-                    //转为int
-                    int nowDate = Integer.parseInt(SDate);
-
-
-                    if ((nowDate - date1) < 12) {
+//                        String SidCardT = SidCard.substring(6, 12);//年月日
+//                        String SidCardT = SidCard.substring(6, 8);//年
+//                        int date1 = Integer.parseInt("19" + SidCardT);
+//                        //获取当前日期
+//                        Date date = new Date();
+//                        //设置显示格式
+//                        SimpleDateFormat fmtrq = new SimpleDateFormat("yyyy", Locale.CHINA);
+//                        //转为String类型
+//                        String SDate = fmtrq.format(date.getTime());
+//                        //转为int
+//                        int nowDate = Integer.parseInt(SDate);
+                    //  if ((nowDate - date1) < 12) {
+                    if (TimeUtils.isSuper12(SidCard, 15)) {
                         tvTost.setText("12岁以下禁止骑行");
                     } else {
-                        new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
+                        //  new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
+
+
+                    }
+
+                } else {
+                    if (!RegularExpressionsUtils.isIdcard18(SidCard)) {
+                        tvTost.setText("请输入正确的身份证信息");
+                        return;
+                    }
+//
+//                    String SidCardT = SidCard.substring(6, 10);
+//
+//                    int date1 = Integer.parseInt(SidCardT);
+//                    //获取当前日期
+//                    Date date = new Date();
+//                    //设置显示格式
+//                    SimpleDateFormat fmtrq = new SimpleDateFormat("yyyy", Locale.CHINA);
+//                    //转为String类型
+//                    String SDate = fmtrq.format(date.getTime());
+//                    //转为int
+//                    int nowDate = Integer.parseInt(SDate);
+//
+//
+//                    if ((nowDate - date1) < 12) {
+
+                    if (TimeUtils.isSuper12(SidCard, 18)) {
+                        tvTost.setText("12岁以下禁止骑行");
+                    } else {
+                        //    new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
+
+
                     }
 
 
-                    Toast.makeText(getContext(), SidCardT, Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -160,5 +151,47 @@ public class IdentityFragment extends Fragment {
 
         return view;
     }
+
+
+    class IdqueryAsyncTask extends AsyncTask<String, String, String> {
+        private String IdCard;
+
+        public IdqueryAsyncTask(String IdCard) {
+            this.IdCard = IdCard;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            return Juhe.getRequest1(IdCard);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            try {
+                JSONObject object = new JSONObject(s);
+                if (object.getInt("error_code") == 0) {
+
+//                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        editor.putString("idcard", SidCard);
+//                        editor.commit();
+
+                    SharedPreUtils.editorPutBoolean(getActivity(), ContentValuse.idcard, true);
+                    tvTost.setText("实名验证成功");
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+
+
+                } else {
+                    Toast.makeText(getActivity(), "验证失败" + object.get("error_code") + ":" + object.get("reason"), Toast.LENGTH_SHORT).show();
+
+                }
+            } catch (Exception e) {
+
+            }
+            super.onPostExecute(s);
+        }
+    }
+
 
 }

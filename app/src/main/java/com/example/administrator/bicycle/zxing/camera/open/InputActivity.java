@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.example.administrator.bicycle.Kaisuo.KaisuoActivity;
 import com.example.administrator.bicycle.R;
-import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
 
 public class InputActivity extends AppCompatActivity {
     EditText mingpai;

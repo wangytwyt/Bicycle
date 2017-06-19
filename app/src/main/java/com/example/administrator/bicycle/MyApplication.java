@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.sofi.smartlocker.ble.interfaces.IRemoteService;
 import com.sofi.smartlocker.ble.util.LOG;
 
 import cn.bmob.newsmssdk.BmobSMS;
@@ -32,7 +33,7 @@ public class MyApplication extends MobApplication {
     public static double latitude, longitude;
     public static String city;
     private static AMapLocationClientOption mLocationOption;
-
+    public static IRemoteService bleService;
 
     //声明AMapLocationClient类对象 29.810044 102.684203
     public static AMapLocationClient mLocationClient = null;

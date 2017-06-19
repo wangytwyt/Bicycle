@@ -34,7 +34,7 @@ public class WebActivity extends AppCompatActivity {
 
         wb = (WebView) findViewById(R.id.wv_web);
 
-        wb.loadUrl("https://www.baidu.com/index.php?tn=93936341_hao_pg");
+        wb.loadUrl("https://www.baidu.com");
         wb.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

@@ -160,7 +160,7 @@
         <activity android:name=".Personal.yonhuxieyi.YhxyActivity" />
         <!-- 二维码 -->
         <activity
-            android:name=".zxing.utils.CaptureActivity"
+            android:name=".zxing.camera.open.CaptureActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <!-- 开锁 -->
@@ -206,6 +206,10 @@
         <activity android:name=".ComplaintsActivity" />
         <!-- 实名认证 -->
         <activity android:name=".Personal.CertificationActivity" />
+        <activity android:name=".WebActivity" />
+        <!-- 更该电话号-->
+        <activity android:name=".Personal.UpdatePhoneActivity"></activity>
+
 
         <!-- 管理员界面 -->
         <!-- 单独车辆维修 -->
@@ -268,8 +272,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
 
-        <activity android:name=".WebActivity" />
-        <activity android:name=".Personal.SetPhoneActivity"></activity>
+
     </application>
 
 </manifest>

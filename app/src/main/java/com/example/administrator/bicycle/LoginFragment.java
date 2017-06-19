@@ -28,6 +28,8 @@ import com.alibaba.fastjson.JSON;
 import com.example.administrator.bicycle.Post.AccessNetwork;
 import com.example.administrator.bicycle.entity.OutLoginEntity;
 import com.example.administrator.bicycle.entity.User;
+import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.SharedPreUtils;
 
 import java.util.Random;
 
@@ -73,9 +75,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
         //同样，在读取SharedPreferences数据前要实例化出一个SharedPreferences对象
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("login", Activity.MODE_PRIVATE);
+  //      SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ContentValuse.registered, Activity.MODE_PRIVATE);
+
         // 使用getString方法获得value，注意第2个参数是value的默认值
-        String token = sharedPreferences.getString("token", "");
+     //   String token = sharedPreferences.getString(ContentValuse.token, "");
+
+        String token = SharedPreUtils.getSharedPreferences(getActivity()).getString(ContentValuse.token, "");
         if (!token.equals("") && token != null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.lin_one, new DepositFragment());
@@ -89,36 +94,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         h = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if (msg.what == 002) {
 
-                }
                 if (msg.what == 003) {
                     String result = (String) msg.obj;
                     Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
 
 
-                    //解析json
-                    OutLoginEntity loginEntity = JSON.parseObject(result, OutLoginEntity.class);
-                    int code = loginEntity.getCode();
-                    if (code == 0) {
-                        User entity = loginEntity.getUser();
+                        SharedPreferences.Editor editor = SharedPreUtils.getEditor(getActivity());
 
-                        //实例化一个SharedPreferences
-                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-                        //实例化一个管理员
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                        editor.putString("token", entity.getVip_token());
-                        editor.putInt("credit", entity.getVip_credit());
-                        editor.putString("idcard", entity.getVip_idcard());
-                        editor.putString("nicheng", entity.getVip_nicheng());
-                        editor.putInt("vipuser", entity.getVip_vipuser());
-                        editor.putString("nicheng", entity.getVip_nicheng());
-                        editor.putString("phone", entity.getVip_phone());
-
-
-//                        editor.putString("")
-
+                        editor.putString(ContentValuse.token, "sdjahkjsdlksdjngvsdkljhjgsaodojglskdfkjugvlszdo");
 
                         //提交业务
                         editor.commit();
@@ -127,12 +111,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         transaction.replace(R.id.lin_one, new DepositFragment());
                         transaction.commit();
 
-                        //提示登录成功或者注册成功
-                        Toast.makeText(getContext(), loginEntity.getInfo(), Toast.LENGTH_SHORT).show();
+                        //提示登录成功或者
+                        Toast.makeText(getContext(), "注册成功", Toast.LENGTH_SHORT).show();
 
                         //关闭弹出框
                         dialog.cancel();
-
 
                     } else {
 
@@ -142,11 +125,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
                 }
-                if (msg.what == 004) {
-                    String result = (String) msg.obj;
-                    Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
-                }
-            }
+
+
         };
 
 
@@ -233,7 +213,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 dialog.setMessage("正在登陆，请稍后~");
                 dialog.setCancelable(false);
                 dialog.show();
-                new Thread(new AccessNetwork("POST", "http://42.159.113.21/heibike/user/check", "vip_phone=" + PhoneNum + "&vip_token=" + validation, h, 003)).start();
+
+                h.sendEmptyMessageDelayed(003,4000);
+
+    //          new Thread(new AccessNetwork("POST", "http://42.159.113.21/heibike/user/check", "vip_phone=" + PhoneNum + "&vip_token=" + validation, h, 003)).start();
 
 
                 break;

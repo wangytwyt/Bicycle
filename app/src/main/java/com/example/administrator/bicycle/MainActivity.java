@@ -1,6 +1,5 @@
 package com.example.administrator.bicycle;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,8 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
@@ -72,18 +69,15 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
-import com.example.administrator.bicycle.manageactivity.RepairBicycleActivity;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.CustomProgressDialog;
 import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.util.SharedPreUtils;
 import com.example.administrator.bicycle.util.TOPpopCancel;
 import com.example.administrator.bicycle.util.TopPopupWindow;
-import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
+import com.example.administrator.bicycle.zxing.camera.open.CaptureActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RouteSearch.OnRouteSearchListener, AMapNaviListener, AMapNaviViewListener, View.OnClickListener {
 
@@ -646,7 +640,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
         if (SharedPreUtils.sharedGet(this, ContentValuse.isSubscribe, false)) {
-            mhandler.sendEmptyMessageDelayed(DENGDIA, 4000);
+             mhandler.sendEmptyMessageDelayed(DENGDIA, 4000);
         }
 
 
@@ -704,7 +698,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                     Log.e("AmapError", "location Error, ErrCode:"
                             + amapLocation.getErrorCode() + ", errInfo:"
                             + amapLocation.getErrorInfo());
-                    mLocationClient.startLocation();
                 }
             }
         }

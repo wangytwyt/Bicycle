@@ -1,10 +1,7 @@
 package com.example.administrator.bicycle.Personal;
 
 import android.app.Activity;
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -13,18 +10,9 @@ import android.widget.Toast;
 
 import com.example.administrator.bicycle.Post.SMSBmob;
 import com.example.administrator.bicycle.R;
-import com.example.administrator.bicycle.util.AccountKey;
+import com.example.administrator.bicycle.util.RegularExpressionsUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Set;
-
-import cn.bmob.newsmssdk.BmobSMS;
-import cn.bmob.newsmssdk.exception.BmobException;
-import cn.bmob.newsmssdk.listener.RequestSMSCodeListener;
-import cn.bmob.newsmssdk.listener.SMSCodeListener;
-
-public class SetPhoneActivity extends Activity implements View.OnClickListener {
+public class UpdatePhoneActivity extends Activity implements View.OnClickListener {
     private EditText et_old, et_oldauthcode, et_new, et_newauthcode;
 
 
@@ -67,18 +55,26 @@ public class SetPhoneActivity extends Activity implements View.OnClickListener {
             case R.id.tv_newauthcode:
                 String newphone = et_new.getText().toString().trim();
                 if (newphone.equals("")) {
-                    Toast.makeText(SetPhoneActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdatePhoneActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(!RegularExpressionsUtils.isMobileNO(newphone)){
+                    Toast.makeText(UpdatePhoneActivity.this, "输入手机号不正确", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 SMSBmob.requestSMSCode(this,newphone);
                 break;
             case R.id.tv_oldauthcode:
                 String phone = et_old.getText().toString().trim();
                 if (phone.equals("")) {
-                    Toast.makeText(SetPhoneActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdatePhoneActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                if(!RegularExpressionsUtils.isMobileNO(phone)){
+                    Toast.makeText(UpdatePhoneActivity.this, "输入手机号不正确", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 SMSBmob.requestSMSCode(this,phone);
 
                 break;

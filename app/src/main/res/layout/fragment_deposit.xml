@@ -75,7 +75,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60sp"
             android:layout_marginTop="10dp"
             android:background="@mipmap/nianfenbeijing"
             android:gravity="center"
@@ -123,7 +123,9 @@
 
                 <CheckBox
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    />
             </LinearLayout>
 
             <ImageView
@@ -136,6 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
@@ -190,6 +193,7 @@
         android:padding="16dp">
 
         <LinearLayout
+            android:id="@+id/ll_weixin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -213,15 +217,17 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/iv_weinxin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/dh1" />
+                android:background="@drawable/selecte_ok"  />
 
 
         </LinearLayout>
 
 
         <LinearLayout
+            android:id="@+id/ll_zhifubao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -245,9 +251,10 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/iv_zhifubao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/dh1" />
+                android:background="@drawable/selecte_ok"  />
         </LinearLayout>
     </LinearLayout>
 

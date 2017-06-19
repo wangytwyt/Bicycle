@@ -114,13 +114,13 @@ public class KaisuoActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             LOG.E(TAG, "onServiceConnected");
             try {
-                Constants.bleService = IRemoteService.Stub.asInterface(service);
+                MyApplication.bleService = IRemoteService.Stub.asInterface(service);
                 //  Constants.bleService.startBleScan();
-                Constants.bleService.registerCallback(mCallback);
+                MyApplication.bleService.registerCallback(mCallback);
 
                 connectLock(str, jisukaisuo, data, getLock);
 
-                Constants.bleService.setHighMode();
+                MyApplication.bleService.setHighMode();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -130,9 +130,9 @@ public class KaisuoActivity extends AppCompatActivity {
         public void onServiceDisconnected(ComponentName name) {
             LOG.E(TAG, "onServiceDisconnected");
             try {
-                if (Constants.bleService != null) {
-                    Constants.bleService.unregisterCallback(mCallback);
-                    Constants.bleService = null;
+                if (MyApplication.bleService != null) {
+                    MyApplication.bleService.unregisterCallback(mCallback);
+                    MyApplication.bleService = null;
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -204,7 +204,7 @@ public class KaisuoActivity extends AppCompatActivity {
 
 //456842
                         try {
-                            Constants.bleService.openLock("123456");
+                            MyApplication.bleService.openLock("123456");
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -294,7 +294,7 @@ public class KaisuoActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                                Constants.bleService.disconnectLock();
+                                MyApplication.bleService.disconnectLock();
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
@@ -336,7 +336,7 @@ public class KaisuoActivity extends AppCompatActivity {
             public void run() {
 
                 try {
-                    Constants.bleService.connectLock(address);
+                    MyApplication.bleService.connectLock(address);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -370,8 +370,8 @@ public class KaisuoActivity extends AppCompatActivity {
                     public void run() {
                         try {
 
-                            if (Constants.bleService != null) {
-                                Constants.bleService.updateKey("456842", et_xiu.getText().toString().trim());
+                            if (MyApplication.bleService != null) {
+                                MyApplication.bleService.updateKey("456842", et_xiu.getText().toString().trim());
                             }
 
                             Log.d("执行成功", "执行成功");
@@ -403,12 +403,12 @@ public class KaisuoActivity extends AppCompatActivity {
 
                 type = 0;
 
-                if (Constants.bleService != null) {
+                if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                Constants.bleService.connectLock(str);
+                                MyApplication.bleService.connectLock(str);
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
@@ -417,14 +417,14 @@ public class KaisuoActivity extends AppCompatActivity {
                 }
             } else if (jisukaisuo != null && !jisukaisuo.equals("")) {
                 type = 1;
-                if (Constants.bleService != null) {
+                if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
 
-                                if (Constants.bleService != null) {
-                                    Constants.bleService.startBleScan();
+                                if (MyApplication.bleService != null) {
+                                    MyApplication.bleService.startBleScan();
                                 }
 
                                 Log.d("执行成功", "执行成功");
@@ -436,12 +436,12 @@ public class KaisuoActivity extends AppCompatActivity {
                 }
             } else if (data != null && !data.equals("")) {
                 type = 0;
-                if (Constants.bleService != null) {
+                if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                Constants.bleService.connectLock(data);
+                                MyApplication.bleService.connectLock(data);
 
                                 Log.d("执行成功", "执行成功");
                             } catch (RemoteException e) {
@@ -455,14 +455,14 @@ public class KaisuoActivity extends AppCompatActivity {
                 ll_setpassword.setVisibility(View.VISIBLE);
 
                 type = 1;
-                if (Constants.bleService != null) {
+                if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
 
-                                if (Constants.bleService != null) {
-                                    Constants.bleService.startBleScan();
+                                if (MyApplication.bleService != null) {
+                                    MyApplication.bleService.startBleScan();
                                 }
 
                                 Log.d("执行成功", "执行成功");
@@ -482,7 +482,7 @@ public class KaisuoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (Constants.bleService != null) {
+        if (MyApplication.bleService != null) {
             showBleTipDialog();
         } else {
             requestLocationPermission();
@@ -500,7 +500,7 @@ public class KaisuoActivity extends AppCompatActivity {
     private void showBleTipDialog() {
         try {
             if (Globals.BLE_INIT && Globals.isBleFeature) {
-                if (!Constants.bleService.isBleEnable()) {
+                if (!MyApplication.bleService.isBleEnable()) {
                     Dialog.showBleDialog(this, R.string.ble_tip, bleListener, bleNeverListener);
                 } else {
                     rentCar();
@@ -515,8 +515,8 @@ public class KaisuoActivity extends AppCompatActivity {
 
     private void rentCar() {
         try {
-            if (Constants.bleService != null) {
-                Constants.bleService.startBleScan();
+            if (MyApplication.bleService != null) {
+                MyApplication.bleService.startBleScan();
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -567,7 +567,7 @@ public class KaisuoActivity extends AppCompatActivity {
     }
 
 
-    //
+
     Handler h = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -578,7 +578,6 @@ public class KaisuoActivity extends AppCompatActivity {
                 tvDate.setText(str);
                 jindutiao.setVisibility(View.GONE);
                 text.setVisibility(View.GONE);
-//
             }
 
 
@@ -587,9 +586,9 @@ public class KaisuoActivity extends AppCompatActivity {
 
     private void stopService() {
         try {
-            if (Constants.bleService != null) {
-                Constants.bleService.unregisterCallback(mCallback);
-                Constants.bleService = null;
+            if (MyApplication.bleService != null) {
+                MyApplication.bleService.unregisterCallback(mCallback);
+                MyApplication.bleService = null;
             }
         } catch (RemoteException e) {
             e.printStackTrace();

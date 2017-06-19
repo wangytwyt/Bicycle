@@ -27,6 +27,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.zxing.camera.open.CaptureActivity;
 
 import java.io.Closeable;
 import java.io.IOException;

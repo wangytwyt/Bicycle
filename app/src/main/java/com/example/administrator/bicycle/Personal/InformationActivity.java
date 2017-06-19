@@ -1,42 +1,24 @@
 package com.example.administrator.bicycle.Personal;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.bicycle.Personal.Shanliangfen.ShanliangActivity;
 import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
-import com.example.administrator.bicycle.Personal.yonhuxieyi.OkHttp;
 import com.example.administrator.bicycle.R;
-import com.example.administrator.bicycle.manageactivity.AllRepairBicycleActivity;
-import com.example.administrator.bicycle.manageactivity.CollectInformationActivity;
 import com.example.administrator.bicycle.photo.utils.HeadImagePop;
-import com.example.administrator.bicycle.photo.utils.ImageUtils;
 import com.example.administrator.bicycle.photo.utils.SelectPicPopupWindow;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.PermissionUtils;
@@ -50,13 +32,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -138,27 +117,14 @@ public class InformationActivity extends Activity implements View.OnClickListene
         four.setOnClickListener(this);
         five.setOnClickListener(this);
         six.setOnClickListener(this);
-        findViewById(R.id.line_n).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(InformationActivity.this, AllRepairBicycleActivity.class));
-            }
-        });
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.line_one:
-//                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//
-//                    ActivityCompat.requestPermissions(this,
-//                            new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
-//
-//                } else {
                 if (PermissionUtils.checkPermissionCamera(this)) {
-                    //setSelectPicPopupWindow();
                     HeadImagePop.setSelectPicPopupWindow(this, findViewById(R.id.ll_lin));
                 }
 
@@ -175,7 +141,7 @@ public class InformationActivity extends Activity implements View.OnClickListene
 
                 break;
             case R.id.line_four:
-                Intent intent2 = new Intent(InformationActivity.this, SetPhoneActivity.class);
+                Intent intent2 = new Intent(InformationActivity.this, UpdatePhoneActivity.class);
                 startActivityForResult(intent2, ContentValuse.requestCodePhone);
                 break;
             case R.id.line_five:
@@ -196,80 +162,6 @@ public class InformationActivity extends Activity implements View.OnClickListene
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-//    private void setSelectPicPopupWindow() {
-//        selectPicPopupWindow = new SelectPicPopupWindow(InformationActivity.this, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // 隐藏弹出窗口
-//                selectPicPopupWindow.dismiss();
-//                switch (v.getId()) {
-//                    case R.id.takePhotoBtn:// 拍照
-//                        takePhoto();
-//                        break;
-//                    case R.id.pickPhotoBtn:// 相册选择图片
-//                        pickPhoto();
-//                        break;
-//                    case R.id.cancelBtn:// 取消
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        });
-//        selectPicPopupWindow.showAtLocation(findViewById(R.id.ll_lin), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-//
-//    }
-
-
-//    private void takePhoto() {
-//        Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        intent2.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-//                "head.jpg")));
-//        startActivityForResult(intent2, PHOTO_REQUEST_CAREMA);
-//    }
-//
-//    private void pickPhoto() {
-//        // 激活系统图库，选择一张图片
-//        Intent intent1 = new Intent(Intent.ACTION_PICK);
-//        intent1.setType("image/*");
-//        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_GALLERY
-//        startActivityForResult(intent1, PHOTO_REQUEST_GALLERY);
-//    }
-//
-//    /*
-// * 判断sdcard是否被挂载
-// */
-//    private boolean hasSdcard() {
-//        //判断ＳＤ卡手否是安装好的　　　media_mounted
-//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    /*
-//     * 剪切图片
-//     */
-//    private void crop(Uri uri) {
-//        // 裁剪图片意图
-//        Intent intent = new Intent("com.android.camera.action.CROP");
-//        intent.setDataAndType(uri, "image/*");
-//        intent.putExtra("crop", "true");
-//        // 裁剪框的比例，1：1
-//        intent.putExtra("aspectX", 1);
-//        intent.putExtra("aspectY", 1);
-//        // 裁剪后输出图片的尺寸大小
-//        intent.putExtra("outputX", 250);
-//        intent.putExtra("outputY", 250);
-//
-//        intent.putExtra("outputFormat", "JPEG");// 图片格式
-//        intent.putExtra("noFaceDetection", true);// 取消人脸识别
-//        intent.putExtra("return-data", true);
-//        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
-//        startActivityForResult(intent, PHOTO_REQUEST_CUT);
-//    }
 
     /**
      * @param requestCode

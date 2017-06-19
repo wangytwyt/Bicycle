@@ -140,13 +140,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_obtain://获取验证码
                 //获取用户填写的电话号码
                 PhoneNum = edtPhoneNum.getText().toString();
-                //初始化BmobSMS
-                BmobSMS.initialize(getBaseContext(), "9b51b1be5b452012fe06d5557eb34592", new SMSCodeListener() {
-                    @Override
-                    public void onReceive(String s) {
-                        edtValidation.setText(s);
-                    }
-                });
                 //发送短信
                 BmobSMS.requestSMSCode(LoginActivity.this, PhoneNum, "验证码", new RequestSMSCodeListener() {
                     @Override

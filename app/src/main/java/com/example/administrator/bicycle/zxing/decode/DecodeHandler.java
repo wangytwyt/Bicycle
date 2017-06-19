@@ -25,7 +25,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.example.administrator.bicycle.R;
-import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
+import com.example.administrator.bicycle.zxing.camera.open.CaptureActivity;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;

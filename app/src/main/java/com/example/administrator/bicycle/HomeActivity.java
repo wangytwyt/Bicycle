@@ -5,32 +5,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.example.administrator.bicycle.Personal.Guide.GuideActivity;
-import com.example.administrator.bicycle.Personal.Guide.ReportActivity;
-import com.example.administrator.bicycle.Personal.InformationActivity;
 import com.example.administrator.bicycle.Personal.InvitationActivity;
 import com.example.administrator.bicycle.Personal.TripActivity;
 import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
-import com.example.administrator.bicycle.Personal.yonhuxieyi.YhxyActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.administrator.bicycle.manageactivity.ManageActivity;
 import com.example.administrator.bicycle.util.PermissionUtils;
-import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
-import com.sofi.smartlocker.ble.util.LOG;
-import com.sofi.smartlocker.ble.util.StringUtils;
+import com.example.administrator.bicycle.zxing.camera.open.CaptureActivity;
 
 import java.io.IOException;
 
@@ -235,7 +225,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.lin_two:
                 //  startActivity(new Intent(HomeActivity.this, InformationActivity.class));
-                              startActivity(new Intent(HomeActivity.this, ManageActivity.class));
+                startActivity(new Intent(HomeActivity.this, ManageActivity.class));
                 break;
             case R.id.lin_three:
 

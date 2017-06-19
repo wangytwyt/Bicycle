@@ -2,20 +2,16 @@ package com.example.administrator.bicycle.manageactivity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.Kaisuo.KaisuoActivity;
-import com.example.administrator.bicycle.MainActivity;
-import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.R;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.PermissionUtils;
-import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
+import com.example.administrator.bicycle.zxing.camera.open.CaptureActivity;
 
 public class BicycleInfoActivity extends Activity implements View.OnClickListener {
     private TextView tv_carid, tv_lock, tv_address;
@@ -72,8 +68,8 @@ public class BicycleInfoActivity extends Activity implements View.OnClickListene
 
     private void toCaptureActivity() {
         Intent intent = new Intent(BicycleInfoActivity.this, CaptureActivity.class);
-        intent.putExtra(ContentValuse.bicyInfoToCapture, ContentValuse.bicyInfoToCaptureID);
-        startActivityForResult(intent, ContentValuse.bicyInfoToCaptureback);
+        intent.putExtra(ContentValuse.getbike, ContentValuse.getbid);
+        startActivityForResult(intent, ContentValuse.getbikeback);
     }
 
     @Override
@@ -94,9 +90,9 @@ public class BicycleInfoActivity extends Activity implements View.OnClickListene
         }
 
         switch (requestCode) {
-            case ContentValuse.bicyInfoToCaptureback:
+            case ContentValuse.getbikeback:
 
-                String result = data.getStringExtra(ContentValuse.bicyInfoToCapture);
+                String result = data.getStringExtra(ContentValuse.getbike);
                 if (result != null) {
                     tv_carid.setText(result);
                 }

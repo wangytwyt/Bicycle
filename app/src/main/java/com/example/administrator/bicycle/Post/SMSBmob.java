@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.administrator.bicycle.Personal.SetPhoneActivity;
-
 import cn.bmob.newsmssdk.BmobSMS;
 import cn.bmob.newsmssdk.exception.BmobException;
 import cn.bmob.newsmssdk.listener.RequestSMSCodeListener;

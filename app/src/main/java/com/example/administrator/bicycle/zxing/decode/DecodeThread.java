@@ -20,7 +20,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 
-import com.example.administrator.bicycle.zxing.utils.CaptureActivity;
+import com.example.administrator.bicycle.zxing.camera.open.CaptureActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 

@@ -245,6 +245,7 @@
         android:layout_marginTop="10dp"
         android:background="#ffffff"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:padding="16dp">
 
         <TextView

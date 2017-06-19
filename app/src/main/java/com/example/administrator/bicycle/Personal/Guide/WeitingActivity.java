@@ -50,6 +50,8 @@ public class WeitingActivity extends BaseActivity{
 
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("举报违停");
+
+
         uploadGridView = (GridView) findViewById(R.id.grid_upload_pictures);
         dataList.addLast(null);// 初始化第一个添加按钮数据
         adapter = new UploadImageAdapter(this, dataList);

@@ -3,12 +3,41 @@ package com.example.administrator.bicycle.util;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2017/6/7.
  */
 
 public class TimeUtils {
+    /**
+     * 是否大于12
+     * @param sidCard
+     * @param IdcardLength
+     * @return
+     */
+    public static boolean isSuper12(String sidCard, int IdcardLength) {
+        int date1;
+        if (sidCard.length() > 17) {
+            sidCard = sidCard.substring(6, 10);
+            date1 = Integer.parseInt(sidCard);
+        } else {
+            sidCard = sidCard.substring(6, 8);//年
+            date1 = Integer.parseInt("19" + sidCard);
+        }
+        //获取当前日期
+        Date date = new Date();
+        //设置显示格式
+        SimpleDateFormat fmtrq = new SimpleDateFormat("yyyy", Locale.CHINA);
+        //转为String类型
+        String SDate = fmtrq.format(date.getTime());
+        //转为int
+        int nowDate = Integer.parseInt(SDate);
+        return (nowDate - date1) < 12;
+
+    }
+
+
     /**
      * 获取现在时间
      *
@@ -85,7 +114,9 @@ public class TimeUtils {
         return strtodate;
     }
 
-    /**  * 将长时间格式时间转换为字符串 yyyy-MM-dd HH:mm:ss  *   * @param dateDate  * @return  */
+    /**
+     * 将长时间格式时间转换为字符串 yyyy-MM-dd HH:mm:ss  *   * @param dateDate  * @return
+     */
     public static String dateToStrLong(java.util.Date dateDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(dateDate);
@@ -96,7 +127,7 @@ public class TimeUtils {
      * 将短时间格式时间转换为字符串 yyyy-MM-dd
      *
      * @param dateDate
-     * @param k
+     * @param
      * @return
      */
     public static String dateToStr(java.util.Date dateDate) {
@@ -182,8 +213,7 @@ public class TimeUtils {
     /**
      * 根据用户传入的时间表示格式，返回当前时间的格式 如果是yyyyMMdd，注意字母y不能大写。
      *
-     * @param sformat
-     *            yyyyMMddhhmmss
+     * @param sformat yyyyMMddhhmmss
      * @return
      */
     public static String getUserDate(String sformat) {
@@ -192,7 +222,6 @@ public class TimeUtils {
         String dateString = formatter.format(currentTime);
         return dateString;
     }
-
 
 
     /**
@@ -210,13 +239,6 @@ public class TimeUtils {
         }
         return mydate1;
     }
-
-
-
-
-
-
-
 
 
 }
