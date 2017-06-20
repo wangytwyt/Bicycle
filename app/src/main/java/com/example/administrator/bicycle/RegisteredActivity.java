@@ -20,18 +20,18 @@ public class RegisteredActivity extends AppCompatActivity {
 
 
 
-        //同样，在读取SharedPreferences数据前要实例化出一个SharedPreferences对象
-        SharedPreferences sharedPreferences = getSharedPreferences("login", Activity.MODE_PRIVATE);
-        // 使用getString方法获得value，注意第2个参数是value的默认值
-        String token = sharedPreferences.getString("token", "");
-        int vipuser = sharedPreferences.getInt("vipuser", 0);
-        String idcard = sharedPreferences.getString("idcard", "");
-
-        if (!token.equals("") && token != null&&!idcard.equals("") && idcard != null) {
-            Intent intent=new Intent(RegisteredActivity.this,HomeActivity.class);
-            startActivity(intent);
-            RegisteredActivity.this.finish();
-        }
+//        //同样，在读取SharedPreferences数据前要实例化出一个SharedPreferences对象
+//        SharedPreferences sharedPreferences = getSharedPreferences("login", Activity.MODE_PRIVATE);
+//        // 使用getString方法获得value，注意第2个参数是value的默认值
+//        String token = sharedPreferences.getString("token", "");
+//        int vipuser = sharedPreferences.getInt("vipuser", 0);
+//        String idcard = sharedPreferences.getString("idcard", "");
+//
+//        if (!token.equals("") && token != null&&!idcard.equals("") && idcard != null) {
+//            Intent intent=new Intent(RegisteredActivity.this,HomeActivity.class);
+//            startActivity(intent);
+//            RegisteredActivity.this.finish();
+//        }
 
         FragmentManager manager=getSupportFragmentManager();
         FragmentTransaction transaction=manager.beginTransaction();

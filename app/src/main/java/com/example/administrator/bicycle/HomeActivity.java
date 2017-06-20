@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.Personal.Guide.GuideActivity;
+import com.example.administrator.bicycle.Personal.InformationActivity;
 import com.example.administrator.bicycle.Personal.InvitationActivity;
 import com.example.administrator.bicycle.Personal.TripActivity;
 import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
@@ -224,8 +225,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, TripActivity.class));
                 break;
             case R.id.lin_two:
-                //  startActivity(new Intent(HomeActivity.this, InformationActivity.class));
-                startActivity(new Intent(HomeActivity.this, ManageActivity.class));
+                startActivity(new Intent(HomeActivity.this, InformationActivity.class));
+                //    startActivity(new Intent(HomeActivity.this, ManageActivity.class));
                 break;
             case R.id.lin_three:
 
@@ -239,7 +240,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, ReportingCenterActivity.class));
                 break;
             case R.id.lin_six:
-                startActivity(new Intent(HomeActivity.this, QianbaoActivity.class));
+                startActivity(new Intent(HomeActivity.this, RechargeActivity.class));
                 break;
 
             case R.id.iv_saomakaisuo:

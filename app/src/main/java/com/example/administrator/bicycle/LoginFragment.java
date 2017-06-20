@@ -64,23 +64,23 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        View title = view.findViewById(R.id.title);
-        LinearLayout finish1 = (LinearLayout) title.findViewById(R.id.finish1);
-        finish1.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
             }
         });
 
+        TextView tvtitle = (TextView) view.findViewById(R.id.tv_title);
+        TextView text = (TextView) view.findViewById(R.id.tv_text);
 
-        //同样，在读取SharedPreferences数据前要实例化出一个SharedPreferences对象
-  //      SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ContentValuse.registered, Activity.MODE_PRIVATE);
+        tvtitle.setText("手机验证");
 
-        // 使用getString方法获得value，注意第2个参数是value的默认值
-     //   String token = sharedPreferences.getString(ContentValuse.token, "");
 
         String token = SharedPreUtils.getSharedPreferences(getActivity()).getString(ContentValuse.token, "");
+
+        //token == null && 是新帐号则去充值 token == null && 不是新帐号则只登录
+
         if (!token.equals("") && token != null) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.lin_one, new DepositFragment());
@@ -97,34 +97,32 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                 if (msg.what == 003) {
                     String result = (String) msg.obj;
-                    Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
 
 
-                        SharedPreferences.Editor editor = SharedPreUtils.getEditor(getActivity());
+//                        SharedPreferences.Editor editor = SharedPreUtils.getEditor(getActivity());
+//                        editor.putString(ContentValuse.token, "sdjahkjsdlksdjngvsdkljhjgsaodojglskdfkjugvlszdo");
+//                        //提交业务
+//                        editor.commit();
 
-                        editor.putString(ContentValuse.token, "sdjahkjsdlksdjngvsdkljhjgsaodojglskdfkjugvlszdo");
 
-                        //提交业务
-                        editor.commit();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.lin_one, new DepositFragment());
+                    transaction.commit();
 
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.lin_one, new DepositFragment());
-                        transaction.commit();
+                    //提示登录成功或者
 
-                        //提示登录成功或者
-                        Toast.makeText(getContext(), "注册成功", Toast.LENGTH_SHORT).show();
 
-                        //关闭弹出框
-                        dialog.cancel();
+                    //关闭弹出框
+                    dialog.cancel();
 
-                    } else {
+                } else {
 
-                        Toast.makeText(getContext(), "请求失败", Toast.LENGTH_SHORT).show();
-
-                    }
-
+                    Toast.makeText(getContext(), "请求失败", Toast.LENGTH_SHORT).show();
 
                 }
+
+
+            }
 
 
         };
@@ -135,7 +133,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         edtPhoneNum.addTextChangedListener(watcher);//设置隐藏显示
         edtValidation.addTextChangedListener(watcher);
 
-
+        view.findViewById(R.id.tv_yhxy).setOnClickListener(this);
         return view;
     }
 
@@ -193,9 +191,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_start:
                 //获取用户填写的电话号码
-                PhoneNum = edtPhoneNum.getText().toString();
-                //获取用户填写的验证码
-                String validation = edtValidation.getText().toString();
+//                PhoneNum = edtPhoneNum.getText().toString();
+//                //获取用户填写的验证码
+//                String validation = edtValidation.getText().toString();
 
 //                BmobSMS.verifySmsCode(LoginActivity.this, PhoneNum, validation, new VerifySMSCodeListener() {
 //                    @Override
@@ -214,9 +212,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 dialog.setCancelable(false);
                 dialog.show();
 
-                h.sendEmptyMessageDelayed(003,4000);
+                h.sendEmptyMessageDelayed(003, 4000);
 
-    //          new Thread(new AccessNetwork("POST", "http://42.159.113.21/heibike/user/check", "vip_phone=" + PhoneNum + "&vip_token=" + validation, h, 003)).start();
+                //          new Thread(new AccessNetwork("POST", "http://42.159.113.21/heibike/user/check", "vip_phone=" + PhoneNum + "&vip_token=" + validation, h, 003)).start();
+
+                break;
+            case R.id.tv_yhxy:
+
+                Intent intent = new Intent(getContext(), WebActivity.class);
+                intent.putExtra(ContentValuse.url, "");
+                getActivity().startActivity(intent);
 
 
                 break;

@@ -7,10 +7,14 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <include layout="@layout/public_layout_title"/>
+
+
     <ImageView
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:background="@mipmap/zhuceliucheng2" />
 
 
@@ -97,7 +101,7 @@
                 android:inputType="number"
                 android:maxLength="18"
                 android:padding="15dp"
-                android:text="370802940221002"
+                android:text=""
                 android:textCursorDrawable="@null"
                 android:textSize="15dp" />
 

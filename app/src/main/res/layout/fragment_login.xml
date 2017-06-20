@@ -8,9 +8,7 @@
     tools:context="com.example.administrator.bicycle.LoginFragment">
 
 
-    <include
-        android:id="@+id/title"
-        layout="@layout/title" />
+    <include layout="@layout/public_layout_title"/>
 
 
     <LinearLayout
@@ -52,7 +50,7 @@
                 android:hint="请输入手机号码"
                 android:inputType="number"
                 android:maxLength="11"
-                android:text="13262232914"
+                android:text=""
                 android:textCursorDrawable="@null"
                 android:textSize="15dp" />
         </LinearLayout>
@@ -160,7 +158,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="25dp"
-        android:enabled="false"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="开    始" />
@@ -181,6 +178,7 @@
             android:textSize="15dp" />
 
         <TextView
+            android:id="@+id/tv_yhxy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="《用车服务条款》"

@@ -8,6 +8,7 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.photo.utils.ImageUtils;
+import com.example.administrator.bicycle.util.ContentValuse;
 
 public class WebActivity extends AppCompatActivity {
     private WebView wb;
@@ -17,6 +18,9 @@ public class WebActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_web);
+
+
+
 
         initView();
     }
@@ -34,7 +38,12 @@ public class WebActivity extends AppCompatActivity {
 
         wb = (WebView) findViewById(R.id.wv_web);
 
-        wb.loadUrl("https://www.baidu.com");
+        String url = getIntent().getStringExtra(ContentValuse.url);
+
+        if(url != null){
+
+        }
+        wb.loadUrl("http://192.168.1.163:8080/h/yhxy.html");
         wb.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.SharedPreUtils;
@@ -22,7 +23,7 @@ import com.example.administrator.bicycle.util.SharedPreUtils;
  * A simple {@link Fragment} subclass.
  */
 public class DepositFragment extends Fragment {
-    private ImageView iv_zhifubao, iv_weixin;
+    private ImageView iv_zhifubao, iv_weixin, iv_priceone, iv_pricetwo;
 
     public DepositFragment() {
         // Required empty public constructor
@@ -33,6 +34,18 @@ public class DepositFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_deposit, container, false);
+
+        view.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
+        TextView tvtitle = (TextView) view.findViewById(R.id.tv_title);
+        TextView text = (TextView) view.findViewById(R.id.tv_text);
+
+        tvtitle.setText("充值");
 
         //同样，在读取SharedPreferences数据前要实例化出一个SharedPreferences对象
         //    SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ContentValuse.registered, Activity.MODE_PRIVATE);
@@ -45,8 +58,37 @@ public class DepositFragment extends Fragment {
             transaction.commit();
         }
 
+
         iv_weixin = (ImageView) view.findViewById(R.id.iv_weixin);
         iv_zhifubao = (ImageView) view.findViewById(R.id.iv_zhifubao);
+        iv_priceone = (ImageView) view.findViewById(R.id.iv_priceone);
+        iv_pricetwo = (ImageView) view.findViewById(R.id.iv_pricetwo);
+        iv_weixin.setSelected(true);
+        iv_pricetwo.setSelected(true);
+        view.findViewById(R.id.rl_one).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iv_pricetwo.setSelected(false);
+                if (iv_priceone.isSelected()) {
+                    iv_priceone.setSelected(false);
+                } else {
+                    iv_priceone.setSelected(true);
+                }
+            }
+        });
+
+        view.findViewById(R.id.rl_two).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iv_priceone.setSelected(false);
+                if (iv_pricetwo.isSelected()) {
+                    iv_pricetwo.setSelected(false);
+                } else {
+                    iv_pricetwo.setSelected(true);
+                }
+            }
+        });
+
 
         view.findViewById(R.id.ll_weixin).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,8 +128,7 @@ public class DepositFragment extends Fragment {
 //                SharedPreferences.Editor editor = SharedPreUtils.getEditor(getActivity());
 //                editor.putBoolean(ContentValuse.vipuser, true);
 //                editor.commit();
-                SharedPreUtils.editorPutBoolean(getActivity(),ContentValuse.vipuser,true);
-
+                SharedPreUtils.editorPutBoolean(getActivity(), ContentValuse.vipuser, true);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.lin_one, new IdentityFragment());
                 transaction.commit();

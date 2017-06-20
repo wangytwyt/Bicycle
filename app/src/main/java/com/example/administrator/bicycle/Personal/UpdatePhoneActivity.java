@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.example.administrator.bicycle.Post.SMSBmob;
 import com.example.administrator.bicycle.R;
-import com.example.administrator.bicycle.util.RegularExpressionsUtils;
+import com.example.administrator.bicycle.util.IdcardUtils;
 
 public class UpdatePhoneActivity extends Activity implements View.OnClickListener {
     private EditText et_old, et_oldauthcode, et_new, et_newauthcode;
@@ -58,7 +58,7 @@ public class UpdatePhoneActivity extends Activity implements View.OnClickListene
                     Toast.makeText(UpdatePhoneActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!RegularExpressionsUtils.isMobileNO(newphone)){
+                if(!IdcardUtils.isMobileNO(newphone)){
                     Toast.makeText(UpdatePhoneActivity.this, "输入手机号不正确", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -71,7 +71,7 @@ public class UpdatePhoneActivity extends Activity implements View.OnClickListene
                     Toast.makeText(UpdatePhoneActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!RegularExpressionsUtils.isMobileNO(phone)){
+                if(!IdcardUtils.isMobileNO(phone)){
                     Toast.makeText(UpdatePhoneActivity.this, "输入手机号不正确", Toast.LENGTH_SHORT).show();
                     return;
                 }

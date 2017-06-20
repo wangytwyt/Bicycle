@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
      */
     private SparseArray<RouteOverLay> routeOverlays = new SparseArray<RouteOverLay>();
 
+    private  String token;
 
     /**
      * 路线计算成功标志位
@@ -173,22 +174,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //设置全屏显示
         //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-
-//        // 从xml中得到GifView的句柄
-//        GifView gf1 = (GifView) findViewById(R.id.gif1);
-//        // 设置Gif图片源
-//        gf1.setGifImage(R.mipmap.heiche1);
-//        // 添加监听器
-//        gf1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//        // 设置显示的大小，拉伸或者压缩
-//        gf1.setShowDimension(-2, -2);
-//        // 设置加载方式：先加载后显示、边加载边显示、只显示第一帧再显示
-//        gf1.setGifImageType(GifView.GifImageType.COVER);
 
 
         //初始化控件
@@ -250,9 +235,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
             @Override
             public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-//解析result获取地址描述信息
+          //解析result获取地址描述信息
 
-                ;
                 Message msg = new Message();
                 msg.what = SETADDRESS;
                 msg.obj = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
@@ -555,6 +539,9 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         dialog = CustomProgressDialog.createDialog(this);
         dialog.show();
+
+         token = SharedPreUtils.getSharedPreferences(this).getString(ContentValuse.token, null);
+
     }
 
 
@@ -575,10 +562,15 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 startActivity(new Intent(MainActivity.this, AssistantActivity.class));
                 break;
             case R.id.tv_suaxin:
-                startActivity(new Intent(MainActivity.this,RegisteredActivity.class));
+                startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
                 break;
             case R.id.tv_tousu:
-                startActivity(new Intent(MainActivity.this, ComplaintsActivity.class));
+                if (token == null || token.equals("")){
+                    startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
+                }else {
+                    startActivity(new Intent(MainActivity.this, ComplaintsActivity.class));
+                }
+
                 break;
             case R.id.btn_Directions:
                 butright.setVisibility(View.GONE);
@@ -586,7 +578,9 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
                 break;
             case R.id.rl_layout:
-                startActivity(new Intent(MainActivity.this, WebActivity.class));
+                Intent intent = new Intent(MainActivity.this, WebActivity.class);
+                intent.putExtra(ContentValuse.url,"");
+                startActivity(intent);
 
                 break;
             case R.id.iv_lift:
@@ -640,10 +634,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
         if (SharedPreUtils.sharedGet(this, ContentValuse.isSubscribe, false)) {
-             mhandler.sendEmptyMessageDelayed(DENGDIA, 4000);
+            mhandler.sendEmptyMessageDelayed(DENGDIA, 4000);
         }
-
-
     }
 
     @Override

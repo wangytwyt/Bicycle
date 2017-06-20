@@ -129,7 +129,8 @@
         <activity android:name=".RegisteredActivity" />
         <!-- 钱包 -->
         <activity android:name=".Personal.WalletActivity" />
-
+        <!-- 充值 -->
+        <activity android:name=".RechargeActivity" />
         <!-- 个人页面 -->
         <activity android:name=".Personal.InformationActivity" />
         <!-- 旅行 -->
@@ -207,9 +208,8 @@
         <!-- 实名认证 -->
         <activity android:name=".Personal.CertificationActivity" />
         <activity android:name=".WebActivity" />
-        <!-- 更该电话号-->
-        <activity android:name=".Personal.UpdatePhoneActivity"></activity>
-
+        <!-- 更该电话号 -->
+        <activity android:name=".Personal.UpdatePhoneActivity" />
 
         <!-- 管理员界面 -->
         <!-- 单独车辆维修 -->
@@ -270,9 +270,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-
-
+        <activity android:name=".KindHistoryActivity"></activity>
     </application>
 
 </manifest>
