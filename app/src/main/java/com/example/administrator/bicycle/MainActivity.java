@@ -71,6 +71,7 @@ import com.amap.api.services.route.WalkRouteResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.CustomProgressDialog;
+import com.example.administrator.bicycle.util.Dialog;
 import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.util.SharedPreUtils;
 import com.example.administrator.bicycle.util.TOPpopCancel;
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
      */
     private SparseArray<RouteOverLay> routeOverlays = new SparseArray<RouteOverLay>();
 
-    private  String token;
+    private String token;
 
     /**
      * 路线计算成功标志位
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private RelativeLayout lay_lift;
     private ImageView iv_lift;
 
+    private NaviLatLng naviLatLng;
 
     //        //利用Handler更新UI
     final Handler mhandler = new Handler() {
@@ -195,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         getBluePointLocation();
 
-
         aMapNavi = AMapNavi.getInstance(getApplicationContext());
         aMapNavi.addAMapNaviListener(this);
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(34.26984294, 108.94729614), 16, 0, 0));
@@ -235,10 +236,14 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
             @Override
             public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-          //解析result获取地址描述信息
+                //解析result获取地址描述信息
 
                 Message msg = new Message();
                 msg.what = SETADDRESS;
+
+                LatLonPoint latLonPoint = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getLatLngPoint();
+                toCalculateDistance(latLonPoint,naviLatLng);
+
                 msg.obj = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
                 mhandler.sendMessage(msg);
             }
@@ -249,6 +254,37 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             }
         });
     }
+
+
+    /*
+    * 判断是否到达目标点
+     */
+    private void toCalculateDistance(LatLonPoint latLonPoint, NaviLatLng naviLatLng) {
+        LatLng start1latLng = new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude());
+        LatLng endLatlng = new LatLng(naviLatLng.getLatitude(), naviLatLng.getLongitude());
+        double distance = Math.floor(AMapUtils.calculateLineDistance(start1latLng, endLatlng));
+        if (distance < 50) {
+            alertDialog();
+        }
+
+
+    }
+
+    private void alertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("已到达自行车附近");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
+    }
+
 
     /*
             * 去二维码扫描
@@ -284,50 +320,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         return super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * 显示提示信息
-     *
-     * @since 2.5.0
-     */
-    private void showMissingPermissionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.notifyTitle);
-        builder.setMessage(R.string.notifyMsg);
-
-        // 拒绝, 退出应用
-        builder.setNegativeButton("拒绝",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-
-        builder.setPositiveButton("开启",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startAppSettings();
-                    }
-                });
-
-        builder.setCancelable(false);
-
-        builder.show();
-    }
-
-    /**
-     * 启动应用的设置
-     *
-     * @since 2.5.0
-     */
-    private void startAppSettings() {
-        Intent intent = new Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + getPackageName()));
-        startActivity(intent);
-    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -339,22 +331,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             toCaptureActivity();
         }
 
-    }
-
-    /**
-     * 检测是否所有的权限都已经授权
-     *
-     * @param grantResults
-     * @return
-     * @since 2.5.0
-     */
-    private boolean verifyPermissions(int[] grantResults) {
-        for (int result : grantResults) {
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-        }
-        return true;
     }
 
 
@@ -463,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             @Override
             public boolean onMarkerClick(Marker marker) {
                 clearRoute();
-                NaviLatLng naviLatLng = new NaviLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
+                naviLatLng = new NaviLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
                 if (startLatlng == null && endLatlng == null) {
                     Toast.makeText(MainActivity.this, "当前位置尚未获取成功，请稍后再试", Toast.LENGTH_SHORT).show();
                 } else {
@@ -484,34 +460,40 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     }
 
     private void popwindow() {
-        pop = new TopPopupWindow(this, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 隐藏弹出窗口
-                pop.dismiss();
-                MainActivity.this.startActivity(new Intent(MainActivity.this, SubscribeActivity.class));
-            }
-        });
+        if (pop == null) {
+            pop = new TopPopupWindow(this, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 隐藏弹出窗口
+                    pop.dismiss();
+                    MainActivity.this.startActivity(new Intent(MainActivity.this, SubscribeActivity.class));
+                }
+            });
+        }
+
         pop.setData(road, calculateLineDistance() + "", getMin(second));
-        pop.showAsDropDown(findViewById(R.id.tltle));
+        if (!pop.isShowing()) {
+            pop.showAsDropDown(findViewById(R.id.tltle));
+        }
     }
 
     private double calculateLineDistance() {
-
         return Math.floor(AMapUtils.calculateLineDistance(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()), new LatLng(endLatlng.getLatitude(), endLatlng.getLongitude())));
     }
 
     private void pop() {
-
-        popCancel = new TOPpopCancel(this, road, "12312312", 0.5, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popCancel.dismiss();
-                SharedPreUtils.sharedPut(MainActivity.this, ContentValuse.isSubscribe, false);
-            }
-        });
-        popCancel.showAsDropDown(findViewById(R.id.tltle));
-
+        if (popCancel == null) {
+            popCancel = new TOPpopCancel(this, road, "12312312", 0.5, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popCancel.dismiss();
+                    SharedPreUtils.sharedPut(MainActivity.this, ContentValuse.isSubscribe, false);
+                }
+            });
+        }
+        if (!popCancel.isShowing()) {
+            popCancel.showAsDropDown(findViewById(R.id.tltle));
+        }
     }
 
 
@@ -540,7 +522,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         dialog = CustomProgressDialog.createDialog(this);
         dialog.show();
 
-         token = SharedPreUtils.getSharedPreferences(this).getString(ContentValuse.token, null);
+        token = SharedPreUtils.getSharedPreferences(this).getString(ContentValuse.token, null);
 
     }
 
@@ -565,9 +547,9 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
                 break;
             case R.id.tv_tousu:
-                if (token == null || token.equals("")){
+                if (token == null || token.equals("")) {
                     startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
-                }else {
+                } else {
                     startActivity(new Intent(MainActivity.this, ComplaintsActivity.class));
                 }
 
@@ -579,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 break;
             case R.id.rl_layout:
                 Intent intent = new Intent(MainActivity.this, WebActivity.class);
-                intent.putExtra(ContentValuse.url,"");
+                intent.putExtra(ContentValuse.url, "");
                 startActivity(intent);
 
                 break;

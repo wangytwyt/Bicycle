@@ -58,7 +58,7 @@ public class CollectInformationAdapter extends BaseAdapter {
         } else {
             mHolder = (HolderView) convertView.getTag();
         }
-        LOG.E("-----------------","------------");
+
         mHolder.tv_bicycleid.setText(info.get(position));
         mHolder.tv_putin.setText("2017-12-9");
         mHolder.tv_starttime.setText("2017-12-9");

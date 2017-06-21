@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@mipmap/gzbj"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <ImageView
@@ -38,19 +39,70 @@
     <!--android:layout_marginRight="10dp"-->
     <!--android:orientation="vertical">-->
 
-    <RadioGroup
-        android:id="@+id/rg_group"
+    <!--<RadioGroup-->
+    <!--android:id="@+id/rg_group"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/rb_time"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:button="@null"-->
+    <!--android:drawableLeft="@drawable/select_collect_rb"-->
+    <!--android:gravity="center"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingLeft="20dp"-->
+    <!--android:paddingRight="20dp"-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:text="按时间"-->
+    <!--android:textColor="@color/grgray"-->
+    <!--android:textSize="15sp" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/tb_bicycleID"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:button="@null"-->
+    <!--android:drawableLeft="@drawable/select_collect_rb"-->
+    <!--android:gravity="center"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingLeft="20dp"-->
+    <!--android:paddingRight="20dp"-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:text="按车牌"-->
+    <!--android:textColor="@color/grgray"-->
+    <!--android:textSize="15sp" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/rb_states"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:button="@null"-->
+    <!--android:drawableLeft="@drawable/select_collect_rb"-->
+    <!--android:gravity="center"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingLeft="20dp"-->
+    <!--android:paddingRight="20dp"-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:text="按状态"-->
+    <!--android:textColor="@color/grgray"-->
+    <!--android:textSize="15sp" />-->
+    <!--</RadioGroup>-->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <RadioButton
+        <TextView
             android:id="@+id/rb_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:button="@null"
-            android:drawableLeft="@drawable/select_collect_rb"
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
@@ -60,13 +112,18 @@
             android:textColor="@color/grgray"
             android:textSize="15sp" />
 
-        <RadioButton
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/view_background" />
+
+        <TextView
             android:id="@+id/tb_bicycleID"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:button="@null"
-            android:drawableLeft="@drawable/select_collect_rb"
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
@@ -76,13 +133,18 @@
             android:textColor="@color/grgray"
             android:textSize="15sp" />
 
-        <RadioButton
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/view_background" />
+
+        <TextView
             android:id="@+id/rb_states"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:button="@null"
-            android:drawableLeft="@drawable/select_collect_rb"
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
@@ -91,7 +153,7 @@
             android:text="按状态"
             android:textColor="@color/grgray"
             android:textSize="15sp" />
-    </RadioGroup>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -101,9 +163,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
+        android:orientation="horizontal"
         android:paddingBottom="10dp"
-        android:orientation="horizontal">
+        android:paddingTop="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -126,7 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="开始送修时间"
+            android:text="送修时间"
             android:textSize="15sp" />
 
         <TextView
@@ -134,7 +196,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="预计完成时间"
+            android:text="完成时间"
             android:textSize="15sp" />
 
         <TextView
@@ -145,38 +207,42 @@
             android:text="状态"
             android:textSize="15sp" />
     </LinearLayout>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/iv_loadfail"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@mipmap/wangluozhongduan"
-        android:visibility="gone"
-        />
+        android:layout_height="1dp"
+        android:background="@color/view_background" />
 
-    <com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout
-        android:id="@+id/refresh_view"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include layout="@layout/refresh_head" />
-        <!-- 支持所有实现Pullable接口的View -->
 
-        <com.example.administrator.bicycle.view.pulltorefresh.PullableListView
-            android:id="@+id/list_view"
+        <ImageView
+            android:id="@+id/iv_loadfail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="#000000"
-            android:dividerHeight="1dp" />
+            android:src="@mipmap/wangluozhongduan"
+            android:visibility="gone" />
 
-        <include layout="@layout/load_more" />
+        <com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout
+            android:id="@+id/refresh_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/refresh_head" />
+            <!-- 支持所有实现Pullable接口的View -->
 
-    </com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout>
+            <com.example.administrator.bicycle.view.pulltorefresh.PullableListView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="#000000"
+                android:dividerHeight="1dp" />
+
+            <include layout="@layout/load_more" />
+
+        </com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout>
 
 
-</RelativeLayout>
-
+    </RelativeLayout>
 
 
     <!--</LinearLayout>-->

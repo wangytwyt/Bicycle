@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 public class RechargeActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView iv_zhifubao, iv_weixin, iv_priceone, iv_pricetwo;
-
+    private int price;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,38 +48,62 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_one:
-                iv_pricetwo.setSelected(false);
                 if (iv_priceone.isSelected()) {
                     iv_priceone.setSelected(false);
+                    iv_pricetwo.setSelected(true);
                 } else {
                     iv_priceone.setSelected(true);
+                    iv_pricetwo.setSelected(false);
                 }
+
+
                 break;
             case R.id.rl_two:
-                iv_priceone.setSelected(false);
                 if (iv_pricetwo.isSelected()) {
                     iv_pricetwo.setSelected(false);
+                    iv_priceone.setSelected(true);
                 } else {
                     iv_pricetwo.setSelected(true);
+                    iv_priceone.setSelected(false);
                 }
                 break;
             case R.id.ll_weixin:
-                iv_zhifubao.setSelected(false);
+
                 if (iv_weixin.isSelected()) {
                     iv_weixin.setSelected(false);
+                    iv_zhifubao.setSelected(true);
                 } else {
                     iv_weixin.setSelected(true);
+                    iv_zhifubao.setSelected(false);
                 }
                 break;
             case R.id.ll_zhifubao:
-                iv_weixin.setSelected(false);
                 if (iv_zhifubao.isSelected()) {
                     iv_zhifubao.setSelected(false);
+                    iv_weixin.setSelected(true);
                 } else {
                     iv_zhifubao.setSelected(true);
+                    iv_weixin.setSelected(false);
                 }
                 break;
             case R.id.btn_return:
+                if(iv_pricetwo.isSelected()){
+                    price = 168;
+                }
+                if(iv_priceone.isSelected()){
+                   price = 88;
+                }
+
+                if (iv_zhifubao.isSelected()){
+
+
+                }
+                if(iv_weixin.isSelected()){
+
+
+                }
+
+
                 break;
 
 

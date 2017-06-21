@@ -45,11 +45,13 @@ private RadioGroup  rg_one,rg_two;
         findViewById(R.id.ll_weixin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iv_zhifubao.setSelected(false);
+
                 if(iv_weixin.isSelected()){
                     iv_weixin.setSelected(false);
+                    iv_zhifubao.setSelected(true);
                 }else {
                     iv_weixin.setSelected(true);
+                    iv_zhifubao.setSelected(false);
                 }
             }
         });
@@ -57,14 +59,14 @@ private RadioGroup  rg_one,rg_two;
         findViewById(R.id.ll_zhifubao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iv_weixin.setSelected(false);
+
 
                 if(iv_zhifubao.isSelected()){
                     iv_zhifubao.setSelected(false);
-
+                    iv_weixin.setSelected(true);
                 }else {
                     iv_zhifubao.setSelected(true);
-
+                    iv_weixin.setSelected(false);
                 }
             }
         });
@@ -77,10 +79,8 @@ private RadioGroup  rg_one,rg_two;
                 changeedGroup = true;
                 if (group == rg_one) {
                     rg_two.clearCheck();
-
                 } else if (group == rg_two) {
                     rg_one.clearCheck();
-
                 }
                 changeedGroup = false;
             }

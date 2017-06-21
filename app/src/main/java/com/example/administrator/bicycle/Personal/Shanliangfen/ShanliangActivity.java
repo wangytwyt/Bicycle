@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.administrator.bicycle.KindHistoryActivity;
 import com.example.administrator.bicycle.R;
 
 public class ShanliangActivity extends AppCompatActivity implements View.OnClickListener {
@@ -20,7 +21,7 @@ public class ShanliangActivity extends AppCompatActivity implements View.OnClick
         guizejiedu = (LinearLayout) findViewById(R.id.line_guizejiedu);
         guizejiedu.setOnClickListener(this);
 
-
+       findViewById(R.id.iv_kindhistory).setOnClickListener(this);
     }
 
     @Override
@@ -28,6 +29,11 @@ public class ShanliangActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.line_guizejiedu:
                 startActivity(new Intent(ShanliangActivity.this,GuizeActivity.class));
+                break;
+            case R.id.iv_kindhistory:
+
+                startActivity(new Intent(ShanliangActivity.this,KindHistoryActivity.class));
+
                 break;
         }
     }
