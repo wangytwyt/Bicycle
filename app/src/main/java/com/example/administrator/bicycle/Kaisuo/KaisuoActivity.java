@@ -305,6 +305,7 @@ public class KaisuoActivity extends AppCompatActivity {
                     send("已关锁");
                     break;
                 case VerifyUtil.CMD_OPEN_LOCK://开锁
+
                     send("已开锁");
                     break;
                 case VerifyUtil.CMD_UPDATE_KEY:

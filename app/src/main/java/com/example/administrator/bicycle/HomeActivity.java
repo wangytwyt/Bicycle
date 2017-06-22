@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.administrator.bicycle.Personal.CertificationActivity;
 import com.example.administrator.bicycle.Personal.Guide.GuideActivity;
 import com.example.administrator.bicycle.Personal.InformationActivity;
 import com.example.administrator.bicycle.Personal.InvitationActivity;
@@ -20,6 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.administrator.bicycle.manageactivity.ManageActivity;
+import com.example.administrator.bicycle.util.HttpUtils;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.zxing.camera.open.CaptureActivity;
 
@@ -114,6 +118,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
         //      getw(MyApplication.getLatitude(), amapLocation.getLongitude());
+
         getw(MyApplication.latitude, MyApplication.longitude);
     }
 
@@ -154,6 +159,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
      * 获取24小时天气信息
      */
     void post(String url, String lat, String lon) throws IOException {
+
+
+
         RequestBody formBody = new FormBody.Builder()
                 .add("lat", lat)
                 .add("lon", lon)
@@ -203,19 +211,24 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getw(final double latitude, final double longitude) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
+       if(NetWorkStatus.isNetworkAvailable(this)){
+           new Thread(new Runnable() {
+               @Override
+               public void run() {
+                   try {
 
-                    post("http://aliv8.data.moji.com/whapi/json/aliweather/forecast24hours", latitude + "", longitude + "");
+                       post("http://aliv8.data.moji.com/whapi/json/aliweather/forecast24hours", latitude + "", longitude + "");
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
 
-            }
-        }).start();
+               }
+           }).start();
+       }else {
+           Toast.makeText(this, "请设置网络！", Toast.LENGTH_SHORT).show();
+       }
+
     }
 
     @Override
@@ -225,8 +238,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, TripActivity.class));
                 break;
             case R.id.lin_two:
-                     startActivity(new Intent(HomeActivity.this, InformationActivity.class));
-              // startActivity(new Intent(HomeActivity.this, ManageActivity.class));
+                //         startActivity(new Intent(HomeActivity.this, InformationActivity.class));
+              startActivity(new Intent(HomeActivity.this, ManageActivity.class));
                 break;
             case R.id.lin_three:
 

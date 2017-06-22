@@ -72,6 +72,7 @@ import com.autonavi.tbt.TrafficFacilityInfo;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.CustomProgressDialog;
 import com.example.administrator.bicycle.util.Dialog;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.util.SharedPreUtils;
 import com.example.administrator.bicycle.util.TOPpopCancel;
@@ -180,17 +181,14 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         //初始化控件
         init();
-
-
         //开启地图
         mMapView.onCreate(savedInstanceState);
 
-        //设置定位蓝点
+//设置定位蓝点
         setBluePoint();
-
-
         //初始化定位
         initMapAndstartLocation();
+
 
         //设置覆盖物
         setIcon();
@@ -205,6 +203,16 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         UiSettings mUiSettings;//定义一个UiSettings对象
         mUiSettings = aMap.getUiSettings();//实例化UiSettings类对象
         mUiSettings.setZoomControlsEnabled(false);
+
+
+        if (!NetWorkStatus.isNetworkAvailable(this)) {
+            dialog.dismiss();
+            Toast.makeText(this, "请设置网络！", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
         /*
          * 扫描二维码的按钮
          */
@@ -230,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     }
 
+
     //得到蓝点的位置信息 坐标转地址
     public void getBluePointLocation() {
         geocoderSearch = new GeocodeSearch(this);
@@ -242,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 msg.what = SETADDRESS;
 
                 LatLonPoint latLonPoint = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getLatLngPoint();
-                toCalculateDistance(latLonPoint,naviLatLng);
+                toCalculateDistance(latLonPoint, naviLatLng);
 
                 msg.obj = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
                 mhandler.sendMessage(msg);
@@ -270,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     }
 
-    private void alertDialog(){
+    private void alertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("已到达自行车附近");
         builder.setTitle("提示");
@@ -398,9 +407,11 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
 
         // 绘制曲线
-        aMap.addPolyline((new PolylineOptions())
-                .add(new LatLng(43.828, 87.621), new LatLng(45.808, 126.55))
-                .geodesic(true).color(Color.RED));
+
+        //大地曲线
+//        aMap.addPolyline((new PolylineOptions())
+//                .add(new LatLng(43.828, 87.621), new LatLng(45.808, 126.55))
+//                .geodesic(true).color(Color.RED));
         //设置地图中间的覆盖物
         //      marker.setPositionByPixels(360, 640);
 
@@ -535,9 +546,18 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_location:
+//                dialog.show();
+                if (!NetWorkStatus.isNetworkAvailable(this)) {
+                    Toast.makeText(this, "请设置网络！", Toast.LENGTH_SHORT).show();
+                }else
+                {
+                    //设置定位蓝点
+                    setBluePoint();
+                    initMapAndstartLocation();
 
-                //设置定位蓝点
-                setBluePoint();
+                }
+
+
 
                 break;
             case R.id.tv_zhushou:
@@ -568,7 +588,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             case R.id.iv_lift:
                 butright.setVisibility(View.VISIBLE);
                 lay_lift.setVisibility(View.GONE);
-
 
                 break;
 
@@ -662,11 +681,13 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
                     Log.d("a1*", "sa");
                     mLocationClient.stopLocation();
+
 //                    System.out.println("省："+arg0.getProvince());
 //                    System.out.println("国家："+arg0.getCountry());
 //                    System.out.println("经度"+arg0.getLatitude());
 //                    System.out.println("纬度"+arg0.getLongitude());
 //                    System.out.println("路是："+arg0.getRoad());
+
                 } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:"
@@ -933,6 +954,10 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
 

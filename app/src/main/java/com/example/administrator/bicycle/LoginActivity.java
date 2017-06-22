@@ -196,10 +196,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.image_return://返回按钮
-                //实例化一个跳转意图
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                //启动一个意图
-                startActivity(intent);
                 //关闭当前界面
                 finish();
                 break;

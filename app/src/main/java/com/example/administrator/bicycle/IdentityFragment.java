@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.administrator.bicycle.Post.Juhe;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.IdcardUtils;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.SharedPreUtils;
 import com.example.administrator.bicycle.util.TimeUtils;
 
@@ -36,7 +37,7 @@ public class IdentityFragment extends Fragment {
     String Sname;
     TextView tvTost;
 
-    private  boolean isidcard;
+    private boolean isidcard;
 
     public IdentityFragment() {
         // Required empty public constructor
@@ -67,7 +68,6 @@ public class IdentityFragment extends Fragment {
         isidcard = sharedPreferences.getBoolean(ContentValuse.idcard, false);
 
 
-
         name = (EditText) view.findViewById(R.id.name);
         IdCard = (EditText) view.findViewById(R.id.IdCard);
         tvTost = (TextView) view.findViewById(R.id.tv_tost);
@@ -90,7 +90,7 @@ public class IdentityFragment extends Fragment {
                     if (!IdcardUtils.validateIdCard15(SidCard)) {
                         tvTost.setText("请输入正确的身份证信息");
                         return;
-                    }else {
+                    } else {
                         tvTost.setText("");
                     }
 
@@ -111,15 +111,14 @@ public class IdentityFragment extends Fragment {
                         tvTost.setText("12岁以下禁止骑行");
                     } else {
                         //  new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
-
-                     new IdqueryAsyncTask(SidCard).execute();
+                        realnameAuthentication();
                     }
 
                 } else {
                     if (!IdcardUtils.validateIdCard18(SidCard)) {
                         tvTost.setText("请输入正确的身份证信息");
                         return;
-                    }else {
+                    } else {
                         tvTost.setText("");
                     }
 
@@ -143,12 +142,7 @@ public class IdentityFragment extends Fragment {
                         tvTost.setText("12岁以下禁止骑行");
                     } else {
                         //    new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
-                        SharedPreUtils.editorPutBoolean(getActivity(), ContentValuse.idcard, true);
-                        tvTost.setText("实名验证成功");
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.lin_one, new RegisteredSuccessFragement());
-                        transaction.commit();
-                       // new IdqueryAsyncTask(SidCard).execute();
+                        realnameAuthentication();
                     }
 
 
@@ -160,6 +154,21 @@ public class IdentityFragment extends Fragment {
 
 
         return view;
+    }
+
+    //实名验证
+    private void realnameAuthentication() {
+        SharedPreUtils.editorPutBoolean(getActivity(), ContentValuse.idcard, true);
+        tvTost.setText("实名验证成功");
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.lin_one, new RegisteredSuccessFragement());
+        transaction.commit();
+        if (NetWorkStatus.isNetworkAvailable(getActivity())) {
+            new IdqueryAsyncTask(SidCard).execute();
+        } else {
+            Toast.makeText(getActivity(), "请设置网络", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

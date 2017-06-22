@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class TimeUtils {
     /**
-     * 是否大于12
+     * 是否小于12
      * @param sidCard
      * @param IdcardLength
      * @return

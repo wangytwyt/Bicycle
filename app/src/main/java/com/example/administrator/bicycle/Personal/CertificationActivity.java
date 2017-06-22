@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.example.administrator.bicycle.Post.Juhe;
 import com.example.administrator.bicycle.R;
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.CustomProgressDialog;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ import org.json.JSONObject;
 public class CertificationActivity extends AppCompatActivity {
     private EditText ed_Certification;
     private String cardID;
+    private CustomProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +46,20 @@ public class CertificationActivity extends AppCompatActivity {
 
         ed_Certification = (EditText) findViewById(R.id.ed_Certification);
 
+        dialog = CustomProgressDialog.createDialog(this);
+
+
         findViewById(R.id.but_certification).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cardID = ed_Certification.getText().toString().trim();
                 if (cardID != null) {
-                    new CertificationAsty(cardID).execute();
+                    if (NetWorkStatus.isNetworkAvailable(CertificationActivity.this)) {
+                        new CertificationAsty(cardID).execute();
+                    } else {
+                        Toast.makeText(CertificationActivity.this, "请设置网络！", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
             }
@@ -63,23 +74,30 @@ public class CertificationActivity extends AppCompatActivity {
         }
 
         @Override
+        protected void onPreExecute() {
+            dialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
         protected void onPostExecute(String s) {
             try {
+                dialog.dismiss();
                 JSONObject object = new JSONObject(s);
                 if (object.getInt("error_code") == 0) {
                     System.out.println(object.get("result"));
-                    Toast.makeText(CertificationActivity.this,"验证成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CertificationActivity.this, "验证成功", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent();
-                    intent.putExtra(ContentValuse.Realname,true);
-                    setResult(1,intent);
+                    intent.putExtra(ContentValuse.Realname, true);
+                    setResult(1, intent);
                     CertificationActivity.this.finish();
                 } else {
-                    Toast.makeText(CertificationActivity.this,"验证失败"+object.get("error_code") + ":" + object.get("reason"),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CertificationActivity.this, "验证失败" + object.get("error_code") + ":" + object.get("reason"), Toast.LENGTH_SHORT).show();
                     System.out.println(object.get("error_code") + ":" + object.get("reason"));
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
 
         }

@@ -44,6 +44,8 @@ public class MyApplication extends MobApplication {
     public void onCreate() {
         super.onCreate();
 
+        
+
         //短信验证码初始化
         BmobSMS.initialize(this, AccountKey.Bmob_Application_ID);
 
