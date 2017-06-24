@@ -201,6 +201,11 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void weiBoshare() {
+
+        Platform.ShareParams sp = new Platform.ShareParams();
+        sp.setText("测试分享的文本");
+        sp.setImagePath("/mnt/sdcard/测试分享的图片.jpg");
+
         Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
         weibo.setPlatformActionListener(new PlatformActionListener() {
             @Override
@@ -219,7 +224,27 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
             }
         }); // 设置分享事件回调
 // 执行图文分享
-        weibo.share(initShareParams());
+        weibo.share(sp);
+
+//        Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+//        weibo.setPlatformActionListener(new PlatformActionListener() {
+//            @Override
+//            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+//
+//            }
+//
+//            @Override
+//            public void onError(Platform platform, int i, Throwable throwable) {
+//
+//            }
+//
+//            @Override
+//            public void onCancel(Platform platform, int i) {
+//
+//            }
+//        }); // 设置分享事件回调
+//// 执行图文分享
+//        weibo.share(initShareParams());
     }
 }
 

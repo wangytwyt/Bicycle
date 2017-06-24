@@ -161,7 +161,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     void post(String url, String lat, String lon) throws IOException {
 
 
-
         RequestBody formBody = new FormBody.Builder()
                 .add("lat", lat)
                 .add("lon", lon)
@@ -211,23 +210,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getw(final double latitude, final double longitude) {
-       if(NetWorkStatus.isNetworkAvailable(this)){
-           new Thread(new Runnable() {
-               @Override
-               public void run() {
-                   try {
+        if (NetWorkStatus.isNetworkAvailable(this)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        post("http://aliv8.data.moji.com/whapi/json/aliweather/forecast24hours", latitude + "", longitude + "");
 
-                       post("http://aliv8.data.moji.com/whapi/json/aliweather/forecast24hours", latitude + "", longitude + "");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
-
-               }
-           }).start();
-       }else {
-           Toast.makeText(this, "请设置网络！", Toast.LENGTH_SHORT).show();
-       }
+                }
+            }).start();
+        } else {
+            Toast.makeText(this, "请设置网络！", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -238,13 +236,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, TripActivity.class));
                 break;
             case R.id.lin_two:
-                //         startActivity(new Intent(HomeActivity.this, InformationActivity.class));
-              startActivity(new Intent(HomeActivity.this, ManageActivity.class));
+                 startActivity(new Intent(HomeActivity.this, InformationActivity.class));
+                //  startActivity(new Intent(HomeActivity.this, ManageActivity.class));
                 break;
             case R.id.lin_three:
-
                 startActivity(new Intent(HomeActivity.this, InvitationActivity.class));
-
                 break;
             case R.id.lin_four:
                 startActivity(new Intent(HomeActivity.this, GuideActivity.class));
@@ -255,13 +251,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.lin_six:
                 startActivity(new Intent(HomeActivity.this, RechargeActivity.class));
                 break;
-
             case R.id.iv_saomakaisuo:
                 if (PermissionUtils.checkPermissionCamera(this)) {
                     toCaptureActivity();
                 }
                 break;
-
         }
 
 

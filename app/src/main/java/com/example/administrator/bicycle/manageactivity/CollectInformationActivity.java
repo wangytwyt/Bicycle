@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -115,6 +116,7 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
 //                }
 //            }
 //        });
+
         findViewById(R.id.rb_time).setOnClickListener(this);
         findViewById(R.id.tb_bicycleID).setOnClickListener(this);
         findViewById(R.id.rb_states).setOnClickListener(this);
@@ -130,6 +132,16 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, states);
             ListView lv = (ListView) view.findViewById(R.id.pop_lv);
             lv.setAdapter(adapter);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+
+
+                }
+            });
+
             setPopupWindow(popupWindowstates, view);
         }
         if (popupWindowstates.isShowing()) {
@@ -166,6 +178,14 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, times);
             ListView lv = (ListView) view.findViewById(R.id.pop_lv);
             lv.setAdapter(adapter);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //按时间
+
+
+                }
+            });
             setPopupWindow(popupWindowTime, view);
         }
         if (popupWindowTime.isShowing()) {

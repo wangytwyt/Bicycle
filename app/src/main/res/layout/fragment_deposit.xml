@@ -94,6 +94,7 @@
                           android:textSize="12dp" />
 
                       <TextView
+                          android:id="@+id/tv_teon"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:layout_below="@+id/tv_priceone"
@@ -155,6 +156,7 @@
                           android:textSize="12dp" />
 
                       <TextView
+                          android:id="@+id/tv_tetw"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:layout_below="@+id/tv_pricetwo"

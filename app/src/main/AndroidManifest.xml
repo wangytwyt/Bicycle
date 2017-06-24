@@ -4,6 +4,11 @@
     android:versionCode="1"
     android:versionName="1.0">
 
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <!-- //地图SDK（包含其搜索功能）需要的基础权限 -->
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 相册需要的权限 -->
@@ -57,7 +62,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <!-- Android6.0 蓝牙扫描才需要 -->
     <!-- <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -90,7 +95,10 @@
     <!-- 蓝牙分享所需的权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="com.huawei.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.huawei.launcher.permission.WRITE_SETTINGS"/>
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -114,7 +122,7 @@
 
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/AppSplash">
+            android:theme="@style/splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

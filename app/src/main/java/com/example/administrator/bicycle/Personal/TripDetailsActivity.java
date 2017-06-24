@@ -1,6 +1,7 @@
 package com.example.administrator.bicycle.Personal;
 
 
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -15,9 +16,13 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 
+import com.amap.api.maps.model.BitmapDescriptor;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.navi.AMapNavi;
 
 import com.amap.api.navi.AMapNaviListener;
@@ -48,7 +53,7 @@ public class TripDetailsActivity extends AppCompatActivity implements AMapNaviLi
      */
     private SparseArray<RouteOverLay> routeOverlays = new SparseArray<RouteOverLay>();
 
-    private TextView tv_distance,tv_cost,tv_time,tv_kcal,tv_bicycleid;
+    private TextView tv_distance, tv_cost, tv_time, tv_kcal, tv_bicycleid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +68,9 @@ public class TripDetailsActivity extends AppCompatActivity implements AMapNaviLi
     }
 
     private void setData() {
-        tv_distance.setText(calculateLineDistance(new LatLng(34.292366, 109.109696),new LatLng(34.287834, 109.107841))+"");
+        tv_distance.setText(calculateLineDistance(new LatLng(34.292366, 109.109696), new LatLng(34.287834, 109.107841)) + "");
         tv_time.setText("1小时");
-        tv_cost.setText("￥"+0.0);
+        tv_cost.setText("￥" + 0.0);
         tv_bicycleid.setText("自行车编号:122313221");
     }
 
@@ -96,13 +101,21 @@ public class TripDetailsActivity extends AppCompatActivity implements AMapNaviLi
 
         //获取AMapNavi实例
         mAMapNavi = AMapNavi.getInstance(getApplicationContext());
-       //添加监听回调，用于处理算路成功109.107841,34.287834
-        mAMapNavi.calculateRideRoute(new NaviLatLng(34.292366, 109.109696), new NaviLatLng(34.287834, 109.107841));
-        mAMapNavi.addAMapNaviListener(this);
+        //添加监听回调，用于处理算路成功109.107841,34.287834
+//        mAMapNavi.calculateRideRoute(new NaviLatLng(34.292366, 109.109696), new NaviLatLng(34.287834, 109.107841));
+//        mAMapNavi.addAMapNaviListener(this);
 
+        LatLng startlatLng = new LatLng(34.292366, 109.109696);
+        LatLng endlatLng2 = new LatLng(34.287834, 109.107841);
+
+        BitmapDescriptor startbt = BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                .decodeResource(getResources(), R.mipmap.start));
+        BitmapDescriptor endbt = BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                .decodeResource(getResources(), R.mipmap.end));
+         aMap.addMarker(new MarkerOptions().icon(startbt).position(startlatLng));
+        aMap.addMarker(new MarkerOptions().icon(endbt).position(endlatLng2));
 
     }
-
 
 
     /*
@@ -138,6 +151,7 @@ public class TripDetailsActivity extends AppCompatActivity implements AMapNaviLi
 
     @Override
     protected void onDestroy() {
+        mMapView.removeAllViews();
         mMapView.onDestroy();
         mAMapNavi.removeAMapNaviListener(this);
         mAMapNavi.destroy();
@@ -155,11 +169,11 @@ public class TripDetailsActivity extends AppCompatActivity implements AMapNaviLi
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("行程详情");
 
-        tv_distance = (TextView)findViewById(R.id.tv_distance);
-        tv_cost = (TextView)findViewById(R.id.tv_cost);
-        tv_time = (TextView)findViewById(R.id.tv_time);
-        tv_kcal = (TextView)findViewById(R.id.tv_kcal);
-        tv_bicycleid = (TextView)findViewById(R.id.tv_bicycleid);
+        tv_distance = (TextView) findViewById(R.id.tv_distance);
+        tv_cost = (TextView) findViewById(R.id.tv_cost);
+        tv_time = (TextView) findViewById(R.id.tv_time);
+        tv_kcal = (TextView) findViewById(R.id.tv_kcal);
+        tv_bicycleid = (TextView) findViewById(R.id.tv_bicycleid);
     }
 
 

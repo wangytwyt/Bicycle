@@ -69,6 +69,7 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
+import com.example.administrator.bicycle.update.UpdateManager;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.CustomProgressDialog;
 import com.example.administrator.bicycle.util.Dialog;
@@ -178,6 +179,9 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+//        UpdateManager manager = new UpdateManager(MainActivity.this);
+//        // 检查软件更新
+//        manager.checkUpdate();
 
         //初始化控件
         init();
@@ -195,8 +199,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         getBluePointLocation();
 
-        aMapNavi = AMapNavi.getInstance(getApplicationContext());
-        aMapNavi.addAMapNaviListener(this);
+
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(34.26984294, 108.94729614), 16, 0, 0));
         aMap.moveCamera(mCameraUpdate);//把缩放级别放进摄像机
 //
@@ -514,6 +517,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     protected void init() {
         mMapView = (MapView) findViewById(R.id.map);//获取地图控件引用
 
+
         code = (ImageView) findViewById(R.id.code);//二维码按钮
         imgEnterToPersonalCenter = (LinearLayout) findViewById(R.id.img_EnterToPersonalCenter);
         iv_location = (TextView) findViewById(R.id.iv_location);
@@ -549,14 +553,12 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 //                dialog.show();
                 if (!NetWorkStatus.isNetworkAvailable(this)) {
                     Toast.makeText(this, "请设置网络！", Toast.LENGTH_SHORT).show();
-                }else
-                {
+                } else {
                     //设置定位蓝点
                     setBluePoint();
                     initMapAndstartLocation();
 
                 }
-
 
 
                 break;
@@ -626,11 +628,17 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         aMapNavi.destroy();
     }
 
+    private void addAMapNaviListener() {
+        aMapNavi = AMapNavi.getInstance(getApplicationContext());
+        aMapNavi.addAMapNaviListener(this);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
         PermissionUtils.checkPermissionneedPermissions(this);
+
+        addAMapNaviListener();
 
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
@@ -689,7 +697,9 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 //                    System.out.println("路是："+arg0.getRoad());
 
                 } else {
+                    dialog.dismiss();
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    Toast.makeText(MainActivity.this, "定位失败", Toast.LENGTH_SHORT).show();
                     Log.e("AmapError", "location Error, ErrCode:"
                             + amapLocation.getErrorCode() + ", errInfo:"
                             + amapLocation.getErrorInfo());

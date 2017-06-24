@@ -81,7 +81,7 @@ public class InformationActivity extends Activity implements View.OnClickListene
         tvShiming.setText(idcard);
         tvNum.setText(phone);
 
-        getBitmapFromSharedPreferences();
+    //    getBitmapFromSharedPreferences();
 
 
     }

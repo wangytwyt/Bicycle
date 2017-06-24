@@ -126,8 +126,8 @@ public class ManageActivity extends Activity implements View.OnClickListener {
 
                 break;
             case R.id.line_four:
-                Intent intent2 = new Intent(ManageActivity.this, UpdatePhoneActivity.class);
-                startActivityForResult(intent2, ContentValuse.requestCodePhone);
+//                Intent intent2 = new Intent(ManageActivity.this, UpdatePhoneActivity.class);
+//                startActivityForResult(intent2, ContentValuse.requestCodePhone);
 
                 break;
             case R.id.ll_manage:

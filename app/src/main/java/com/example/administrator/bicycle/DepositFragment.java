@@ -4,6 +4,7 @@ package com.example.administrator.bicycle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,6 +45,12 @@ public class DepositFragment extends Fragment {
 
         TextView tvtitle = (TextView) view.findViewById(R.id.tv_title);
         TextView text = (TextView) view.findViewById(R.id.tv_text);
+
+
+        TextView tv_teon = (TextView) view.findViewById(R.id.tv_teon);
+        tv_teon.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG );
+        TextView tv_tetw = (TextView) view.findViewById(R.id.tv_tetw);
+        tv_tetw.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG );
 
         tvtitle.setText("充值");
 

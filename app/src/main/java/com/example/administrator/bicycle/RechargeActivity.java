@@ -1,5 +1,6 @@
 package com.example.administrator.bicycle;
 
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,8 +35,16 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
         iv_zhifubao = (ImageView) findViewById(R.id.iv_zhifubao);
         iv_priceone = (ImageView) findViewById(R.id.iv_priceone);
         iv_pricetwo = (ImageView) findViewById(R.id.iv_pricetwo);
+
+
         iv_weixin.setSelected(true);
         iv_pricetwo.setSelected(true);
+
+        TextView tv_teon = (TextView) findViewById(R.id.tv_teon);
+        tv_teon.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG );
+        TextView tv_tetw = (TextView) findViewById(R.id.tv_tetw);
+        tv_tetw.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG );
+
         findViewById(R.id.rl_one).setOnClickListener(this);
         findViewById(R.id.rl_two).setOnClickListener(this);
         findViewById(R.id.ll_weixin).setOnClickListener(this);
