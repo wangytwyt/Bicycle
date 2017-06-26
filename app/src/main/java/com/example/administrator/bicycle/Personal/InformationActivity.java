@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.administrator.bicycle.Personal.Replace.ReplaceNumActivity;
 import com.example.administrator.bicycle.Personal.Shanliangfen.ShanliangActivity;
 import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
 import com.example.administrator.bicycle.R;
@@ -66,7 +67,7 @@ public class InformationActivity extends Activity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-  //      getSupportActionBar().hide();
+        //      getSupportActionBar().hide();
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_information);
         init();
@@ -81,7 +82,7 @@ public class InformationActivity extends Activity implements View.OnClickListene
         tvShiming.setText(idcard);
         tvNum.setText(phone);
 
-    //    getBitmapFromSharedPreferences();
+        //    getBitmapFromSharedPreferences();
 
 
     }
@@ -137,12 +138,12 @@ public class InformationActivity extends Activity implements View.OnClickListene
                 startActivityForResult(intent, ContentValuse.requestCodeNickname);
                 break;
             case R.id.line_three:
-                startActivityForResult(new Intent(InformationActivity.this, CertificationActivity.class),ContentValuse.requestCodeRealname);
+                startActivityForResult(new Intent(InformationActivity.this, CertificationActivity.class), ContentValuse.requestCodeRealname);
 
                 break;
             case R.id.line_four:
-                Intent intent2 = new Intent(InformationActivity.this, UpdatePhoneActivity.class);
-                startActivityForResult(intent2, ContentValuse.requestCodePhone);
+                Intent intent2 = new Intent(InformationActivity.this, ReplaceNumActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.line_five:
                 startActivity(new Intent(InformationActivity.this, QianbaoActivity.class));
@@ -180,21 +181,20 @@ public class InformationActivity extends Activity implements View.OnClickListene
             return;
         }
 
-        switch (requestCode){
+        switch (requestCode) {
             case ContentValuse.requestCodeNickname:
                 String nickname = data.getStringExtra(ContentValuse.nickname);
-                if (nickname != null){
+                if (nickname != null) {
                     tvNicheng.setText(nickname);
                 }
                 break;
             case ContentValuse.requestCodeRealname:
-                boolean isREalname = data.getBooleanExtra(ContentValuse.Realname,false);
-                if (isREalname){
+                boolean isREalname = data.getBooleanExtra(ContentValuse.Realname, false);
+                if (isREalname) {
                     tvShiming.setText("已认证");
                 }
                 break;
-            case  ContentValuse.requestCodePhone:
-
+            case ContentValuse.requestCodePhone:
 
 
                 break;

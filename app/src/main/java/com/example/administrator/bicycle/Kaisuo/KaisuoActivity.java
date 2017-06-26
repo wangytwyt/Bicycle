@@ -311,9 +311,9 @@ public class KaisuoActivity extends AppCompatActivity {
                 case VerifyUtil.CMD_UPDATE_KEY:
                     send("密码修改成功");
                     Intent intent = new Intent();
-                    intent.putExtra(ContentValuse.lockname,mname);
-                    intent.putExtra(ContentValuse.lockaddress,maddress);
-                    setResult(1,intent);
+                    intent.putExtra(ContentValuse.lockname, mname);
+                    intent.putExtra(ContentValuse.lockaddress, maddress);
+                    setResult(1, intent);
                     KaisuoActivity.this.finish();
 
                     break;

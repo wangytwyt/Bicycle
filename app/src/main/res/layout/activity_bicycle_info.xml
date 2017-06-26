@@ -1,198 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_bicycle_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.example.administrator.bicycle.manageactivity.BicycleInfoActivity">
 
-    <include layout="@layout/public_layout_title" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@mipmap/gzbj"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:src="@mipmap/guangbiao" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="车辆信息录入"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
+        <include layout="@layout/public_layout_title" />
+
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@mipmap/gzbj"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@mipmap/guangbiao" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:background="@mipmap/info_text_select_off"
-                android:gravity="center"
-                android:text="车架号"
-                android:textSize="15dp" />
+                android:text="车辆信息录入"
+                android:textSize="15sp" />
 
-
-            <TextView
-                android:id="@+id/tv_carid"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="2"
-                android:background="@mipmap/shurukuang"
-                android:padding="5dp" />
-
-            <TextView
-                android:id="@+id/tv_getbid"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:background="@mipmap/info_text_select_off"
-                android:gravity="center"
-                android:text="获取"
-                android:textSize="15dp" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/view_background" />
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical"
-          >
-          <LinearLayout
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center_horizontal"
-              android:orientation="horizontal"
-              android:padding="10dp">
-
-              <TextView
-                  android:layout_width="0dp"
-                  android:layout_height="wrap_content"
-                  android:layout_centerVertical="true"
-                  android:layout_gravity="center_vertical"
-                  android:layout_weight="1"
-                  android:background="@mipmap/info_text_select_off"
-                  android:gravity="center"
-                  android:text="锁   号"
-                  android:textSize="15dp" />
-
-
-              <TextView
-                 android:id="@+id/tv_lock"
-                  android:layout_width="0dp"
-                  android:layout_height="wrap_content"
-                  android:layout_marginLeft="10dp"
-                  android:layout_weight="2"
-                  android:background="@mipmap/shurukuang"
-                  android:padding="5dp" />
-              <TextView
-
-                  android:layout_width="0dp"
-                  android:layout_height="wrap_content"
-                  android:layout_centerVertical="true"
-                  android:layout_gravity="center_vertical"
-                  android:layout_weight="1"
-                  android:layout_marginLeft="10dp"
-                  android:background="@mipmap/info_text_select_off"
-                  android:gravity="center"
-                  android:text="获取"
-                  android:visibility="invisible"
-                  android:textSize="15dp" />
-          </LinearLayout>
-
-          <LinearLayout
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center_horizontal"
-              android:orientation="horizontal"
-              android:padding="10dp">
-
-              <TextView
-                  android:layout_width="0dp"
-                  android:layout_height="wrap_content"
-                  android:layout_centerVertical="true"
-                  android:layout_gravity="center_vertical"
-                  android:layout_weight="1"
-                  android:background="@mipmap/info_text_select_off"
-                  android:gravity="center"
-                  android:text="地  址"
-                  android:textSize="15dp" />
-
-
-              <TextView
-                  android:id="@+id/tv_address"
-                  android:layout_width="0dp"
-                  android:layout_height="wrap_content"
-                  android:layout_marginLeft="10dp"
-                  android:layout_weight="2"
-                  android:background="@mipmap/shurukuang"
-                  android:padding="5dp" />
-
-              <TextView
-                  android:id="@+id/tv_getlock"
-                  android:layout_width="0dp"
-                  android:layout_height="wrap_content"
-                  android:layout_centerVertical="true"
-                  android:layout_gravity="center_vertical"
-                  android:layout_weight="1"
-                  android:layout_marginLeft="10dp"
-                  android:background="@mipmap/info_text_select_off"
-                  android:gravity="center"
-                  android:text="获取"
-                  android:textSize="15dp" />
-          </LinearLayout>
-      </LinearLayout>
-
-
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/view_background" />
-
-
-        <Button
-            android:id="@+id/but"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="30dp"
-            android:background="@mipmap/dianzizhuangtai"
-            android:text="提交" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="车架号"
+                    android:textSize="15dp" />
 
 
+                <TextView
+                    android:id="@+id/tv_carid"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="2"
+                    android:background="@mipmap/shurukuang"
+                    android:hint="请获取车架号"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:id="@+id/tv_getbid"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@mipmap/info_text_select_off"
+                    android:gravity="center"
+                    android:text="获取"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/view_background" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="锁    号"
+                        android:textSize="15dp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_lock"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="2"
+                        android:background="@mipmap/shurukuang"
+                        android:hint="请获取锁号"
+                        android:padding="5dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@mipmap/info_text_select_off"
+                        android:gravity="center"
+                        android:text="获取"
+                        android:textSize="15dp"
+                        android:visibility="invisible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="地    址"
+                        android:textSize="15dp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="2"
+                        android:background="@mipmap/shurukuang"
+                        android:hint="请获取地址"
+                        android:padding="5dp" />
+
+                    <TextView
+                        android:id="@+id/tv_getlock"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@mipmap/info_text_select_off"
+                        android:gravity="center"
+                        android:text="获取"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/but"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@mipmap/com_off"
+        android:enabled="false"
+        android:text="提    交" />
 
-</LinearLayout>
+
+</RelativeLayout>

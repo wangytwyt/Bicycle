@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button start;//登录
     private EditText edtPhoneNum;//手机号输入框
     private EditText edtValidation;//验证码输入框
-    private ImageView imageReturn;//登录界面的返回图片
+
     private ImageView imgDel;//删除图标
     private Handler h;
     TextView tvYy;//语音烟瘴吗
@@ -120,17 +120,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      *  初始化控件
      */
     protected void init() {
+        TextView tvtitle = (TextView) findViewById(R.id.tv_title);
+        tvtitle.setText("登录");
+
         obtain = (Button) findViewById(R.id.btn_obtain);//获取验证码
         start = (Button) findViewById(R.id.btn_start);//登录
         edtPhoneNum = (EditText) findViewById(R.id.edt_PhoneNum);//手机号输入框
         edtValidation = (EditText) findViewById(R.id.edt_validation);//验证码输入框
-        imageReturn = (ImageView) findViewById(R.id.image_return);//登录界面的返回图片
+
         tvYy = (TextView) findViewById(R.id.tv_yy);
         tvYy.setOnClickListener(this);
         imgDel = (ImageView) findViewById(R.id.img_del);//删除图标
         obtain.setOnClickListener(this);
         start.setOnClickListener(this);
-        imageReturn.setOnClickListener(this);
+        findViewById(R.id.iv_back).setOnClickListener(this);
         imgDel.setOnClickListener(this);
     }
 
@@ -192,12 +195,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 dialog.setCancelable(false);
                 dialog.show();
                 new Thread(new AccessNetwork("POST", "http://42.159.113.21/heibike/user/check", "vip_phone=" + PhoneNum + "&vip_token=" + validation, h, 003)).start();
-
-
-                break;
-            case R.id.image_return://返回按钮
-                //关闭当前界面
-                finish();
                 break;
             case R.id.img_del:
                 edtPhoneNum.setText("");

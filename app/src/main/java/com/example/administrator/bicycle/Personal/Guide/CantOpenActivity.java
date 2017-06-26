@@ -26,6 +26,6 @@ public class CantOpenActivity extends AppCompatActivity {
         });
 
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
-        tvtitle.setText("开锁");
+        tvtitle.setText("开不了锁");
     }
 }

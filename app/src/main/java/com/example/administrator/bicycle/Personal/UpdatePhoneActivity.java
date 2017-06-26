@@ -1,6 +1,8 @@
 package com.example.administrator.bicycle.Personal;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -10,6 +12,8 @@ import android.widget.Toast;
 
 import com.example.administrator.bicycle.Post.SMSBmob;
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.photo.utils.HeadImagePop;
+import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.IdcardUtils;
 
 public class UpdatePhoneActivity extends Activity implements View.OnClickListener {
@@ -37,7 +41,7 @@ public class UpdatePhoneActivity extends Activity implements View.OnClickListene
         });
 
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
-        tvtitle.setText("手机号");
+        tvtitle.setText("更改手机号");
 
 
         et_old = (EditText) findViewById(R.id.et_old);
@@ -80,7 +84,6 @@ public class UpdatePhoneActivity extends Activity implements View.OnClickListene
                 break;
         }
     }
-
 
 
 }

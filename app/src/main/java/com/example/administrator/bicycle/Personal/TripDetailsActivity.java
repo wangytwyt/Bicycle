@@ -65,6 +65,7 @@ public class TripDetailsActivity extends AppCompatActivity implements AMapNaviLi
 
         initView();
         setData();
+        
     }
 
     private void setData() {
@@ -73,6 +74,18 @@ public class TripDetailsActivity extends AppCompatActivity implements AMapNaviLi
         tv_cost.setText("￥" + 0.0);
         tv_bicycleid.setText("自行车编号:122313221");
     }
+
+
+
+    /*
+    *11卡/min
+     */
+    private  int kcal(int min){
+        return  min * 11;
+    }
+
+
+
 
     /*
     *画路径

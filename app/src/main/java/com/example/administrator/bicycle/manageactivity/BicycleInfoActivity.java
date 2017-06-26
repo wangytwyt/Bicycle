@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.Kaisuo.KaisuoActivity;
@@ -15,6 +16,8 @@ import com.example.administrator.bicycle.zxing.camera.open.CaptureActivity;
 
 public class BicycleInfoActivity extends Activity implements View.OnClickListener {
     private TextView tv_carid, tv_lock, tv_address;
+    private String result, name, address;
+    private Button but;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,11 @@ public class BicycleInfoActivity extends Activity implements View.OnClickListene
 
         findViewById(R.id.tv_getbid).setOnClickListener(this);
         findViewById(R.id.tv_getlock).setOnClickListener(this);
-        findViewById(R.id.but).setOnClickListener(this);
+        but = (Button) findViewById(R.id.but);
+
+        but.setOnClickListener(this);
+
+
     }
 
 
@@ -92,22 +99,35 @@ public class BicycleInfoActivity extends Activity implements View.OnClickListene
         switch (requestCode) {
             case ContentValuse.getbikeback:
 
-                String result = data.getStringExtra(ContentValuse.getbike);
+                result = data.getStringExtra(ContentValuse.getbike);
                 if (result != null) {
                     tv_carid.setText(result);
                 }
+                setbut();
+
 
                 break;
             case ContentValuse.bicyInfoToKaisuo:
-                String name = data.getStringExtra(ContentValuse.lockname);
-                String address = data.getStringExtra(ContentValuse.lockaddress);
+                name = data.getStringExtra(ContentValuse.lockname);
+                address = data.getStringExtra(ContentValuse.lockaddress);
                 if (name != null && address != null) {
                     tv_lock.setText(name);
                     tv_address.setText(address);
                 }
-
+                setbut();
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setbut() {
+        if (result != null && name != null && address != null && !result.equals("") && !name.equals("") && !address.equals("") ) {
+            but.setBackgroundResource(R.mipmap.com_off);
+            but.setEnabled(true);
+        } else {
+            but.setBackgroundResource(R.mipmap.com_no);
+            but.setEnabled(false);
+
+        }
     }
 }
