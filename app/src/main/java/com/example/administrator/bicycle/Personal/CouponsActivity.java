@@ -35,6 +35,8 @@ public class CouponsActivity extends AppCompatActivity {
         list.add(inEntity);
         outEntity.setList(list);
 
+
+
         //判空
         if (outEntity.getList() == null) {
             listView.setVisibility(View.GONE);

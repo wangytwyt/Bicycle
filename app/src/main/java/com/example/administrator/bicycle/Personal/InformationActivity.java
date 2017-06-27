@@ -154,6 +154,8 @@ public class InformationActivity extends Activity implements View.OnClickListene
         }
     }
 
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (PermissionUtils.onRequestPermissionsResultCamera(this, requestCode, permissions, grantResults)) {

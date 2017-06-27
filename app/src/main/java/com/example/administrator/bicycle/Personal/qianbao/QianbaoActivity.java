@@ -12,9 +12,12 @@ import com.example.administrator.bicycle.R;
 
 
 public class QianbaoActivity extends AppCompatActivity {
-   private ImageView iv_weixin,iv_zhifubao;
-private RadioGroup  rg_one,rg_two;
+    private ImageView iv_weixin, iv_zhifubao;
+    private RadioGroup rg_one, rg_two;
     private Boolean changeedGroup = false;
+    private int[] money = {20, 30, 50, 80, 100, 200};
+    private int heibiNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +25,7 @@ private RadioGroup  rg_one,rg_two;
         setContentView(R.layout.activity_qianbao);
         initView();
     }
+
     private void initView() {
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,11 +37,11 @@ private RadioGroup  rg_one,rg_two;
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("我的钱包");
 
-        iv_weixin = (ImageView)findViewById(R.id.iv_weinxin);
-        iv_zhifubao= (ImageView)findViewById(R.id.iv_zhifubao);
-        rg_one = (RadioGroup)findViewById(R.id.rg_one);
+        iv_weixin = (ImageView) findViewById(R.id.iv_weinxin);
+        iv_zhifubao = (ImageView) findViewById(R.id.iv_zhifubao);
+        rg_one = (RadioGroup) findViewById(R.id.rg_one);
 
-        rg_two = (RadioGroup)findViewById(R.id.rg_two);
+        rg_two = (RadioGroup) findViewById(R.id.rg_two);
         rg_one.setOnCheckedChangeListener(new MyRadioGroupOnCheckedChangedListener());
         rg_one.check(R.id.rb_30);
         rg_two.setOnCheckedChangeListener(new MyRadioGroupOnCheckedChangedListener());
@@ -46,10 +50,10 @@ private RadioGroup  rg_one,rg_two;
             @Override
             public void onClick(View v) {
 
-                if(iv_weixin.isSelected()){
+                if (iv_weixin.isSelected()) {
                     iv_weixin.setSelected(false);
                     iv_zhifubao.setSelected(true);
-                }else {
+                } else {
                     iv_weixin.setSelected(true);
                     iv_zhifubao.setSelected(false);
                 }
@@ -61,15 +65,37 @@ private RadioGroup  rg_one,rg_two;
             public void onClick(View v) {
 
 
-                if(iv_zhifubao.isSelected()){
+                if (iv_zhifubao.isSelected()) {
                     iv_zhifubao.setSelected(false);
                     iv_weixin.setSelected(true);
-                }else {
+                } else {
                     iv_zhifubao.setSelected(true);
                     iv_weixin.setSelected(false);
                 }
             }
         });
+
+
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iv_zhifubao.isSelected()) {
+                    zhifubaoPay();
+                }
+                if (iv_weixin.isSelected()) {
+                    weixinPay();
+                }
+            }
+        });
+
+    }
+
+    private void zhifubaoPay() {
+
+    }
+
+    private void weixinPay() {
+
     }
 
     class MyRadioGroupOnCheckedChangedListener implements RadioGroup.OnCheckedChangeListener {
@@ -84,6 +110,29 @@ private RadioGroup  rg_one,rg_two;
                 }
                 changeedGroup = false;
             }
+
+            switch (checkedId) {
+                case R.id.rb_20:
+                    heibiNumber = 20;
+                    break;
+                case R.id.rb_30:
+                    heibiNumber = 30;
+                    break;
+                case R.id.rb_50:
+                    heibiNumber = 50;
+                    break;
+                case R.id.rb_80:
+                    heibiNumber = 80;
+                    break;
+                case R.id.rb_100:
+                    heibiNumber = 100;
+                    break;
+                case R.id.rb_200:
+                    heibiNumber = 200;
+                    break;
+
+            }
+
         }
     }
 }
