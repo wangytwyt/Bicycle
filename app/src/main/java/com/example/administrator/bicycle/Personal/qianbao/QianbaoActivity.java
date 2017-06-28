@@ -130,7 +130,6 @@ public class QianbaoActivity extends AppCompatActivity {
                 case R.id.rb_200:
                     heibiNumber = 200;
                     break;
-
             }
 
         }
