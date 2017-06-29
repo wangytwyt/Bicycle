@@ -234,8 +234,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             @Override
             public void onClick(View v) {
 //             startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
-        //        startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                startActivity(new Intent(MainActivity.this, PrizeActivity.class));
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                //            startActivity(new Intent(MainActivity.this, PrizeActivity.class));
             }
         });
 

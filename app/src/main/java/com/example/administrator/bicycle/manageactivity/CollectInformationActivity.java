@@ -2,10 +2,12 @@ package com.example.administrator.bicycle.manageactivity;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,27 +18,44 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.administrator.bicycle.Post.PostUtil;
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.R;
 import com.example.administrator.bicycle.adapter.CollectInformationAdapter;
+import com.example.administrator.bicycle.entity.CollectInformationEntity;
 import com.example.administrator.bicycle.util.CustomProgressDialog;
+import com.example.administrator.bicycle.util.HttpUtils;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.PxToDpUtils;
 import com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout;
 
 import com.sofi.smartlocker.ble.util.LOG;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class CollectInformationActivity extends AppCompatActivity implements PullToRefreshLayout.OnRefreshListener, View.OnClickListener {
     private ListView list_view;
     private CollectInformationAdapter adapter;
-    private ArrayList<String> info = new ArrayList<String>();
+    private PullToRefreshLayout pull;
+    private ArrayList<CollectInformationEntity> info = new ArrayList<CollectInformationEntity>();
     private CustomProgressDialog dialog;
 
     private Handler m = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            dialog.dismiss();
+            adapter.notifyDataSetChanged();
         }
     };
 
@@ -87,17 +106,17 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
         tvtitle.setText("信息汇整");
 
 
-        ((PullToRefreshLayout) findViewById(R.id.refresh_view))
-                .setOnRefreshListener(this);
-        setData();
+        pull = (PullToRefreshLayout) findViewById(R.id.refresh_view);
+        pull.setOnRefreshListener(this);
+
         dialog = CustomProgressDialog.createDialog(this);
-        dialog.show();
+
 
         adapter = new CollectInformationAdapter(this, info);
         list_view = (ListView) findViewById(R.id.list_view);
         list_view.setAdapter(adapter);
         iv_loadfail = (ImageView) findViewById(R.id.iv_loadfail);
-
+        iv_loadfail.setOnClickListener(this);
 //        rg_group = (RadioGroup)findViewById(R.id.rg_group);
 //        rg_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 //            @Override
@@ -121,6 +140,9 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
         findViewById(R.id.tb_bicycleID).setOnClickListener(this);
         findViewById(R.id.rb_states).setOnClickListener(this);
 
+
+        getData(Url.CollectInformationUrl);
+
     }
 
 
@@ -135,9 +157,12 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            getData(Url.CollectInformationUrl);
 
-
-
+                            break;
+                    }
 
                 }
             });
@@ -198,14 +223,6 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
     }
 
 
-    private void setData() {
-
-        m.sendEmptyMessageDelayed(0, 3000);
-        for (int i = 0; i < 20; i++) {
-            info.add("1214221");
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -219,6 +236,86 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
             case R.id.rb_states:
                 initPopStates();
                 break;
+            case R.id.iv_loadfail:
+
+                break;
+
         }
     }
+
+
+    private void getData(String url) {
+        if (!NetWorkStatus.isNetworkAvailable(this)) {
+            loadFailure();
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        dialog.show();
+        HttpUtils.doGet(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                dialog.dismiss();
+                loadFailure();
+                Toast.makeText(CollectInformationActivity.this, "sdsds", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dialog.dismiss();
+                loadSuccess();
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject jsobject = new JSONObject(response.body().string());
+                        JSONArray jsArray = jsobject.getJSONArray("result");
+                        for (int i = 0; i < jsArray.length(); i++) {
+                            JSONObject jo = jsArray.getJSONObject(i);
+                            CollectInformationEntity collinfo = new CollectInformationEntity();
+                            collinfo.setT_BIKENO(jo.getString("T_BIKENO"));
+                            collinfo.setT_BIKENOMAL(jo.getString("T_BIKENOMAL"));
+                            collinfo.setT_YJTime(jo.getString("T_YJTime"));
+                            collinfo.setT_BIKETIME(jo.getString("T_BIKETIME"));
+                            collinfo.setT_BXTIME(jo.getString("T_BXTIME"));
+                            info.add(collinfo);
+                        }
+
+                        m.sendMessage(new Message());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+
+                }
+            }
+
+        });
+
+
+    }
+
+    private void loadFailure() {
+        pull.setVisibility(View.GONE);
+        list_view.setVisibility(View.GONE);
+        iv_loadfail.setVisibility(View.VISIBLE);
+    }
+
+    private void loadSuccess() {
+        pull.setVisibility(View.VISIBLE);
+        list_view.setVisibility(View.VISIBLE);
+        iv_loadfail.setVisibility(View.GONE);
+    }
+
+    class getsd extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            return PostUtil.sendGet(Url.CollectInformationUrl, "");
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            String sdf = s;
+            super.onPostExecute(s);
+        }
+    }
+
 }

@@ -220,8 +220,10 @@
             android:id="@+id/iv_loadfail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:visibility="gone"
             android:src="@mipmap/wangluozhongduan"
-            android:visibility="gone" />
+            />
 
         <com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout
             android:id="@+id/refresh_view"

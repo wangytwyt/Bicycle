@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 /**
  * Created by Administrator on 2017/6/22.
@@ -65,7 +66,7 @@ public class NetWorkStatus {
     /**
      * 检查当前网络是否可用
      *
-     * @param context
+     * @param
      * @return
      */
 
@@ -99,4 +100,7 @@ public class NetWorkStatus {
         }
         return false;
     }
+
+
+
 }

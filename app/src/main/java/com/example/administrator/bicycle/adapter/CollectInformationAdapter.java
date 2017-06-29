@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.entity.CollectInformationEntity;
 import com.example.administrator.bicycle.photo.BaseActivity;
 import com.sofi.smartlocker.ble.util.LOG;
 
@@ -20,10 +21,10 @@ import java.util.zip.Inflater;
 
 public class CollectInformationAdapter extends BaseAdapter {
     private Context mcontent;
-    private ArrayList<String> info = new ArrayList<String>();
+    private ArrayList<CollectInformationEntity> info = new ArrayList<CollectInformationEntity>();
     private HolderView mHolder;
 
-    public CollectInformationAdapter(Context mcontent, ArrayList<String> info) {
+    public CollectInformationAdapter(Context mcontent, ArrayList<CollectInformationEntity> info) {
         this.info = info;
         this.mcontent = mcontent;
     }
@@ -58,25 +59,25 @@ public class CollectInformationAdapter extends BaseAdapter {
         } else {
             mHolder = (HolderView) convertView.getTag();
         }
+        CollectInformationEntity  cinfo =info.get(position);
+        mHolder.tv_bicycleid.setText(cinfo.getT_BIKENO());
+        mHolder.tv_putin.setText(cinfo.getT_BIKETIME());
+        mHolder.tv_starttime.setText(cinfo.getT_BXTIME());
+        mHolder.tv_endtime.setText(cinfo.getT_YJTime());
 
-        mHolder.tv_bicycleid.setText(info.get(position));
-        mHolder.tv_putin.setText("2017-12-9");
-        mHolder.tv_starttime.setText("2017-12-9");
-        mHolder.tv_endtime.setText("2017-12-9");
-        int status = 0;
-       switch (status){
-           case 0:
+       switch (cinfo.getT_BIKENOMAL()){
+           case "正常":
                mHolder.tv_static.setText("正常");
                break;
-           case 1:
+           case "维修中":
                mHolder.tv_static.setBackgroundResource(R.mipmap.collect_weixiuzhong);
                mHolder.tv_static.setText("维修中");
                break;
-           case 2:
+           case "已完成":
                mHolder.tv_static.setBackgroundResource(R.mipmap.collect_yiwancheng);
                mHolder.tv_static.setText("已完成");
                break;
-           case 3:
+           case "待处理":
                mHolder.tv_static.setBackgroundResource(R.mipmap.collect_daichuli);
                mHolder.tv_static.setText("待处理");
                break;

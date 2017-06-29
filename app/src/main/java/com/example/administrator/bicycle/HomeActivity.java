@@ -183,8 +183,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, TripActivity.class));
                 break;
             case R.id.lin_two:
-                startActivity(new Intent(HomeActivity.this, InformationActivity.class));
-                //    startActivity(new Intent(HomeActivity.this, ManageActivity.class));
+                //   startActivity(new Intent(HomeActivity.this, InformationActivity.class));
+                   startActivity(new Intent(HomeActivity.this, ManageActivity.class));
                 break;
             case R.id.lin_three:
                 startActivity(new Intent(HomeActivity.this, InvitationActivity.class));

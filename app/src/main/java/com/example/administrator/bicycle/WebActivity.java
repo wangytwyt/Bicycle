@@ -43,7 +43,7 @@ public class WebActivity extends AppCompatActivity {
         if(url != null){
 
         }
-        wb.loadUrl("http://192.168.1.163:8080/h/yhxy.html");
+        wb.loadUrl("http://192.168.1.163:8080/heibike/tbike/findBikeByTfTime.do?");
         wb.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

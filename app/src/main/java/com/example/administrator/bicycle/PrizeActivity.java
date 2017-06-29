@@ -94,7 +94,7 @@ public class PrizeActivity extends AppCompatActivity {
                 mm.what = (int) (Math.random() * 60 + 30);
                 mhandler.sendMessage(mm);
             }
-        }, 1000, 30);        //从1000ms即1s开始，30ms为数字改变周期
+        }, 0, 30);        //从1000ms即1s开始，30ms为数字改变周期
     }
 
 
