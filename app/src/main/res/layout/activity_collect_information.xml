@@ -10,242 +10,215 @@
     <include layout="@layout/public_layout_title" />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@mipmap/gzbj"
-        android:visibility="gone"
-        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:src="@mipmap/guangbiao" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="车辆故障"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginLeft="10dp"-->
-    <!--android:layout_marginRight="10dp"-->
-    <!--android:orientation="vertical">-->
-
-    <!--<RadioGroup-->
-    <!--android:id="@+id/rg_group"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal">-->
-
-    <!--<RadioButton-->
-    <!--android:id="@+id/rb_time"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1"-->
-    <!--android:button="@null"-->
-    <!--android:drawableLeft="@drawable/select_collect_rb"-->
-    <!--android:gravity="center"-->
-    <!--android:paddingBottom="10dp"-->
-    <!--android:paddingLeft="20dp"-->
-    <!--android:paddingRight="20dp"-->
-    <!--android:paddingTop="10dp"-->
-    <!--android:text="按时间"-->
-    <!--android:textColor="@color/grgray"-->
-    <!--android:textSize="15sp" />-->
-
-    <!--<RadioButton-->
-    <!--android:id="@+id/tb_bicycleID"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1"-->
-    <!--android:button="@null"-->
-    <!--android:drawableLeft="@drawable/select_collect_rb"-->
-    <!--android:gravity="center"-->
-    <!--android:paddingBottom="10dp"-->
-    <!--android:paddingLeft="20dp"-->
-    <!--android:paddingRight="20dp"-->
-    <!--android:paddingTop="10dp"-->
-    <!--android:text="按车牌"-->
-    <!--android:textColor="@color/grgray"-->
-    <!--android:textSize="15sp" />-->
-
-    <!--<RadioButton-->
-    <!--android:id="@+id/rb_states"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1"-->
-    <!--android:button="@null"-->
-    <!--android:drawableLeft="@drawable/select_collect_rb"-->
-    <!--android:gravity="center"-->
-    <!--android:paddingBottom="10dp"-->
-    <!--android:paddingLeft="20dp"-->
-    <!--android:paddingRight="20dp"-->
-    <!--android:paddingTop="10dp"-->
-    <!--android:text="按状态"-->
-    <!--android:textColor="@color/grgray"-->
-    <!--android:textSize="15sp" />-->
-    <!--</RadioGroup>-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/rb_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:text="按时间"
-            android:textColor="@color/grgray"
-            android:textSize="15sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/view_background" />
-
-        <TextView
-            android:id="@+id/tb_bicycleID"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:text="按车牌"
-            android:textColor="@color/grgray"
-            android:textSize="15sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/view_background" />
-
-        <TextView
-            android:id="@+id/rb_states"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:text="按状态"
-            android:textColor="@color/grgray"
-            android:textSize="15sp" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/view_background" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:gravity="center"
-            android:text="车牌号"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="投放时间"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="送修时间"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="完成时间"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:gravity="center"
-            android:text="状态"
-            android:textSize="15sp" />
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/view_background" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/iv_loadfail"
+        <RadioGroup
+            android:id="@+id/rg_group"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:visibility="gone"
-            android:src="@mipmap/wangluozhongduan"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/tb_bicycleID"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/select_collect_rb"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:text="按车牌"
+                android:textColor="@color/grgray"
+                android:textSize="15sp" />
 
-        <com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout
-            android:id="@+id/refresh_view"
+            <RadioButton
+                android:id="@+id/rb_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/select_collect_rb"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:text="按时间"
+                android:textColor="@color/grgray"
+                android:textSize="15sp" />
+
+
+            <RadioButton
+                android:id="@+id/rb_states"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/select_collect_rb"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:text="按状态"
+                android:textColor="@color/grgray"
+                android:textSize="15sp" />
+        </RadioGroup>
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/rb_time"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:paddingLeft="20dp"-->
+        <!--android:paddingRight="20dp"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:text="按时间"-->
+        <!--android:textColor="@color/grgray"-->
+        <!--android:textSize="15sp" />-->
+
+        <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:background="@color/view_background" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/tb_bicycleID"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:paddingLeft="20dp"-->
+        <!--android:paddingRight="20dp"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:text="按车牌"-->
+        <!--android:textColor="@color/grgray"-->
+        <!--android:textSize="15sp" />-->
+
+        <!--<View-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:background="@color/view_background" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/rb_states"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:paddingLeft="20dp"-->
+        <!--android:paddingRight="20dp"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:text="按状态"-->
+        <!--android:textColor="@color/grgray"-->
+        <!--android:textSize="15sp" />-->
+        <!--</LinearLayout>-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:text="车牌号"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="投放时间"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="送修时间"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="完成时间"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:text="状态"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_background" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <include layout="@layout/refresh_head" />
-            <!-- 支持所有实现Pullable接口的View -->
 
-            <com.example.administrator.bicycle.view.pulltorefresh.PullableListView
-                android:id="@+id/list_view"
+            <ImageView
+                android:id="@+id/iv_loadfail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="#000000"
-                android:dividerHeight="1dp" />
+                android:scaleType="fitXY"
+                android:src="@mipmap/wangluozhongduan"
+                android:visibility="gone" />
 
-            <include layout="@layout/load_more" />
+            <com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout
+                android:id="@+id/refresh_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        </com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout>
+                <include layout="@layout/refresh_head" />
+                <!-- 支持所有实现Pullable接口的View -->
+
+                <com.example.administrator.bicycle.view.pulltorefresh.PullableListView
+                    android:id="@+id/list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@color/view_background"
+                    android:dividerHeight="1dp" />
+
+                <include layout="@layout/load_more" />
+
+            </com.example.administrator.bicycle.view.pulltorefresh.PullToRefreshLayout>
 
 
-    </RelativeLayout>
+        </RelativeLayout>
 
 
-    <!--</LinearLayout>-->
-</LinearLayout>
+        <!--</LinearLayout>-->
+    </LinearLayout>

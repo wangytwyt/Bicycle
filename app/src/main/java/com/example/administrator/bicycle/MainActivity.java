@@ -567,7 +567,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 startActivity(new Intent(MainActivity.this, AssistantActivity.class));
                 break;
             case R.id.tv_suaxin:
-                startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
+                startActivity(new Intent(MainActivity.this, PrizeActivity.class));
                 break;
             case R.id.tv_tousu:
                 if (token == null || token.equals("")) {

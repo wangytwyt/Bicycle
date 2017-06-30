@@ -13,7 +13,9 @@
     <string name="zhaobudaoche_three">点击单车图标，若浮现出照片，说明这辆单车上有一位用户提供的找车帮助，点击照片，可看到停车地点的大图。如果找车帮助信息有用，请点赞，上一位用户获得您的肯定时，会得到善良分。</string>
     <string name="zhaobudaoche_four">定位受周围环境影响，有时候会有偏移。请环顾定位点四周，马路对面寻找单车。</string>
 
-
+    <string name="prize_one">1：缴纳一年年费的，可以拥有一次抽奖机会，点击开始，将会获赠最少30天，最多90天的免费骑行天数。</string>
+    <string name="prize_two">2：缴纳两年年费的，可以拥有两次抽奖机会，点击开始，每次将会获赠最少30天，最多90天的免费骑行天数，两次的赠送天数可以累计。</string>
+    <string name="prize_dialog">   所抽取的天数将自动计入剩余骑行天数中，可进入个人中心查看倒计时。</string>
     <string name="notifyTitle">温馨提示</string>
     <string name="notifyMsg">是否开启手机定位权限</string>
     <string name="confirm">确定</string>
@@ -48,4 +50,5 @@
     <string name="soft_update_later">稍后更新</string>
     <string name="soft_updating">正在更新</string>
     <string name="soft_update_cancel">取消</string>
+
 </resources>

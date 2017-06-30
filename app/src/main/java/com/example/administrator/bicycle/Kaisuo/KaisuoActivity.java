@@ -305,16 +305,20 @@ public class KaisuoActivity extends AppCompatActivity {
                     send("已关锁");
                     break;
                 case VerifyUtil.CMD_OPEN_LOCK://开锁
-
-                    send("已开锁");
-                    break;
-                case VerifyUtil.CMD_UPDATE_KEY:
-                    send("密码修改成功");
                     Intent intent = new Intent();
                     intent.putExtra(ContentValuse.lockname, mname);
                     intent.putExtra(ContentValuse.lockaddress, maddress);
                     setResult(1, intent);
                     KaisuoActivity.this.finish();
+                    send("已开锁");
+                    break;
+                case VerifyUtil.CMD_UPDATE_KEY:
+                    send("密码修改成功");
+//                    Intent intent = new Intent();
+//                    intent.putExtra(ContentValuse.lockname, mname);
+//                    intent.putExtra(ContentValuse.lockaddress, maddress);
+//                    setResult(1, intent);
+//                    KaisuoActivity.this.finish();
 
                     break;
 

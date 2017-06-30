@@ -4,70 +4,144 @@
     android:id="@+id/activity_prize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/prize_background"
     android:orientation="vertical"
     tools:context="com.example.administrator.bicycle.PrizeActivity">
 
-    <include layout="@layout/public_layout_title" />
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true"
-            >
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@mipmap/prize_ding"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="90dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_prize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_one"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:background="@mipmap/prize_text"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="30dp" />
+
+                    <TextView
+                        android:id="@+id/tv_two"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@mipmap/prize_text"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="30dp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/ll_prize"
+                    android:layout_toRightOf="@id/ll_prize"
+                    android:text="天"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_one"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:text="0"
-                    android:textSize="30dp"
-                    android:gravity="center"
-                    android:background="@color/black"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:id="@+id/tv_two"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/black"
-                    android:text="0"
-                    android:textSize="30dp"
-                    android:gravity="center"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/but_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="开始" />
-
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:background="@mipmap/prize_start"
+                    android:textColor="@color/white"
+                    android:text="开始抽奖" />
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="12dp"
+                    android:visibility="invisible"/>
                 <Button
                     android:id="@+id/but_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:background="@mipmap/prize_end"
                     android:enabled="false"
-                    android:text="停" />
+                    android:textColor="@color/white"
+                    android:text="点击结束" />
 
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#66ffffff"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="活动介绍"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/prize_one"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prize_two"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>

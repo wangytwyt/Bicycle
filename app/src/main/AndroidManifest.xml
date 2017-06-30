@@ -155,6 +155,7 @@
         <!-- 邀请好友 -->
         <activity android:name=".Personal.InvitationActivity" />
 
+
         <service
             android:name="com.sofi.smartlocker.ble.BleService"
             android:enabled="true"
@@ -173,8 +174,14 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <!-- 开锁 -->
         <activity android:name=".Kaisuo.KaisuoActivity" />
-       <!--抽奖-->
-        <activity android:name=".PrizeActivity"></activity>
+        <!-- 抽奖 -->
+        <activity android:name=".PrizeActivity" />
+        <activity
+            android:name=".PrizeDialogActivity"
+            android:theme="@style/DialogTransparent"
+        >
+
+        </activity>
         <!-- 手动输入车铭牌号 -->
         <activity android:name=".zxing.camera.open.InputActivity" />
         <!-- 搜索 -->

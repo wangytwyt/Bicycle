@@ -2,6 +2,7 @@ package com.example.administrator.bicycle;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -124,6 +125,7 @@ private CheckBoxView cbxv;
             dataList.addFirst(imagePath);
             adapter.update(dataList); // 刷新图片
         }
+
     }
 
 }

@@ -17,6 +17,9 @@ public class ContentValuse {
     public static final String isSubscribe = "SUBSCRIBE";
     public static  final String url = "url";
 
+
+    public static final String prize ="prize";
+
     public static final int getbid = 0X451235;
     public static final int getbikeback = 555555;
     public static final int bicyInfoToKaisuo = 0X666666;

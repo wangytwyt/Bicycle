@@ -1,5 +1,6 @@
 package com.example.administrator.bicycle;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.administrator.bicycle.util.ContentValuse;
 
 import java.util.Random;
 import java.util.Timer;
@@ -18,6 +21,8 @@ public class PrizeActivity extends AppCompatActivity {
     private boolean israndom = true;
     private Timer timer;
 
+private int day;
+
 
     private TextView tvone, tvtwo;
     private Button butstart, butend;
@@ -28,6 +33,9 @@ public class PrizeActivity extends AppCompatActivity {
             setText(msg);
             if (!israndom) {
                 timer.cancel();
+
+
+
             }
         }
     };
@@ -42,15 +50,6 @@ public class PrizeActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        TextView tvtitle = (TextView) findViewById(R.id.tv_title);
-        tvtitle.setText("抽奖");
 
         tvone = (TextView) findViewById(R.id.tv_one);
         tvtwo = (TextView) findViewById(R.id.tv_two);
@@ -78,6 +77,11 @@ public class PrizeActivity extends AppCompatActivity {
                 butend.setEnabled(false);
                 israndom = false;
 
+
+                Intent intent = new Intent(PrizeActivity.this,PrizeDialogActivity.class);
+                intent.putExtra(ContentValuse.prize,day);
+                PrizeActivity.this.startActivity(intent);
+
             }
         });
 
@@ -99,6 +103,7 @@ public class PrizeActivity extends AppCompatActivity {
 
 
     private void setText(Message msg) {
+        day = msg.what;
         tvone.setText(msg.what / 10 + "");
         tvtwo.setText(msg.what % 10 + "");
     }
