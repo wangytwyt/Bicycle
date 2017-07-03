@@ -147,7 +147,6 @@
         android:text="收不到短信?试试语音验证码"
         android:textColor="#f11919"
         android:textSize="15dp"
-        android:visibility="gone"
         />
 
     <Button

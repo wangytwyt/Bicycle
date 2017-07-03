@@ -26,17 +26,32 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.administrator.bicycle.Post.AccessNetwork;
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.entity.OutLoginEntity;
 import com.example.administrator.bicycle.entity.User;
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.CustomProgressDialog;
+import com.example.administrator.bicycle.util.HttpUtils;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.SharedPreUtils;
+import com.google.gson.JsonObject;
+import com.sofi.smartlocker.ble.util.LOG;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import cn.bmob.newsmssdk.BmobSMS;
 import cn.bmob.newsmssdk.exception.BmobException;
 import cn.bmob.newsmssdk.listener.RequestSMSCodeListener;
 import cn.bmob.newsmssdk.listener.SMSCodeListener;
+import cn.bmob.newsmssdk.listener.VerifySMSCodeListener;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 /**
@@ -51,8 +66,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private Handler h;
     TextView tvYy;//语音验证码
     private String PhoneNum;//电话号码
-    ProgressDialog dialog;
+
     View view;
+
+    private CustomProgressDialog dialog;
+
+
 
     public LoginFragment() {
         // Required empty public constructor
@@ -88,41 +107,51 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
 
 
-        dialog = new ProgressDialog(getContext());
-
         //利用Handler更新UI
         h = new Handler() {
             @Override
             public void handleMessage(Message msg) {
 
-                if (msg.what == 003) {
-                    String result = (String) msg.obj;
+                switch (msg.what){
+                    case ContentValuse.success:
+                        Toast.makeText(getActivity(), "登录成功", Toast.LENGTH_SHORT).show();
+                        break;
 
-
-//                        SharedPreferences.Editor editor = SharedPreUtils.getEditor(getActivity());
-//                        editor.putString(ContentValuse.token, "sdjahkjsdlksdjngvsdkljhjgsaodojglskdfkjugvlszdo");
-//                        //提交业务
-//                        editor.commit();
-
-
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.lin_one, new DepositFragment());
-                    transaction.commit();
-
-                    //提示登录成功或者
-
-
-                    //关闭弹出框
-                    dialog.cancel();
-
-                } else {
-
-                    Toast.makeText(getContext(), "请求失败", Toast.LENGTH_SHORT).show();
-
+                    case ContentValuse.failure:
+                        dialog.dismiss();
+                        Toast.makeText(getActivity(), "验证失败", Toast.LENGTH_SHORT).show();
+                        break;
                 }
-
-
             }
+
+
+
+
+//                if (msg.what == 003) {
+//                    String result = (String) msg.obj;
+//
+//
+////                        SharedPreferences.Editor editor = SharedPreUtils.getEditor(getActivity());
+////                        editor.putString(ContentValuse.token, "sdjahkjsdlksdjngvsdkljhjgsaodojglskdfkjugvlszdo");
+////                        //提交业务
+////                        editor.commit();
+//
+//
+//                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//                    transaction.replace(R.id.lin_one, new DepositFragment());
+//                    transaction.commit();
+//
+//                    //提示登录成功或者
+//
+//
+//                } else {
+//
+//                    Toast.makeText(getContext(), "请求失败", Toast.LENGTH_SHORT).show();
+//
+//                }
+
+
+
 
 
         };
@@ -146,12 +175,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         start = (Button) view.findViewById(R.id.btn_start);//登录
         edtPhoneNum = (EditText) view.findViewById(R.id.edt_PhoneNum);//手机号输入框
         edtValidation = (EditText) view.findViewById(R.id.edt_validation);//验证码输入框
-//        tvYy = (TextView) view.findViewById(R.id.tv_yy);
-//        tvYy.setOnClickListener(this);
+        tvYy = (TextView) view.findViewById(R.id.tv_yy);
+        tvYy.setOnClickListener(this);
         imgDel = (ImageView) view.findViewById(R.id.img_del);//删除图标
         obtain.setOnClickListener(this);
         start.setOnClickListener(this);
         imgDel.setOnClickListener(this);
+
+
+        dialog = new CustomProgressDialog(getActivity());
+        dialog.setMessage("登陆中...");
     }
 
     @Override
@@ -159,7 +192,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_obtain://获取验证码
                 //获取用户填写的电话号码
+                if (!NetWorkStatus.isNetworkAvailable(getActivity())){
+                    Toast.makeText(getContext(), "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 PhoneNum = edtPhoneNum.getText().toString();
+               if (PhoneNum.equals("")){
+                   Toast.makeText(getContext(), "电话号为空，请输入电话号！", Toast.LENGTH_SHORT).show();
+                   return;
+               }
+
                 //发送短信
                 BmobSMS.requestSMSCode(getContext(), PhoneNum, "验证码", new RequestSMSCodeListener() {
                     @Override
@@ -190,37 +232,76 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.btn_start:
-                //获取用户填写的电话号码
-//                PhoneNum = edtPhoneNum.getText().toString();
-//                //获取用户填写的验证码
-//                String validation = edtValidation.getText().toString();
+                if (!NetWorkStatus.isNetworkAvailable(getActivity())){
+                    Toast.makeText(getContext(), "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // 获取用户填写的电话号码
+                final String phoneN = edtPhoneNum.getText().toString();
+                //获取用户填写的验证码
+                String validation = edtValidation.getText().toString();
+                if (validation.equals("")){
+                    Toast.makeText(getContext(), "验证码为空，请输入验证码！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-//                BmobSMS.verifySmsCode(LoginActivity.this, PhoneNum, validation, new VerifySMSCodeListener() {
-//                    @Override
-//                    public void done(BmobException e) {
-//                        if (e == null) {//短信验证码已验证成功
-//                            //发送post请求
-//
-//                            startActivity(new Intent(LoginActivity.this, MainActivity.class));//跳转
-//                        } else {
-//                            Toast.makeText(LoginActivity.this, "验证失败：code =" + e.getErrorCode() + ",msg = " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
+                if (phoneN.equals("")){
+                    Toast.makeText(getContext(), "电话号为空，请输入电话号！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                dialog.setMessage("正在登陆，请稍后~");
-                dialog.setCancelable(false);
-                dialog.show();
+                BmobSMS.verifySmsCode(getActivity(), phoneN, validation, new VerifySMSCodeListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if (e == null) {//短信验证码已验证成功
+                            //发送post请求Login.do?T_USERPHONE= & AREA=
+                            Map<String, String> map = new HashMap<String, String>();
+                            map.put("T_USERPHONE", phoneN);
+                            map.put("AREA",MyApplication.city);
+                            HttpUtils.doPost(Url.Login, map, new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+                                    h.sendEmptyMessage(ContentValuse.failure);
+                                }
 
-                h.sendEmptyMessageDelayed(003, 4000);
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    if (response.isSuccessful()) {
+                                        String userjson = response.body().string();
 
-                //          new Thread(new AccessNetwork("POST", "http://42.159.113.21/heibike/user/check", "vip_phone=" + PhoneNum + "&vip_token=" + validation, h, 003)).start();
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(userjson);
+
+
+
+
+
+
+
+
+
+
+
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            });
+
+
+                        } else {
+                           h.sendEmptyMessage(ContentValuse.failure);
+                        }
+                    }
+                });
+
 
                 break;
             case R.id.tv_yhxy:
 
                 Intent intent = new Intent(getContext(), WebActivity.class);
-                intent.putExtra(ContentValuse.url, "");
+                intent.putExtra(ContentValuse.url, Url.url + "/heibike/yhxy.html");
                 getActivity().startActivity(intent);
 
 
@@ -228,11 +309,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.img_del:
                 edtPhoneNum.setText("");
                 break;
-//            case R.id.tv_yy:
-//                Random random = new Random();
-//                int yzm = random.nextInt(8999) + 1000;
-//                new Thread(new AccessNetwork("POST", "http://op.juhe.cn/yuntongxun/voice", "valicode=" + yzm + "&to=13020778812&playtimes=&key=50a8f12a35991688610e0ca0490684ba&dtype=", h, 004)).start();
-//                break;
+            case R.id.tv_yy:
+                Random random = new Random();
+                int yzm = random.nextInt(8999) + 1000;
+                new Thread(new AccessNetwork("POST", "http://op.juhe.cn/yuntongxun/voice", "valicode=" + yzm + "&to=13020778812&playtimes=&key=50a8f12a35991688610e0ca0490684ba&dtype=", h, 004)).start();
+                break;
         }
     }
 

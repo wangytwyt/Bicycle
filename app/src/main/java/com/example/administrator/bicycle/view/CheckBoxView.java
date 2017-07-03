@@ -83,9 +83,11 @@ public class CheckBoxView extends LinearLayout {
                     if (v.isSelected()) {
                         v.setSelected(false);
                         but.setTextColor(0Xff404040);
+                        but.setTag(true);
                     } else {
                         v.setSelected(true);
                         but.setTextColor(0Xffffffff);
+                        but.setTag(false);
                     }
                 }
             });
@@ -97,27 +99,15 @@ public class CheckBoxView extends LinearLayout {
     }
 
 
-    public ArrayList<String> getCheckButton() {
-        ArrayList<String> texts = new ArrayList<String>();
+    public String getIds() {
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < views.size(); i++) {
-            boolean isSelect = (boolean) views.get(i).but.getTag();
+            boolean isSelect = (boolean) views.get(i).but.isSelected();
             if (isSelect) {
-                texts.add(views.get(i).but.getText().toString());
+                sb.append(String.valueOf(i + 1));
             }
         }
-        return texts;
-    }
-
-
-    public ArrayList<Integer> getCheckID() {
-        ArrayList<Integer> mIDs = new ArrayList<Integer>();
-        for (int i = 0; i < views.size(); i++) {
-            boolean isSelect = (boolean) views.get(i).but.getTag();
-            if (isSelect) {
-                mIDs.add(views.get(i).id);
-            }
-        }
-        return mIDs;
+        return sb.toString();
     }
 
 

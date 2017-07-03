@@ -41,17 +41,17 @@ public class WebActivity extends AppCompatActivity {
         String url = getIntent().getStringExtra(ContentValuse.url);
 
         if(url != null){
-
+            wb.loadUrl(url);
+            wb.setWebViewClient(new WebViewClient(){
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    // TODO Auto-generated method stub
+                    //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                    view.loadUrl(url);
+                    return true;
+                }
+            });
         }
-        wb.loadUrl("http://192.168.1.163:8080/heibike/tbike/findBikeByTfTime.do?");
-        wb.setWebViewClient(new WebViewClient(){
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO Auto-generated method stub
-                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
-                view.loadUrl(url);
-                return true;
-            }
-        });
+
     }
 }

@@ -5,12 +5,25 @@ package com.example.administrator.bicycle.Post;
  */
 
 public class Url {
-    private final static String url = "http://192.168.1.163:8080";
+    public final static String url = "http://192.168.1.163:8080";
     // private  final static  String url = "http://192.168.1.126:8080";
 
 
-    // 车辆
+
+
+
     private final static String bidypath = url + "/heibike/tbike/";
+
+
+    public final   static  String Login = url+"/heibike/Lg/Login.do?";
+
+
+
+
+    //举报中心
+    public  final static  String  reportingCenter=bidypath+ "JbZx.do?";
+
+
 //车牌
     public final static String allBike = bidypath + "listBike.do?";
     //时间

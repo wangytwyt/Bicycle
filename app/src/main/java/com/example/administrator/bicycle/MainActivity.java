@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         if (!NetWorkStatus.isNetworkAvailable(this)) {
             dialog.dismiss();
-            Toast.makeText(this, "请设置网络！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -279,8 +279,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         if (distance < 50) {
             alertDialog();
         }
-
-
     }
 
     private void alertDialog() {

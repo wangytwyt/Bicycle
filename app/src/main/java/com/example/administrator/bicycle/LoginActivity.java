@@ -74,9 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         //实例化一个管理员
                         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                        editor.putString("token", entity.getVip_token());
-                        editor.putInt("credit", entity.getVip_credit());
-                        editor.putString("nicheng", entity.getVip_nicheng());
+
 
                         //提交业务
                         editor.commit();
@@ -238,4 +236,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 }
+
 

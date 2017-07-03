@@ -7,12 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 
 public class PrizeDialogActivity extends Activity {
 
     private TextView tv_day;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +36,24 @@ public class PrizeDialogActivity extends Activity {
             @Override
             public void onClick(View v) {
 
+                if(!NetWorkStatus.isNetworkAvailable(PrizeDialogActivity.this)){
+                    Toast.makeText(PrizeDialogActivity.this, "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                setResult(1,new Intent());
+                finish();
+
             }
         });
     }
+
+
+    private void priseCommit(){
+
+    }
+
+
 
 }

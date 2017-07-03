@@ -43,4 +43,10 @@ public class ContentValuse {
     public static final int PHelp = 0X11221123;
     public static final int OpenHelp = 0X11221124;
     public static final int CloseHelp = 0X11221125;
+
+
+    public  static final  int prizeResult =0X11221126;
+
+    public  static final  int success =0X11221127;
+    public  static final  int failure =0X11221128;
 }

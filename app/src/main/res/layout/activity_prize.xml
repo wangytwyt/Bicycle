@@ -43,6 +43,7 @@
                         android:background="@mipmap/prize_text"
                         android:gravity="center"
                         android:text="0"
+                        android:textStyle="bold"
                         android:textColor="@color/white"
                         android:textSize="30dp" />
 
@@ -54,6 +55,7 @@
                         android:background="@mipmap/prize_text"
                         android:gravity="center"
                         android:text="0"
+                        android:textStyle="bold"
                         android:textColor="@color/white"
                         android:textSize="30dp" />
                 </LinearLayout>

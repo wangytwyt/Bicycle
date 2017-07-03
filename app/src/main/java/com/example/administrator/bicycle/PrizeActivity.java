@@ -1,11 +1,13 @@
 package com.example.administrator.bicycle;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -15,13 +17,13 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PrizeActivity extends AppCompatActivity {
+public class PrizeActivity extends Activity {
     private final int one = 0X124557;
     private final int two = 0X124558;
     private boolean israndom = true;
     private Timer timer;
 
-private int day;
+    private int day;
 
 
     private TextView tvone, tvtwo;
@@ -34,7 +36,9 @@ private int day;
             if (!israndom) {
                 timer.cancel();
 
-
+                Intent intent = new Intent(PrizeActivity.this, PrizeDialogActivity.class);
+                intent.putExtra(ContentValuse.prize, day);
+                PrizeActivity.this.startActivityForResult(intent, ContentValuse.prizeResult);
 
             }
         }
@@ -44,7 +48,8 @@ private int day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        // getSupportActionBar().hide();
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_prize);
         initView();
     }
@@ -78,10 +83,6 @@ private int day;
                 israndom = false;
 
 
-                Intent intent = new Intent(PrizeActivity.this,PrizeDialogActivity.class);
-                intent.putExtra(ContentValuse.prize,day);
-                PrizeActivity.this.startActivity(intent);
-
             }
         });
 
@@ -106,7 +107,19 @@ private int day;
         day = msg.what;
         tvone.setText(msg.what / 10 + "");
         tvtwo.setText(msg.what % 10 + "");
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == 0) {
+            return;
+        }
+        if (requestCode == ContentValuse.prizeResult) {
+           finish();
+        }
 
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
