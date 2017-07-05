@@ -33,6 +33,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.bicycle.Kaisuo.KaisuoActivity;
@@ -87,9 +88,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private boolean isHasSurface = false;
 
 
-    private ImageView shanguangdeng;//闪光灯
+    private TextView shanguangdeng;//闪光灯
     private ImageView jisukaisuo;//极速开锁
-    private ImageView image_inputNum;//输入铭牌
+    private TextView image_inputNum;//输入铭牌
     private LinearLayout fanhui;//返回
 
 
@@ -113,9 +114,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
-        shanguangdeng = (ImageView) findViewById(R.id.shanguangdeng);//闪光灯
+        shanguangdeng = (TextView) findViewById(R.id.shanguangdeng);//闪光灯
         jisukaisuo = (ImageView) findViewById(R.id.jisu);
-        image_inputNum = (ImageView) findViewById(R.id.image_inputNum);
+        image_inputNum = (TextView) findViewById(R.id.image_inputNum);
         fanhui = (LinearLayout) findViewById(R.id.btn_return);
 
 
@@ -129,7 +130,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             shanguangdeng.setVisibility(View.GONE);
             jisukaisuo.setVisibility(View.GONE);
             image_inputNum.setVisibility(View.GONE);
-
         }
 
 

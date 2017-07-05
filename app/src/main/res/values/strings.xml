@@ -3,7 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="scan_text">请对准车牌上的二维码</string>
     <string name="shanliang_one">嘿车自创办以来，始终坚持用技术手段向用户提供便捷，经济，环保的绿色城市出行方式。为实现这个目标，我们不用固定车桩，单车散落分布在道路两旁以供大家方便用车，我们坚持鼓励正确的用车行为，因此也制定了“善良分”积分规则，帮助大家更好的了解及使用单车。</string>
     <string name="shanliang_two">每个用户默认100分善良分为起始分数，最低分数为0，分数越高，意味着越符合原则。而善良值越低，意味着该用户有过不恰当的使用行为。</string>
     <string name="shanliang_three">善良分过低时，用车的会员时间亦会受到影响。当善良分低于0分时，该会员年费将增至888元/年。中国用户（含中国注册的国际用户）：88元/年（不必担心，注册时初始善良分为100分，扣分规则查看我的善良分）。</string>
