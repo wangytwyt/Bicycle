@@ -57,7 +57,7 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
     private void showShareQZone() {
         Platform.ShareParams sp = new Platform.ShareParams();
         sp.setTitle("测试分享的标题");
-        //sp.setTitleUrl(""); // 标题的超链接
+        sp.setTitleUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021"); // 标题的超链接
         sp.setText("测试分享的文本");
         sp.setImageData(BitmapFactory.decodeResource(this.getResources(),R.mipmap.logo));
         sp.setSite("玩");

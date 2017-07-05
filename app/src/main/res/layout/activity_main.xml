@@ -201,12 +201,28 @@
             android:textSize="15dp"
             android:drawableRight="@mipmap/tousuqian" />
 
-        <com.ant.liao.GifView
-            android:id="@+id/gif1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/iv_location"
-            android:layout_centerHorizontal="true" />
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_botton"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:orientation="vertical"-->
+            <!--android:background="@mipmap/bg_fog"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginTop="16dp">-->
+             <!--<TextView-->
+                 <!--android:id="@+id/dd"-->
+                 <!--android:layout_width="wrap_content"-->
+                 <!--android:layout_height="wrap_content"-->
+                 <!--android:padding="5dp"-->
+                 <!--android:gravity="center"-->
+                 <!--android:layout_gravity="center_horizontal"-->
+                 <!--android:text="diskjf"-->
+                 <!--/>-->
+
+
+        <!--</LinearLayout>-->
+
 
     </RelativeLayout>
 

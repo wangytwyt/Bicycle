@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         if (!NetWorkStatus.isNetworkAvailable(this)) {
             dialog.dismiss();
-            Toast.makeText(this, "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     private void alertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("已到达自行车附近");
+        builder.setMessage("您已到达自行车附近");
         builder.setTitle("提示");
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 
@@ -292,7 +292,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 dialog.dismiss();
             }
         });
-
         builder.create().show();
     }
 

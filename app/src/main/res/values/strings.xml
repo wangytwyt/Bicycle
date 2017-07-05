@@ -17,6 +17,8 @@
     <string name="prize_two">2：缴纳两年年费的，可以拥有两次抽奖机会，点击开始，每次将会获赠最少30天，最多90天的免费骑行天数，两次的赠送天数可以累计。</string>
     <string name="prize_dialog">   所抽取的天数将自动计入剩余骑行天数中，可进入个人中心查看倒计时。</string>
     <string name="notifyTitle">温馨提示</string>
+
+    <string name="isNetwork">网络不可用，请设置网络！</string>
     <string name="notifyMsg">是否开启手机定位权限</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
