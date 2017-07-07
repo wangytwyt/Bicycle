@@ -58,6 +58,7 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
             if (msg.what == 1){
                 adapter.notifyDataSetChanged();
             }else {
+                loadFailure();
                 Toast.makeText(CollectInformationActivity.this, "加载失败！", Toast.LENGTH_SHORT).show();
             }
 
@@ -276,7 +277,7 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
             @Override
             public void onFailure(Call call, IOException e) {
                 dialog.dismiss();
-                loadFailure();
+
                 m.sendEmptyMessage(-1);
             }
 
@@ -303,9 +304,10 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
                         m.sendEmptyMessage(1);
                     } catch (Exception e) {
                         e.printStackTrace();
+
                     }
                 } else {
-                    loadFailure();
+
                     m.sendEmptyMessage(-1);
 
                 }

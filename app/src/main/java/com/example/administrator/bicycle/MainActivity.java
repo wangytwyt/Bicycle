@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,7 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
+import com.example.administrator.bicycle.Kaisuo.KaisuoActivity;
 import com.example.administrator.bicycle.update.UpdateManager;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.CustomProgressDialog;
@@ -78,6 +80,7 @@ import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.util.SharedPreUtils;
 import com.example.administrator.bicycle.util.TOPpopCancel;
 import com.example.administrator.bicycle.util.TopPopupWindow;
+import com.example.administrator.bicycle.view.WrapSlidingDrawer;
 import com.example.administrator.bicycle.zxing.camera.open.CaptureActivity;
 
 import java.util.HashMap;
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private ImageView code;//二维码按钮
     private LinearLayout imgEnterToPersonalCenter;
     private AMapLocationClientOption mLocationOption;
-    private TextView iv_location;
+    private ImageView location;
     private TopPopupWindow pop;
     private TOPpopCancel popCancel;
     /**
@@ -171,6 +174,9 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     private CustomProgressDialog dialog;
 
+
+    private WrapSlidingDrawer mdrawer;//定义一个抽屉控件
+    private ImageView iv_xia;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -394,27 +400,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     private void setIcon() {
         aMap = mMapView.getMap();
 
-        //绘制marker
-//        Marker marker = aMap.addMarker(new MarkerOptions()
-//              .position(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()))
-//
-//                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-//                       .decodeResource(getResources(), R.mipmap.jqdw)))
-//                .draggable(true));
-//        NaviLatLng naviLatLng = new NaviLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
-//
-//
-//        startLatlng = naviLatLng;
-
-
-        // 绘制曲线
-
-        //大地曲线
-//        aMap.addPolyline((new PolylineOptions())
-//                .add(new LatLng(43.828, 87.621), new LatLng(45.808, 126.55))
-//                .geodesic(true).color(Color.RED));
-        //设置地图中间的覆盖物
-        //      marker.setPositionByPixels(360, 640);
 
 
         MarkerOptions markerOption = new MarkerOptions();
@@ -432,9 +417,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         LatLng latLng1 = new LatLng(34.292818, 109.11123);
         LatLng latLng2 = new LatLng(34.290115, 109.110983);
 
-//        final Marker marker1 = aMap.addMarker(new MarkerOptions().position(latLng));//.title("导航").snippet("导航")
-//        final Marker marker2 = aMap.addMarker(new MarkerOptions().position(latLng1));
-//        final Marker marker3 = aMap.addMarker(new MarkerOptions().position(latLng2));
+
 
         BitmapDescriptor bt = BitmapDescriptorFactory.fromBitmap(BitmapFactory
                 .decodeResource(getResources(), R.mipmap.dwmk));
@@ -518,12 +501,13 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         code = (ImageView) findViewById(R.id.code);//二维码按钮
         imgEnterToPersonalCenter = (LinearLayout) findViewById(R.id.img_EnterToPersonalCenter);
-        iv_location = (TextView) findViewById(R.id.iv_location);
-        iv_location.setOnClickListener(this);
+        location = (ImageView) findViewById(R.id.location);
+        location.setOnClickListener(this);
 
-        findViewById(R.id.tv_zhushou).setOnClickListener(this);
-        findViewById(R.id.tv_suaxin).setOnClickListener(this);
-        findViewById(R.id.tv_tousu).setOnClickListener(this);
+        findViewById(R.id.code_ji).setOnClickListener(this);
+        findViewById(R.id.zhushou).setOnClickListener(this);
+        findViewById(R.id.suaxin).setOnClickListener(this);
+        findViewById(R.id.tousu).setOnClickListener(this);
         butright = (ImageButton) findViewById(R.id.btn_Directions);
         butright.setOnClickListener(this);
         iv_lift = (ImageView) findViewById(R.id.iv_lift);
@@ -537,6 +521,42 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         token = SharedPreUtils.getSharedPreferences(this).getString(ContentValuse.token, null);
 
+
+
+
+        mdrawer = (WrapSlidingDrawer)findViewById(R.id.slidingdrawer);
+        iv_xia = (ImageView) findViewById(R.id.handle);
+
+        //这个事件是当抽屉打开时触发的事件，这里所指的“打开”是当抽屉完全到达顶部触发的事件，我们在这里改变了ImageButton按钮的图片
+        mdrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
+            @Override
+            public void onDrawerOpened() {
+                iv_xia.setImageResource(R.mipmap.bicy_background_arrw);
+            }
+        });
+        //这个事件当然就是和上面相对应的事件了。当抽屉完全关闭时触发的事件，我们将ImageButton的图片又变回了最初状态
+        mdrawer.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener(){
+            @Override
+            public void onDrawerClosed() {
+                iv_xia.setImageResource(R.mipmap.bicy_background_up);
+            }
+
+        });
+        //这个事件是抽屉的拖动事件，当抽屉在开始拖动和结束拖动时分别触发onScrollStarted() 和onScrollEnded() 事件
+        mdrawer.setOnDrawerScrollListener(new SlidingDrawer.OnDrawerScrollListener(){
+            //当手指离开抽屉头时触发此事件（松开ImageButton触发）
+            @Override
+            public void onScrollEnded() {
+
+            }
+
+            //当按下抽屉头时触发此事件（按下ImageButton触发）
+            @Override
+            public void onScrollStarted() {
+
+            }
+
+        });
     }
 
 
@@ -547,7 +567,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_location:
+            case R.id.location:
 //                dialog.show();
                 if (!NetWorkStatus.isNetworkAvailable(this)) {
                     Toast.makeText(this, "请设置网络！", Toast.LENGTH_SHORT).show();
@@ -560,13 +580,22 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
 
                 break;
-            case R.id.tv_zhushou:
+            case R.id.code_ji:
+                Intent intentji = new Intent(MainActivity.this, KaisuoActivity.class);
+                intentji.putExtra("jisukaisuo", "jisukaisuo");
+                startActivity(intentji);
+
+                break;
+
+            case R.id.zhushou:
                 startActivity(new Intent(MainActivity.this, AssistantActivity.class));
                 break;
-            case R.id.tv_suaxin:
-                startActivity(new Intent(MainActivity.this, PrizeActivity.class));
+            case R.id.suaxin:
+               startActivity(new Intent(MainActivity.this, PrizeActivity.class));
+
+
                 break;
-            case R.id.tv_tousu:
+            case R.id.tousu:
                 if (token == null || token.equals("")) {
                     startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
                 } else {

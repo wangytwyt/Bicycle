@@ -5,7 +5,7 @@ package com.example.administrator.bicycle.Post;
  */
 
 public class Url {
-    public final static String url = "http://192.168.1.163:8080";
+    public final static String url = "http://192.168.1.189:8080";
     // private  final static  String url = "http://192.168.1.126:8080";
 
 
