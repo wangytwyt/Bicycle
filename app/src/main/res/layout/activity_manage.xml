@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="头像"
+            android:text="我的头像"
             android:textColor="#363636"
             android:textSize="15dp" />
 
@@ -75,7 +75,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="昵称"
+            android:text="我的昵称"
             android:textColor="#363636"
             android:textSize="15dp" />
 
@@ -121,7 +121,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="手机号"
+            android:text="我的手机"
             android:textColor="#363636"
             android:textSize="15dp" />
 
@@ -142,6 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:visibility="invisible"
             android:background="@mipmap/more" />
 
     </LinearLayout>
@@ -178,7 +179,7 @@
             android:id="@+id/tv_mange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="45415 辆"
+            android:text=""
             android:textColor="#363636"
             android:textSize="15dp" />
 
@@ -209,7 +210,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="车辆信息录入"
+            android:text="车辆录入"
             android:textColor="#363636"
             android:textSize="15dp" />
 

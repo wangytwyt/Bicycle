@@ -2,6 +2,9 @@ package com.example.administrator.bicycle.Personal;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,9 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.bicycle.Post.Juhe;
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.RegisteredSuccessFragement;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.CustomProgressDialog;
+import com.example.administrator.bicycle.util.HttpUtils;
 import com.example.administrator.bicycle.util.IdcardUtils;
 import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.TimeUtils;
@@ -20,11 +26,41 @@ import com.example.administrator.bicycle.util.TimeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
 public class CertificationActivity extends AppCompatActivity {
     private EditText ed_Certification, ed_name;
     private String cardID,name;
     private CustomProgressDialog dialog;
     private TextView tv_error;
+    private Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            dialog.dismiss();
+            switch (msg.what) {
+                case ContentValuse.success:
+                    Toast.makeText(CertificationActivity.this, "认证成功", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent();
+                    intent.putExtra(ContentValuse.Realname, true);
+                    setResult(1, intent);
+                    CertificationActivity.this.finish();
+
+                    break;
+
+                case ContentValuse.failure:
+                    dialog.dismiss();
+                    Toast.makeText(CertificationActivity.this, "认证失败", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +87,7 @@ public class CertificationActivity extends AppCompatActivity {
         ed_name = (EditText) findViewById(R.id.ed_name);
 
         dialog = CustomProgressDialog.createDialog(this);
+        dialog.setMessage("认证中...");
         tv_error = (TextView) findViewById(R.id.tv_error);
 
         findViewById(R.id.but_certification).setOnClickListener(new View.OnClickListener() {
@@ -85,23 +122,12 @@ public class CertificationActivity extends AppCompatActivity {
                             }
 
 
-//                        String SidCardT = SidCard.substring(6, 12);//年月日
-//                        String SidCardT = SidCard.substring(6, 8);//年
-//                        int date1 = Integer.parseInt("19" + SidCardT);
-//                        //获取当前日期
-//                        Date date = new Date();
-//                        //设置显示格式
-//                        SimpleDateFormat fmtrq = new SimpleDateFormat("yyyy", Locale.CHINA);
-//                        //转为String类型
-//                        String SDate = fmtrq.format(date.getTime());
-//                        //转为int
-//                        int nowDate = Integer.parseInt(SDate);
-                            //  if ((nowDate - date1) < 12) {
+
                             if (TimeUtils.isSuper12(cardID, 15)) {
                                 tv_error.setText("12岁以下禁止骑行");
                             } else {
-                                //  new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
-                                new CertificationAsty(cardID).execute();
+
+                                realnameAuthentication(cardID,name);
                             }
 
                         } else {
@@ -113,26 +139,13 @@ public class CertificationActivity extends AppCompatActivity {
                             }
 
 //
-//                    String SidCardT = SidCard.substring(6, 10);
 //
-//                    int date1 = Integer.parseInt(SidCardT);
-//                    //获取当前日期
-//                    Date date = new Date();
-//                    //设置显示格式
-//                    SimpleDateFormat fmtrq = new SimpleDateFormat("yyyy", Locale.CHINA);
-//                    //转为String类型
-//                    String SDate = fmtrq.format(date.getTime());
-//                    //转为int
-//                    int nowDate = Integer.parseInt(SDate);
-//
-//
-//                    if ((nowDate - date1) < 12) { tvTost.setText("请输入正确的身份证信息");
 
                             if (TimeUtils.isSuper12(cardID, 18)) {
                                 tv_error.setText("12岁以下禁止骑行");
                             } else {
-                                //    new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
-                                new CertificationAsty(cardID).execute();
+
+                                realnameAuthentication(cardID,name);
                             }
 
 
@@ -148,46 +161,45 @@ public class CertificationActivity extends AppCompatActivity {
     }
 
 
-    class CertificationAsty extends AsyncTask<String, String, String> {
-        private String id;
+    //实名验证
+    private void realnameAuthentication(String SidCard, String name) {
 
-        public CertificationAsty(String id) {
-            this.id = id;
-        }
+dialog.show();
+        Map<String, String> map = new HashMap<>();
+        map.put("T_USERIDCARD", SidCard);
+        map.put("T_NAME", name);
 
-        @Override
-        protected void onPreExecute() {
-            dialog.show();
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                dialog.dismiss();
-                JSONObject object = new JSONObject(s);
-                if (object.getInt("error_code") == 0) {
-                    System.out.println(object.get("result"));
-                    Toast.makeText(CertificationActivity.this, "验证成功", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent();
-                    intent.putExtra(ContentValuse.Realname, true);
-                    setResult(1, intent);
-                    CertificationActivity.this.finish();
-                } else {
-                    Toast.makeText(CertificationActivity.this, "验证失败" + object.get("error_code") + ":" + object.get("reason"), Toast.LENGTH_SHORT).show();
-                    System.out.println(object.get("error_code") + ":" + object.get("reason"));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        HttpUtils.doPost(Url.IdentityUrl, map, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mhandler.sendEmptyMessage(ContentValuse.failure);
             }
 
-        }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    try {
+                        String userjson = response.body().string();
+                        JSONObject jsonObject = new JSONObject(userjson);
+                        String result = jsonObject.getString("result");
+                        if (response.equals("02")) {
+                            mhandler.sendEmptyMessage(ContentValuse.success);
+                        } else {
+                            mhandler.sendEmptyMessage(ContentValuse.failure);
+                        }
 
-        @Override
-        protected String doInBackground(String... params) {
-            return Juhe.getRequest1(id);
-        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    mhandler.sendEmptyMessage(ContentValuse.failure);
+                }
+
+
+            }
+        });
+
     }
+
 
 }

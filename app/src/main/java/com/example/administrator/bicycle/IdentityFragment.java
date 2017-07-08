@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -17,13 +19,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.bicycle.Post.Juhe;
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.CustomProgressDialog;
+import com.example.administrator.bicycle.util.HttpUtils;
 import com.example.administrator.bicycle.util.IdcardUtils;
 import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.SharedPreUtils;
 import com.example.administrator.bicycle.util.TimeUtils;
 
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 /**
@@ -42,6 +55,27 @@ public class IdentityFragment extends Fragment {
     public IdentityFragment() {
         // Required empty public constructor
     }
+
+    private CustomProgressDialog dialog;
+
+    private Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            dialog.dismiss();
+            switch (msg.what) {
+                case ContentValuse.success:
+                    Toast.makeText(getActivity(), "认证成功", Toast.LENGTH_SHORT).show();
+
+
+                    break;
+
+                case ContentValuse.failure:
+                    dialog.dismiss();
+                    Toast.makeText(getActivity(), "认证失败", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -68,6 +102,8 @@ public class IdentityFragment extends Fragment {
         isidcard = sharedPreferences.getBoolean(ContentValuse.idcard, false);
 
 
+        dialog = new CustomProgressDialog(getActivity());
+        dialog.setMessage("认证中...");
         name = (EditText) view.findViewById(R.id.name);
         IdCard = (EditText) view.findViewById(R.id.IdCard);
         tvTost = (TextView) view.findViewById(R.id.tv_tost);
@@ -95,23 +131,11 @@ public class IdentityFragment extends Fragment {
                     }
 
 
-//                        String SidCardT = SidCard.substring(6, 12);//年月日
-//                        String SidCardT = SidCard.substring(6, 8);//年
-//                        int date1 = Integer.parseInt("19" + SidCardT);
-//                        //获取当前日期
-//                        Date date = new Date();
-//                        //设置显示格式
-//                        SimpleDateFormat fmtrq = new SimpleDateFormat("yyyy", Locale.CHINA);
-//                        //转为String类型
-//                        String SDate = fmtrq.format(date.getTime());
-//                        //转为int
-//                        int nowDate = Integer.parseInt(SDate);
-                    //  if ((nowDate - date1) < 12) {
                     if (TimeUtils.isSuper12(SidCard, 15)) {
                         tvTost.setText("12岁以下禁止骑行");
                     } else {
                         //  new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
-                        realnameAuthentication();
+                        realnameAuthentication(SidCard, Sname);
                     }
 
                 } else {
@@ -122,27 +146,12 @@ public class IdentityFragment extends Fragment {
                         tvTost.setText("");
                     }
 
-//
-//                    String SidCardT = SidCard.substring(6, 10);
-//
-//                    int date1 = Integer.parseInt(SidCardT);
-//                    //获取当前日期
-//                    Date date = new Date();
-//                    //设置显示格式
-//                    SimpleDateFormat fmtrq = new SimpleDateFormat("yyyy", Locale.CHINA);
-//                    //转为String类型
-//                    String SDate = fmtrq.format(date.getTime());
-//                    //转为int
-//                    int nowDate = Integer.parseInt(SDate);
-//
-//
-//                    if ((nowDate - date1) < 12) { tvTost.setText("请输入正确的身份证信息");
 
                     if (TimeUtils.isSuper12(SidCard, 18)) {
                         tvTost.setText("12岁以下禁止骑行");
                     } else {
                         //    new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
-                        realnameAuthentication();
+                        realnameAuthentication(SidCard, Sname);
                     }
 
 
@@ -157,59 +166,56 @@ public class IdentityFragment extends Fragment {
     }
 
     //实名验证
-    private void realnameAuthentication() {
-        SharedPreUtils.editorPutBoolean(getActivity(), ContentValuse.idcard, true);
-        tvTost.setText("实名验证成功");
+    private void realnameAuthentication(String SidCard, String name) {
+
+
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.lin_one, new RegisteredSuccessFragement());
         transaction.commit();
-        if (NetWorkStatus.isNetworkAvailable(getActivity())) {
-            new IdqueryAsyncTask(SidCard).execute();
-        } else {
-            Toast.makeText(getActivity(), "请设置网络", Toast.LENGTH_SHORT).show();
+        if (!NetWorkStatus.isNetworkAvailable(getActivity())) {
+            Toast.makeText(getActivity(), "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-    }
+        dialog.show();
+        Map<String, String> map = new HashMap<>();
+        map.put("T_USERIDCARD", SidCard);
+        map.put("T_NAME", name);
 
+        HttpUtils.doPost(Url.IdentityUrl, map, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mhandler.sendEmptyMessage(ContentValuse.failure);
+            }
 
-    class IdqueryAsyncTask extends AsyncTask<String, String, String> {
-        private String IdCard;
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    try {
+                        String userjson = response.body().string();
+                        JSONObject jsonObject = new JSONObject(userjson);
+                        String result = jsonObject.getString("result");
+                        if (response.equals("02")) {
+                            mhandler.sendEmptyMessage(ContentValuse.success);
+                        } else {
+                            mhandler.sendEmptyMessage(ContentValuse.failure);
+                        }
 
-        public IdqueryAsyncTask(String IdCard) {
-            this.IdCard = IdCard;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            return Juhe.getRequest1(IdCard);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-            try {
-                JSONObject object = new JSONObject(s);
-                if (object.getInt("error_code") == 0) {
-
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.putString("idcard", SidCard);
-//                        editor.commit();
-
-                    SharedPreUtils.editorPutBoolean(getActivity(), ContentValuse.idcard, true);
-                    tvTost.setText("实名验证成功");
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.lin_one, new RegisteredSuccessFragement());
-                    transaction.commit();
-
-                } else {
-                    Toast.makeText(getActivity(), "验证失败" + object.get("error_code") + ":" + object.get("reason"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    mhandler.sendEmptyMessage(ContentValuse.failure);
                 }
-            } catch (Exception e) {
+
 
             }
-            super.onPostExecute(s);
-        }
+        });
+
     }
+
+
+
 
 
 }

@@ -10,6 +10,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.navi.model.NaviLatLng;
+import com.example.administrator.bicycle.entity.User;
 import com.example.administrator.bicycle.util.AccountKey;
 import com.mob.MobApplication;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -40,6 +41,9 @@ public class MyApplication extends MobApplication {
     //声明定位回调监听器
     public static String road;
 
+    public static User user ;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -50,6 +54,15 @@ public class MyApplication extends MobApplication {
         BmobSMS.initialize(this, AccountKey.Bmob_Application_ID);
 
         initImageLoader(getApplicationContext());
+
+    }
+
+    public static boolean isLogin(){
+        if(user == null){
+            return false;
+        }else {
+            return  true;
+        }
     }
 
     /**

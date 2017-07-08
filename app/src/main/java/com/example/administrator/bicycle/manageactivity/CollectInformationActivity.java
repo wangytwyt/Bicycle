@@ -56,6 +56,7 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1){
+                loadSuccess();
                 adapter.notifyDataSetChanged();
             }else {
                 loadFailure();
@@ -286,7 +287,7 @@ public class CollectInformationActivity extends AppCompatActivity implements Pul
                 dialog.dismiss();
 
                 if (response.isSuccessful()) {
-                    loadSuccess();
+
                     try {
                         JSONObject jsobject = new JSONObject(response.body().string());
                         JSONArray jsArray = jsobject.getJSONArray("result");

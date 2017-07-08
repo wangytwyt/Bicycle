@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.administrator.bicycle.manageactivity.ManageActivity;
+import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.HttpUtils;
 import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.PermissionUtils;
@@ -47,7 +48,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private OkHttpClient okHttpClient = new OkHttpClient();
 
 
-    private ImageView iv_saomakaisuo,tv_weather;
+    private ImageView iv_saomakaisuo, tv_weather;
 
     private TextView tv_city, tv_temperature;
 
@@ -57,7 +58,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
             typeWearher(msg.what);
-            tv_temperature.setText((String)msg.obj);
+            tv_temperature.setText((String) msg.obj);
         }
     };
 
@@ -71,7 +72,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         init();
 
-      //  getw(MyApplication.latitude, MyApplication.longitude);
+        //  getw(MyApplication.latitude, MyApplication.longitude);
     }
 
     private void init() {
@@ -138,7 +139,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                         Message msg = new Message();
                         msg.what = code_day;
-                        msg.obj = low+"℃/"+high+"℃";
+                        msg.obj = low + "℃/" + high + "℃";
                         mhandler.sendMessage(msg);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -153,48 +154,38 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void typeWearher(int type){
+    private void typeWearher(int type) {
 
 
         if (type >= 0 && type < 4) { //晴天
             tv_weather.setImageResource(R.drawable.p2);
-        }
-        else if (type >= 4 && type < 10) { //多云
+        } else if (type >= 4 && type < 10) { //多云
             tv_weather.setImageResource(R.drawable.p5);
-        }
-        else if (type >= 10 && type < 20) { //雨
+        } else if (type >= 10 && type < 20) { //雨
             tv_weather.setImageResource(R.drawable.p10);
-        }
-        else if (type >= 20 && type < 26) { //雪
+        } else if (type >= 20 && type < 26) { //雪
             tv_weather.setImageResource(R.drawable.p22);
-        }
-        else if (type >= 26 && type < 30) { //沙尘暴
+        } else if (type >= 26 && type < 30) { //沙尘暴
 
             tv_weather.setImageResource(R.drawable.p31);
-        }
-        else if (type >= 30 && type < 32) { //雾霾
+        } else if (type >= 30 && type < 32) { //雾霾
             tv_weather.setImageResource(R.drawable.p30);
 
-        }
-        else if (type >= 32 && type < 37) { //风
+        } else if (type >= 32 && type < 37) { //风
 
             tv_weather.setImageResource(R.drawable.p33);
-        }
-        else if (type == 37) { //冷
+        } else if (type == 37) { //冷
 
             tv_weather.setImageResource(R.drawable.p37);
-        }
-        else if (type == 38) { //热
+        } else if (type == 38) { //热
 
             tv_weather.setImageResource(R.drawable.p38);
-        }
-        else if (type == 99) { //未知
+        } else if (type == 99) { //未知
             tv_weather.setImageResource(R.drawable.p99);
 
         }
 
     }
-
 
 
     /*
@@ -279,8 +270,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, TripActivity.class));
                 break;
             case R.id.lin_two:
-                //    startActivity(new Intent(HomeActivity.this, InformationActivity.class));
-               startActivity(new Intent(HomeActivity.this, ManageActivity.class));
+
+                switch (MyApplication.user.getT_SIGN()) {
+                    case 1:
+                        startActivity(new Intent(HomeActivity.this, InformationActivity.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(HomeActivity.this, ManageActivity.class));
+                        break;
+                }
+
+
                 break;
             case R.id.lin_three:
                 startActivity(new Intent(HomeActivity.this, InvitationActivity.class));
@@ -299,6 +299,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     toCaptureActivity();
                 }
                 break;
+        }
+
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 0) {
+            return;
         }
 
 

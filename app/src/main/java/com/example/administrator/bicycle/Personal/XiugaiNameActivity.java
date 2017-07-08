@@ -17,40 +17,61 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.Post.AccessNetwork;
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.R;
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.CustomProgressDialog;
+import com.example.administrator.bicycle.util.HttpUtils;
+import com.example.administrator.bicycle.util.NetWorkStatus;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class XiugaiNameActivity extends Activity {
     EditText name;
 
     String nameT;
-    SharedPreferences sharedPreferences;
-    Handler h = new Handler(new Handler.Callback() {
+
+    private CustomProgressDialog dialog;
+    private Handler mhandler = new Handler() {
         @Override
-        public boolean handleMessage(Message msg) {
-            if (msg.what == 006) {
+        public void handleMessage(Message msg) {
+            dialog.dismiss();
+            switch (msg.what) {
+                case ContentValuse.success:
+                    Toast.makeText(XiugaiNameActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
 
-                String result = (String) msg.obj;
-                Toast.makeText(XiugaiNameActivity.this, result, Toast.LENGTH_SHORT).show();
+                    nameT = name.getText().toString().trim();
 
-                if (!result.equals("") && result != null) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("nicheng", nameT);
-                    editor.commit();
-                }
+                    Intent intent = new Intent();
+                    intent.putExtra(ContentValuse.nickname, nameT);
 
+                    setResult(1, intent);
+                    finish();
+
+                    break;
+
+                case ContentValuse.failure:
+                    dialog.dismiss();
+                    Toast.makeText(XiugaiNameActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+                    break;
             }
-
-
-            return false;
         }
-    });
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  getSupportActionBar().hide();
+        //  getSupportActionBar().hide();
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_xiugai_name);
 
@@ -70,10 +91,11 @@ public class XiugaiNameActivity extends Activity {
         tv_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submit();
+                submit(name.getText().toString().trim());
             }
         });
-
+        dialog = new CustomProgressDialog(this);
+        dialog.setMessage("修改中...");
         name = (EditText) findViewById(R.id.edt_name);
 
 
@@ -99,45 +121,46 @@ public class XiugaiNameActivity extends Activity {
 
     }
 
-    private void submit() {
+    private void submit(String name) {
+        if (!NetWorkStatus.isNetworkAvailable(this)) {
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        dialog.show();
+
+        Map<String, String> map = new HashMap<>();
+        map.put("T_USERPHONE", MyApplication.user.getT_USERPHONE());
+        map.put("T_USERNAME", name);
+
+        HttpUtils.doPost(Url.nicknameUrl, map, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mhandler.sendEmptyMessage(ContentValuse.failure);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    try {
+                        String userjson = response.body().string();
+                        JSONObject jsonObject = new JSONObject(userjson);
+                        String result = jsonObject.getString("result");
+                        if (response.equals("02")) {
+                            mhandler.sendEmptyMessage(ContentValuse.success);
+                        } else {
+                            mhandler.sendEmptyMessage(ContentValuse.failure);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    mhandler.sendEmptyMessage(ContentValuse.failure);
+                }
+            }
+        });
 
 
-        nameT = name.getText().toString().trim();
-
-        Intent intent = new Intent();
-        intent.putExtra(ContentValuse.nickname,nameT);
-
-        setResult(1,intent);
-        finish();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //同样，在读取SharedPreferences数据前要实例化出一个SharedPreferences对象
-        sharedPreferences = getSharedPreferences("login", Activity.MODE_PRIVATE);
-        // 使用getString方法获得value，注意第2个参数是value的默认值
-        final String token = sharedPreferences.getString("token", "");
-        final String phone = sharedPreferences.getString("phone", "");
-
-        new Thread(new AccessNetwork("POST", "http://42.159.113.21/heibike/user/nicheng.mvc", "vip_nicheng=" + nameT + "&&vip_phone=" + phone + "&&vip_token=" + token, h, 006)).start();
     }
 
 }

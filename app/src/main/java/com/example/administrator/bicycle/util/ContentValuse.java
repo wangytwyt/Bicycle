@@ -12,13 +12,13 @@ public class ContentValuse {
     public static final String registered = "registered";
     public static final String token = "token";
     public static final String vipuser = "vipuser";
-    public static final String idcard ="idcard";
+    public static final String idcard = "idcard";
 
     public static final String isSubscribe = "SUBSCRIBE";
-    public static  final String url = "url";
+    public static final String url = "url";
 
 
-    public static final String prize ="prize";
+    public static final String prize = "prize";
 
     public static final int getbid = 0X451235;
     public static final int getbikeback = 555555;
@@ -45,8 +45,9 @@ public class ContentValuse {
     public static final int CloseHelp = 0X11221125;
 
 
-    public  static final  int prizeResult =0X11221126;
+    public static final int prizeResult = 0X11221126;
 
-    public  static final  int success =0X11221127;
-    public  static final  int failure =0X11221128;
+    public static final int success = 0X11221127;
+    public static final int failure = 0X11221128;
+    public static final int deleteLogin = 0X11221100;
 }

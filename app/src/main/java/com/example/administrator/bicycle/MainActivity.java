@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     private WrapSlidingDrawer mdrawer;//定义一个抽屉控件
     private ImageView iv_xia;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -239,9 +240,11 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         imgEnterToPersonalCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//             startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
-                startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                //            startActivity(new Intent(MainActivity.this, PrizeActivity.class));
+                if (!MyApplication.isLogin()) {
+                    startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
+                } else {
+                    startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                }
             }
         });
 
@@ -401,7 +404,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         aMap = mMapView.getMap();
 
 
-
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.title("导航").snippet("导航");
 
@@ -416,7 +418,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         final LatLng latLng = new LatLng(34.292366, 109.109696);
         LatLng latLng1 = new LatLng(34.292818, 109.11123);
         LatLng latLng2 = new LatLng(34.290115, 109.110983);
-
 
 
         BitmapDescriptor bt = BitmapDescriptorFactory.fromBitmap(BitmapFactory
@@ -522,9 +523,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         token = SharedPreUtils.getSharedPreferences(this).getString(ContentValuse.token, null);
 
 
-
-
-        mdrawer = (WrapSlidingDrawer)findViewById(R.id.slidingdrawer);
+        mdrawer = (WrapSlidingDrawer) findViewById(R.id.slidingdrawer);
         iv_xia = (ImageView) findViewById(R.id.handle);
 
         //这个事件是当抽屉打开时触发的事件，这里所指的“打开”是当抽屉完全到达顶部触发的事件，我们在这里改变了ImageButton按钮的图片
@@ -535,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             }
         });
         //这个事件当然就是和上面相对应的事件了。当抽屉完全关闭时触发的事件，我们将ImageButton的图片又变回了最初状态
-        mdrawer.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener(){
+        mdrawer.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener() {
             @Override
             public void onDrawerClosed() {
                 iv_xia.setImageResource(R.mipmap.bicy_background_up);
@@ -543,7 +542,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         });
         //这个事件是抽屉的拖动事件，当抽屉在开始拖动和结束拖动时分别触发onScrollStarted() 和onScrollEnded() 事件
-        mdrawer.setOnDrawerScrollListener(new SlidingDrawer.OnDrawerScrollListener(){
+        mdrawer.setOnDrawerScrollListener(new SlidingDrawer.OnDrawerScrollListener() {
             //当手指离开抽屉头时触发此事件（松开ImageButton触发）
             @Override
             public void onScrollEnded() {
@@ -570,7 +569,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             case R.id.location:
 //                dialog.show();
                 if (!NetWorkStatus.isNetworkAvailable(this)) {
-                    Toast.makeText(this, "请设置网络！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
                 } else {
                     //设置定位蓝点
                     setBluePoint();
@@ -581,9 +580,14 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
                 break;
             case R.id.code_ji:
-                Intent intentji = new Intent(MainActivity.this, KaisuoActivity.class);
-                intentji.putExtra("jisukaisuo", "jisukaisuo");
-                startActivity(intentji);
+                if (MyApplication.isLogin()) {
+                    Intent intentji = new Intent(MainActivity.this, KaisuoActivity.class);
+                    intentji.putExtra("jisukaisuo", "jisukaisuo");
+                    startActivity(intentji);
+                } else {
+                    startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
+                }
+
 
                 break;
 
@@ -591,17 +595,15 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 startActivity(new Intent(MainActivity.this, AssistantActivity.class));
                 break;
             case R.id.suaxin:
-            //   startActivity(new Intent(MainActivity.this, PrizeActivity.class));
+                startActivity(new Intent(MainActivity.this, PrizeActivity.class));
 
-                startActivity(new Intent(MainActivity.this, testActivity.class));
                 break;
             case R.id.tousu:
-                if (token == null || token.equals("")) {
-                    startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
-                } else {
+                if (MyApplication.isLogin()) {
                     startActivity(new Intent(MainActivity.this, ComplaintsActivity.class));
+                } else {
+                    startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
                 }
-
                 break;
             case R.id.btn_Directions:
                 butright.setVisibility(View.GONE);
@@ -717,11 +719,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                     Log.d("a1*", "sa");
                     mLocationClient.stopLocation();
 
-//                    System.out.println("省："+arg0.getProvince());
-//                    System.out.println("国家："+arg0.getCountry());
-//                    System.out.println("经度"+arg0.getLatitude());
-//                    System.out.println("纬度"+arg0.getLongitude());
-//                    System.out.println("路是："+arg0.getRoad());
 
                 } else {
                     dialog.dismiss();

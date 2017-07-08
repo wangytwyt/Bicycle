@@ -72,7 +72,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private CustomProgressDialog dialog;
 
 
-
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -112,9 +111,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void handleMessage(Message msg) {
 
-                switch (msg.what){
+                switch (msg.what) {
                     case ContentValuse.success:
                         Toast.makeText(getActivity(), "登录成功", Toast.LENGTH_SHORT).show();
+
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        transaction.replace(R.id.lin_one, new DepositFragment());
+                        transaction.commit();
+
+
                         break;
 
                     case ContentValuse.failure:
@@ -123,8 +128,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         break;
                 }
             }
-
-
 
 
 //                if (msg.what == 003) {
@@ -149,9 +152,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 //                    Toast.makeText(getContext(), "请求失败", Toast.LENGTH_SHORT).show();
 //
 //                }
-
-
-
 
 
         };
@@ -192,15 +192,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_obtain://获取验证码
                 //获取用户填写的电话号码
-                if (!NetWorkStatus.isNetworkAvailable(getActivity())){
+                if (!NetWorkStatus.isNetworkAvailable(getActivity())) {
                     Toast.makeText(getContext(), "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 PhoneNum = edtPhoneNum.getText().toString();
-               if (PhoneNum.equals("")){
-                   Toast.makeText(getContext(), "电话号为空，请输入电话号！", Toast.LENGTH_SHORT).show();
-                   return;
-               }
+                if (PhoneNum.equals("")) {
+                    Toast.makeText(getContext(), "电话号为空，请输入电话号！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 //发送短信
                 BmobSMS.requestSMSCode(getContext(), PhoneNum, "验证码", new RequestSMSCodeListener() {
@@ -232,7 +232,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.btn_start:
-                if (!NetWorkStatus.isNetworkAvailable(getActivity())){
+                if (!NetWorkStatus.isNetworkAvailable(getActivity())) {
                     Toast.makeText(getContext(), "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -240,12 +240,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 final String phoneN = edtPhoneNum.getText().toString();
                 //获取用户填写的验证码
                 String validation = edtValidation.getText().toString();
-                if (validation.equals("")){
+                if (validation.equals("")) {
                     Toast.makeText(getContext(), "验证码为空，请输入验证码！", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (phoneN.equals("")){
+                if (phoneN.equals("")) {
                     Toast.makeText(getContext(), "电话号为空，请输入电话号！", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -257,8 +257,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             //发送post请求Login.do?T_USERPHONE= & AREA=
                             Map<String, String> map = new HashMap<String, String>();
                             map.put("T_USERPHONE", phoneN);
-                            map.put("AREA",MyApplication.city);
-                            HttpUtils.doPost(Url.Login, map, new Callback() {
+                            map.put("AREA", MyApplication.city);
+                            HttpUtils.doPost(Url.loginUrl, map, new Callback() {
                                 @Override
                                 public void onFailure(Call call, IOException e) {
                                     h.sendEmptyMessage(ContentValuse.failure);
@@ -271,18 +271,43 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                                         try {
                                             JSONObject jsonObject = new JSONObject(userjson);
+                                            String result = jsonObject.getString("result");
+                                            if (result.equals("02")) {
+                                                JSONObject js = jsonObject.getJSONObject("pd");
 
+                                                User user = new User();
+                                                    String rmb = js.getString("T_RMB");
+                                                if (rmb.equals("null")){
+                                                    user.setT_TRRMB(-1);
+                                                }else {
+                                                    user.setT_TRRMB(Integer.valueOf(rmb));
+                                                }
 
+                                                user.setT_USERPHONE(js.getString("T_USERPHONE"));
+                                              String userName = js.getString("T_USERNAME");
+                                                if ( userName.equals("null")){
+                                                    userName = "";
+                                                }
+                                                user.setT_USERNAME(userName);
 
-
-
-
-
-
-
-
-
-                                        }catch (Exception e){
+                                               String name = js.getString("T_NAME");
+                                                if (name.equals("null")){
+                                                    name = "";
+                                                }
+                                                user.setT_NAME(name);
+                                                String T_USERIMAGE = js.getString("T_USERIMAGE");
+                                                if (T_USERIMAGE.equals("null")){
+                                                    T_USERIMAGE = "";
+                                                }
+                                                user.setT_USERIMAGE(T_USERIMAGE);
+                                                user.setTUSER_ID(Integer.valueOf(js.getString("TUSER_ID")));
+                                                user.setT_SIGN(js.getInt("T_SIGN"));
+                                                MyApplication.user = user;
+                                                h.sendEmptyMessage(ContentValuse.success);
+                                            }else {
+                                                h.sendEmptyMessage(ContentValuse.failure);
+                                            }
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                     }
@@ -291,7 +316,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
                         } else {
-                           h.sendEmptyMessage(ContentValuse.failure);
+                            h.sendEmptyMessage(ContentValuse.failure);
                         }
                     }
                 });

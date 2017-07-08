@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.Personal.UpdatePhoneActivity;
 import com.example.administrator.bicycle.Personal.XiugaiNameActivity;
 import com.example.administrator.bicycle.R;
@@ -48,6 +49,8 @@ public class ManageActivity extends Activity implements View.OnClickListener {
 
         tvNicheng = (TextView) findViewById(R.id.tv_nicheng);
         tvNum = (TextView) findViewById(R.id.tv_num);
+        tvNicheng.setText(MyApplication.user.getT_USERNAME());
+        tvNum.setText(MyApplication.user.getT_USERPHONE());
 
         findViewById(R.id.ll_manage).setOnClickListener(this);
         findViewById(R.id.ll_input).setOnClickListener(this);

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.util.Base64;
@@ -14,16 +16,24 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.Personal.Replace.ReplaceNumActivity;
 import com.example.administrator.bicycle.Personal.Shanliangfen.ShanliangActivity;
 import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.R;
 import com.example.administrator.bicycle.photo.utils.HeadImagePop;
 import com.example.administrator.bicycle.photo.utils.SelectPicPopupWindow;
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.HttpUtils;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.PermissionUtils;
 import com.example.administrator.bicycle.view.RoundImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -48,22 +58,27 @@ import okhttp3.Response;
 public class InformationActivity extends Activity implements View.OnClickListener {
     private final int CAMERA_REQUEST_CODE = 0X1112;
     private RoundImageView iv_img;
-    private Button bt_camera;
-    private Button bt_xiangce;
-    //    private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
-//    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
-//    private static final int PHOTO_REQUEST_CUT = 3;// 结果
-    /* 头像名称 */
-    private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
-    private File tempFile;
 
-    private SharedPreferences sharedPreferences;
     private LinearLayout one, two, three, four, five, six;
     private TextView tvNicheng, tvShiming, tvNum;
+    private TextView but_Logout;
+    private Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
 
-    private SelectPicPopupWindow selectPicPopupWindow;
+            switch (msg.what) {
+                case ContentValuse.success:
+                    InformationActivity.this.finish();
+                    Toast.makeText(InformationActivity.this, "退出成功", Toast.LENGTH_SHORT).show();
+                    break;
 
+                case ContentValuse.failure:
 
+                    Toast.makeText(InformationActivity.this, "退出失败", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,18 +88,19 @@ public class InformationActivity extends Activity implements View.OnClickListene
         init();
 
 
-        sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-        String nicheng = sharedPreferences.getString("nicheng", "未取到值");
-        String idcard = sharedPreferences.getString("idcard", "未实名");
-        String phone = sharedPreferences.getString("phone", "未实名");
+        tvNicheng.setText(MyApplication.user.getT_USERNAME());
+       String name = MyApplication.user.getT_NAME();
+        if(name.equals("")){
+            tvShiming.setText("未认证");
+        }else {
+            tvShiming.setText(name);
+        }
 
-        tvNicheng.setText(nicheng);
-        tvShiming.setText(idcard);
-        tvNum.setText(phone);
+        tvNum.setText(MyApplication.user.getT_USERPHONE());
 
-        //    getBitmapFromSharedPreferences();
-
-
+        if (!MyApplication.user.getT_USERIMAGE().isEmpty()) {
+            ImageLoader.getInstance().displayImage(MyApplication.user.getT_USERIMAGE(), iv_img);
+        }
     }
 
     private void init() {
@@ -105,7 +121,7 @@ public class InformationActivity extends Activity implements View.OnClickListene
         four = (LinearLayout) findViewById(R.id.line_four);
         five = (LinearLayout) findViewById(R.id.line_five);
         six = (LinearLayout) findViewById(R.id.line_six);
-
+        but_Logout = (Button) findViewById(R.id.but_Logout);
 
         tvNicheng = (TextView) findViewById(R.id.tv_nicheng);
         tvShiming = (TextView) findViewById(R.id.tv_shiming);
@@ -118,7 +134,7 @@ public class InformationActivity extends Activity implements View.OnClickListene
         four.setOnClickListener(this);
         five.setOnClickListener(this);
         six.setOnClickListener(this);
-
+        but_Logout.setOnClickListener(this);
     }
 
     @Override
@@ -151,10 +167,46 @@ public class InformationActivity extends Activity implements View.OnClickListene
             case R.id.line_six:
                 startActivity(new Intent(InformationActivity.this, ShanliangActivity.class));
                 break;
+            case R.id.but_Logout:
+                logout();
+                break;
         }
     }
 
+    private void logout() {
+        if (!NetWorkStatus.isNetworkAvailable(this)) {
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        HttpUtils.doGet(Url.deleteLog + MyApplication.user.getT_USERPHONE(), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mhandler.sendEmptyMessage(ContentValuse.failure);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    try {
+                        String userjson = response.body().string();
+                        JSONObject jsonObject = new JSONObject(userjson);
+                        String result = jsonObject.getString("result");
+                        if (response.equals("02")) {
+                            mhandler.sendEmptyMessage(ContentValuse.success);
+                        } else {
+                            mhandler.sendEmptyMessage(ContentValuse.failure);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    mhandler.sendEmptyMessage(ContentValuse.failure);
+                }
+            }
+        });
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -205,149 +257,6 @@ public class InformationActivity extends Activity implements View.OnClickListene
 
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    //保存图片到SharedPreferences
-    private void saveBitmapToSharedPreferences(Bitmap bitmap) {
-        // Bitmap bitmap=BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-        //第一步:将Bitmap压缩至字节数组输出流ByteArrayOutputStream
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
-        //第二步:利用Base64将字节数组输出流中的数据转换成字符串String
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        String imageString = new String(Base64.encodeToString(byteArray, Base64.DEFAULT));
-        //第三步:将String保持至SharedPreferences
-//        SharedPreferences sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("image", imageString);
-        editor.commit();
-
-        //上传头像
-//        try {
-//            setImgByStr(imageString, "");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-    }
-
-    public static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
-    private OkHttpClient client = new OkHttpClient();
-
-    /**
-     * 上传头像
-     *
-     * @param imgStr
-     * @param
-     */
-    public void setImgByStr(String imgStr, File file) throws IOException {
-//        String url = "http://appserver.1035.mobi/MobiSoft/User_upLogo";
-        String url = "http://42.159.113.21/heibike/user/upload.mvc";
-//        Log.d("imgStr",imgStr);
-//        Map<String, String> params = new HashMap<String, String>();
-//        params.put("id", "11460047");// 11459832
-//        params.put("data", imgStr);
-//        OkHttp.postAsync(url, params, new OkHttp.DataCallBack() {
-//            @Override
-//            public void requestFailure(Request request, IOException e) {
-//                Log.i("上传失败", "失败" + request.toString() + e.toString());
-//            }
-//
-//            @Override
-//            public void requestSuccess(String result) throws Exception {
-//                Log.i("上传成功", result);
-//            }
-//        });
-////
-////
-//            File file = new File("README.md");
-
-
-        String phone = sharedPreferences.getString("phone", "");
-        String token = sharedPreferences.getString("token", "");
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
-
-        builder.addFormDataPart("file", file.getName(), body).addFormDataPart("vip_phone", phone).addFormDataPart("vip_token", token);
-
-        Request request = new Request.Builder().url(url).post(builder.build()).build();
-//        Request request = new Request.Builder().url(url).post(builder.build()).tag("123").build();
-
-        // readTimeout("请求超时时间" , 时间单位);
-        client.newBuilder().readTimeout(5000, TimeUnit.MILLISECONDS).build().newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.i("lfq", "onFailure");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String str = response.body().string();
-                    Log.i("lfq", response.message() + " , body " + str);
-
-                } else {
-                    Log.i("lfq", response.message() + " error : body " + response.body().string());
-                }
-            }
-        });
-
-
-    }
-
-
-    InputStream String2InputStream(String str) {
-        ByteArrayInputStream stream = new ByteArrayInputStream(str.getBytes());
-        return stream;
-    }
-
-    public void inputstreamtofile(InputStream ins, File file) throws IOException {
-        OutputStream os = new FileOutputStream(file);
-        int bytesRead = 0;
-        byte[] buffer = new byte[8192];
-        while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-            os.write(buffer, 0, bytesRead);
-        }
-
-
-        os.close();
-        ins.close();
-    }
-
-
-    static boolean saveBitmap2file(Bitmap bmp, File filename) {
-        Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
-        int quality = 100;
-        OutputStream stream = null;
-        try {
-            stream = new FileOutputStream("/sdcard/" + filename);
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return bmp.compress(format, quality, stream);
-    }
-
-
-    //从SharedPreferences获取图片
-    private void getBitmapFromSharedPreferences() {
-        //第一步:取出字符串形式的Bitmap
-        String imageString = sharedPreferences.getString("image", "");
-        //第二步:利用Base64将字符串转换为ByteArrayInputStream
-        byte[] byteArray = Base64.decode(imageString, Base64.DEFAULT);
-        if (byteArray.length == 0) {
-            iv_img.setImageResource(R.mipmap.ic_launcher_round);
-        } else {
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
-
-            //第三步:利用ByteArrayInputStream生成Bitmap
-
-
-            Bitmap bitmap = BitmapFactory.decodeStream(byteArrayInputStream);
-            iv_img.setImageBitmap(bitmap);
-        }
-
     }
 
 
