@@ -5,26 +5,34 @@ package com.example.administrator.bicycle.Post;
  */
 
 public class Url {
-    public final static String url = "http://192.168.1.189:8080";
+    public final static String url = "http://42.51.40.93:8080/heibike";
     // private  final static  String url = "http://192.168.1.126:8080";
 
 
-    private final static String bidypath = url + "/heibike/tbike/";
 
 
-    public final static String Login = url + "/heibike/Lg";
+
+    public final static String Login = url + "/Lg";
 
     public final static String loginUrl = Login + "/Login.do?";
 
-    public final static String deleteLog = Login + "deleteLog.do?T_USERPHONE=";
-
+    public final static String deleteLog = Login + "/deleteLog.do?T_USERPHONE=";
+    public final static String prizeUrl = Login + "/insertDw.do?";
 
     public final static String IdentityUrl = Login + "/insertSm.do?";
 
+    public final static String getRMB = url + "/tuser/findBPh.do?T_USERPHONE=";
 
-    public final static String nicknameUrl = url + "/heibike/tuser/upNcByPh.do?";
+    public final static String getSL = url+"/tuser/findSL.do?T_USERPHONE=";
+
+    public final static String getDay = url+"/tuser/findDay.do?T_USERPHONE=";
 
 
+    public final static String nicknameUrl = url + "/tuser/upNcByPh.do?";
+
+
+
+    private final static String bidypath = url + "/tbike/";
     //举报中心
     public final static String reportingCenter = bidypath + "JbZx.do?";
     ///投诉

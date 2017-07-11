@@ -506,7 +506,13 @@ public class KaisuoActivity extends AppCompatActivity {
         try {
             if (Globals.BLE_INIT && Globals.isBleFeature) {
                 if (!MyApplication.bleService.isBleEnable()) {
-                    Dialog.showBleDialog(this, R.string.ble_tip, bleListener, bleNeverListener);
+                    Dialog.showBleDialog(this, R.string.ble_tip, bleListener, bleNeverListener, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            KaisuoActivity.this.finish();
+                            dialog.dismiss();
+                        }
+                    });
                 } else {
                     rentCar();
                 }
@@ -548,7 +554,9 @@ public class KaisuoActivity extends AppCompatActivity {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             Globals.BLE_INIT = false;
+            KaisuoActivity.this.finish();
             dialog.cancel();
+
         }
     };
 

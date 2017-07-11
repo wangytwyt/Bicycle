@@ -1,5 +1,6 @@
 package com.example.administrator.bicycle;
 
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +20,20 @@ private TextView tv_time;
 
 
         findViewById(R.id.but).setOnClickListener(new startBtnListener());
-
+        player();
     }
+
+
+    private void player(){
+        MediaPlayer  mediaPlayer = MediaPlayer.create(this,R.raw.openloke);
+        mediaPlayer.start();
+    }
+
+
+
+
+
+
 
 
     //时间计数器，最多只能到99小时，如需要更大小时数需要改改方法

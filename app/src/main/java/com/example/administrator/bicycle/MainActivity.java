@@ -595,8 +595,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 startActivity(new Intent(MainActivity.this, AssistantActivity.class));
                 break;
             case R.id.suaxin:
-                startActivity(new Intent(MainActivity.this, PrizeActivity.class));
-
+               // startActivity(new Intent(MainActivity.this, PrizeActivity.class));
+                startActivity(new Intent(MainActivity.this, testActivity.class));
                 break;
             case R.id.tousu:
                 if (MyApplication.isLogin()) {

@@ -54,16 +54,6 @@ public class DepositFragment extends Fragment {
 
         tvtitle.setText("充值");
 
-        //同样，在读取SharedPreferences数据前要实例化出一个SharedPreferences对象
-        //    SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ContentValuse.registered, Activity.MODE_PRIVATE);
-        // 使用getString方法获得value，注意第2个参数是value的默认值
-
-        boolean vipuser = SharedPreUtils.getSharedPreferences(getActivity()).getBoolean(ContentValuse.vipuser, false);
-        if (vipuser) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.lin_one, new IdentityFragment());
-            transaction.commit();
-        }
 
 
         iv_weixin = (ImageView) view.findViewById(R.id.iv_weixin);
@@ -132,10 +122,6 @@ public class DepositFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-//                SharedPreferences.Editor editor = SharedPreUtils.getEditor(getActivity());
-//                editor.putBoolean(ContentValuse.vipuser, true);
-//                editor.commit();
-                SharedPreUtils.editorPutBoolean(getActivity(), ContentValuse.vipuser, true);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.lin_one, new IdentityFragment());
                 transaction.commit();

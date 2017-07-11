@@ -1,1 +1,0 @@
-package com.example.administrator.bicycle.Kaisuo;public class OutEntity {    private Info result;    public void setInfo(Info result){        this.result = result;    }    public Info getInfo(){        return this.result;    }}

@@ -61,7 +61,7 @@ public class XiugaiNameActivity extends Activity {
                     break;
 
                 case ContentValuse.failure:
-                    dialog.dismiss();
+
                     Toast.makeText(XiugaiNameActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -94,8 +94,8 @@ public class XiugaiNameActivity extends Activity {
                 submit(name.getText().toString().trim());
             }
         });
-        dialog = new CustomProgressDialog(this);
-        dialog.setMessage("修改中...");
+        dialog = CustomProgressDialog.createDialog(this);
+        dialog.setMessage("    修改中...    ");
         name = (EditText) findViewById(R.id.edt_name);
 
 
@@ -122,6 +122,10 @@ public class XiugaiNameActivity extends Activity {
     }
 
     private void submit(String name) {
+        if(name.equals("")){
+            Toast.makeText(this, "请输入昵称！", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!NetWorkStatus.isNetworkAvailable(this)) {
             Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
             return;
@@ -146,7 +150,7 @@ public class XiugaiNameActivity extends Activity {
                         String userjson = response.body().string();
                         JSONObject jsonObject = new JSONObject(userjson);
                         String result = jsonObject.getString("result");
-                        if (response.equals("02")) {
+                        if (result.equals("02")) {
                             mhandler.sendEmptyMessage(ContentValuse.success);
                         } else {
                             mhandler.sendEmptyMessage(ContentValuse.failure);

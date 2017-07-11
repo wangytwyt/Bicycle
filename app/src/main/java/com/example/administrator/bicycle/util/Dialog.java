@@ -228,7 +228,7 @@ public class Dialog {
     }
 
     public static void showBleDialog(Context context, int msgId,
-                                     DialogInterface.OnClickListener positiveListener, DialogInterface.OnClickListener neutralListener) {
+                                     DialogInterface.OnClickListener positiveListener, DialogInterface.OnClickListener neutralListener, DialogInterface.OnClickListener cancellListener) {
         if(bleDialog != null) {
             bleDialog.dismiss();
             bleDialog = null;
@@ -240,11 +240,7 @@ public class Dialog {
                 .setCancelable(false)
                 .setPositiveButton(R.string.confirm, positiveListener)
                 .setNeutralButton(R.string.never, neutralListener)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                .setNegativeButton(R.string.cancel, cancellListener);
         bleDialog = builder.create();
         bleDialog.show();
     }

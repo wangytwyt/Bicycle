@@ -134,7 +134,7 @@ public class IdentityFragment extends Fragment {
                     if (TimeUtils.isSuper12(SidCard, 15)) {
                         tvTost.setText("12岁以下禁止骑行");
                     } else {
-                        //  new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
+
                         realnameAuthentication(SidCard, Sname);
                     }
 
@@ -150,7 +150,6 @@ public class IdentityFragment extends Fragment {
                     if (TimeUtils.isSuper12(SidCard, 18)) {
                         tvTost.setText("12岁以下禁止骑行");
                     } else {
-                        //    new Thread(new AccessNetwork("GET", "http://apis.juhe.cn/idcard/index", "cardno=" + SidCard + "&&key=de2b95384b5271c741b58722a7412bd2", h, 007)).start();
                         realnameAuthentication(SidCard, Sname);
                     }
 

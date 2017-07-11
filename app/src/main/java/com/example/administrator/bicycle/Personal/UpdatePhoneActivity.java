@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.Post.SMSBmob;
 import com.example.administrator.bicycle.R;
 import com.example.administrator.bicycle.photo.utils.HeadImagePop;
@@ -17,8 +18,8 @@ import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.IdcardUtils;
 
 public class UpdatePhoneActivity extends Activity implements View.OnClickListener {
-    private EditText et_old, et_oldauthcode, et_new, et_newauthcode;
-
+    private EditText  et_new, et_newauthcode;
+private TextView et_old;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +45,14 @@ public class UpdatePhoneActivity extends Activity implements View.OnClickListene
         tvtitle.setText("更改手机号");
 
 
-        et_old = (EditText) findViewById(R.id.et_old);
-        et_oldauthcode = (EditText) findViewById(R.id.et_oldauthcode);
+        et_old = (TextView) findViewById(R.id.et_old);
+        et_old.setText(" 当前手机号："+MyApplication.user.getT_USERPHONE());
+
         et_new = (EditText) findViewById(R.id.et_new);
         et_newauthcode = (EditText) findViewById(R.id.et_newauthcode);
 
         findViewById(R.id.tv_newauthcode).setOnClickListener(this);
-        findViewById(R.id.tv_oldauthcode).setOnClickListener(this);
+
     }
 
     @Override
@@ -69,19 +71,7 @@ public class UpdatePhoneActivity extends Activity implements View.OnClickListene
 
                 SMSBmob.requestSMSCode(this,newphone);
                 break;
-            case R.id.tv_oldauthcode:
-                String phone = et_old.getText().toString().trim();
-                if (phone.equals("")) {
-                    Toast.makeText(UpdatePhoneActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!IdcardUtils.isMobileNO(phone)){
-                    Toast.makeText(UpdatePhoneActivity.this, "输入手机号不正确", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                SMSBmob.requestSMSCode(this,phone);
 
-                break;
         }
     }
 

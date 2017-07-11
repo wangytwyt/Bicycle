@@ -6,11 +6,11 @@ package com.example.administrator.bicycle.entity;
 
 public class User {
     //年费
-    int T_TRRMB;
+    double T_TRRMB;
     //电话
     String T_USERPHONE;
     //嘿币
-    int T_HEIBI;
+    double T_HEIBI;
     //昵称
     String T_USERNAME;
     //   头像链接
@@ -38,19 +38,20 @@ public class User {
         this.TUSER_ID = TUSER_ID;
     }
 
-    public int getT_TRRMB() {
+
+    public double getT_TRRMB() {
         return T_TRRMB;
     }
 
-    public void setT_TRRMB(int t_TRRMB) {
+    public void setT_TRRMB(double t_TRRMB) {
         T_TRRMB = t_TRRMB;
     }
 
-    public int getT_HEIBI() {
+    public double getT_HEIBI() {
         return T_HEIBI;
     }
 
-    public void setT_HEIBI(int t_HEIBI) {
+    public void setT_HEIBI(double t_HEIBI) {
         T_HEIBI = t_HEIBI;
     }
 

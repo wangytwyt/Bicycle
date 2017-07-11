@@ -95,63 +95,34 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         tvtitle.setText("手机验证");
 
 
-        String token = SharedPreUtils.getSharedPreferences(getActivity()).getString(ContentValuse.token, "");
-
-        //token == null && 是新帐号则去充值 token == null && 不是新帐号则只登录
-
-        if (!token.equals("") && token != null) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.lin_one, new DepositFragment());
-            transaction.commit();
-        }
-
-
         //利用Handler更新UI
         h = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-
+                dialog.dismiss();
                 switch (msg.what) {
                     case ContentValuse.success:
                         Toast.makeText(getActivity(), "登录成功", Toast.LENGTH_SHORT).show();
 
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.lin_one, new DepositFragment());
-                        transaction.commit();
+                        if (MyApplication.user.getT_TRRMB() < 0) {
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            transaction.replace(R.id.lin_one, new DepositFragment());
+                            transaction.commit();
+                        } else if (MyApplication.user.getT_NAME().equals("")) {
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            transaction.replace(R.id.lin_one, new IdentityFragment());
+                            transaction.commit();
+                        }
 
 
                         break;
 
                     case ContentValuse.failure:
-                        dialog.dismiss();
+
                         Toast.makeText(getActivity(), "验证失败", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
-
-
-//                if (msg.what == 003) {
-//                    String result = (String) msg.obj;
-//
-//
-////                        SharedPreferences.Editor editor = SharedPreUtils.getEditor(getActivity());
-////                        editor.putString(ContentValuse.token, "sdjahkjsdlksdjngvsdkljhjgsaodojglskdfkjugvlszdo");
-////                        //提交业务
-////                        editor.commit();
-//
-//
-//                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                    transaction.replace(R.id.lin_one, new DepositFragment());
-//                    transaction.commit();
-//
-//                    //提示登录成功或者
-//
-//
-//                } else {
-//
-//                    Toast.makeText(getContext(), "请求失败", Toast.LENGTH_SHORT).show();
-//
-//                }
 
 
         };
@@ -161,6 +132,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         init();
         edtPhoneNum.addTextChangedListener(watcher);//设置隐藏显示
         edtValidation.addTextChangedListener(watcher);
+
+
+
 
         view.findViewById(R.id.tv_yhxy).setOnClickListener(this);
         return view;
@@ -183,8 +157,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         imgDel.setOnClickListener(this);
 
 
-        dialog = new CustomProgressDialog(getActivity());
-        dialog.setMessage("登陆中...");
+        dialog = CustomProgressDialog.createDialog(getActivity());;
+        dialog.setMessage("    验证中...   ");
     }
 
     @Override
@@ -237,96 +211,155 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     return;
                 }
                 // 获取用户填写的电话号码
-                final String phoneN = edtPhoneNum.getText().toString();
-                //获取用户填写的验证码
-                String validation = edtValidation.getText().toString();
-                if (validation.equals("")) {
-                    Toast.makeText(getContext(), "验证码为空，请输入验证码！", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+               final String phoneN = edtPhoneNum.getText().toString();
+//                //获取用户填写的验证码
+//                String validation = edtValidation.getText().toString();
+//                if (validation.equals("")) {
+//                    Toast.makeText(getContext(), "验证码为空，请输入验证码！", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//                if (phoneN.equals("")) {
+//                    Toast.makeText(getContext(), "电话号为空，请输入电话号！", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+                dialog.show();
+//                BmobSMS.verifySmsCode(getActivity(), phoneN, validation, new VerifySMSCodeListener() {
+//                    @Override
+//                    public void done(BmobException e) {
+//                        if (e == null) {//短信验证码已验证成功
+//                            //发送post请求Login.do?T_USERPHONE= & AREA=
+//                            Map<String, String> map = new HashMap<String, String>();
+//                            map.put("T_USERPHONE", phoneN);
+//                            map.put("AREA", MyApplication.city);
+//                            HttpUtils.doPost(Url.loginUrl, map, new Callback() {
+//                                @Override
+//                                public void onFailure(Call call, IOException e) {
+//                                    h.sendEmptyMessage(ContentValuse.failure);
+//                                }
+//
+//                                @Override
+//                                public void onResponse(Call call, Response response) throws IOException {
+//                                    if (response.isSuccessful()) {
+//                                        String userjson = response.body().string();
+//
+//                                        try {
+//                                            JSONObject jsonObject = new JSONObject(userjson);
+//                                            String result = jsonObject.getString("result");
+//                                            if (result.equals("02")) {
+//                                                JSONObject js = jsonObject.getJSONObject("pd");
+//
+//                                                User user = new User();
+//                                                String rmb = js.getString("T_RMB");
+//                                                if (rmb.equals("null")) {
+//                                                    user.setT_TRRMB(-1);
+//                                                } else {
+//                                                    user.setT_TRRMB(Integer.valueOf(rmb));
+//                                                }
+//
+//                                                user.setT_USERPHONE(js.getString("T_USERPHONE"));
+//                                                String userName = js.getString("T_USERNAME");
+//                                                if (userName.equals("null")) {
+//                                                    userName = "";
+//                                                }
+//                                                user.setT_USERNAME(userName);
+//
+//                                                String name = js.getString("T_NAME");
+//                                                if (name.equals("null")) {
+//                                                    name = "";
+//                                                }
+//                                                user.setT_NAME(name);
+//                                                String T_USERIMAGE = js.getString("T_USERIMAGE");
+//                                                if (T_USERIMAGE.equals("null")) {
+//                                                    T_USERIMAGE = "";
+//                                                }
+//                                                user.setT_USERIMAGE(T_USERIMAGE);
+//                                                user.setTUSER_ID(Integer.valueOf(js.getString("TUSER_ID")));
+//                                                user.setT_SIGN(js.getInt("T_SIGN"));
+//                                                MyApplication.user = user;
+//                                                h.sendEmptyMessage(ContentValuse.success);
+//                                            } else {
+//                                                h.sendEmptyMessage(ContentValuse.failure);
+//                                            }
+//                                        } catch (Exception e) {
+//                                            e.printStackTrace();
+//                                            h.sendEmptyMessage(ContentValuse.failure);
+//                                        }
+//                                    }
+//                                }
+//                            });
+//
+//
+//                        } else {
+//                            h.sendEmptyMessage(ContentValuse.failure);
+//                        }
+//                    }
+//                });
 
-                if (phoneN.equals("")) {
-                    Toast.makeText(getContext(), "电话号为空，请输入电话号！", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                BmobSMS.verifySmsCode(getActivity(), phoneN, validation, new VerifySMSCodeListener() {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("T_USERPHONE", "17829173776");
+                map.put("AREA", MyApplication.city);
+                HttpUtils.doPost(Url.loginUrl, map, new Callback() {
                     @Override
-                    public void done(BmobException e) {
-                        if (e == null) {//短信验证码已验证成功
-                            //发送post请求Login.do?T_USERPHONE= & AREA=
-                            Map<String, String> map = new HashMap<String, String>();
-                            map.put("T_USERPHONE", phoneN);
-                            map.put("AREA", MyApplication.city);
-                            HttpUtils.doPost(Url.loginUrl, map, new Callback() {
-                                @Override
-                                public void onFailure(Call call, IOException e) {
+                    public void onFailure(Call call, IOException e) {
+                        h.sendEmptyMessage(ContentValuse.failure);
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        if (response.isSuccessful()) {
+                            String userjson = response.body().string();
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(userjson);
+                                String result = jsonObject.getString("result");
+                                if (result.equals("02")) {
+                                    JSONObject js = jsonObject.getJSONObject("pd");
+
+                                    User user = new User();
+                                    String rmb = js.getString("T_RMB");
+                                    if (rmb.equals("null")) {
+                                        user.setT_TRRMB(-1);
+                                    } else {
+                                        user.setT_TRRMB(Integer.valueOf(rmb));
+                                    }
+
+                                    user.setT_USERPHONE(js.getString("T_USERPHONE"));
+                                    String userName = js.getString("T_USERNAME");
+                                    if (userName.equals("null")) {
+                                        userName = "";
+                                    }
+                                    user.setT_USERNAME(userName);
+
+                                    String name = js.getString("T_NAME");
+                                    if (name.equals("null")) {
+                                        name = "";
+                                    }
+                                    user.setT_NAME(name);
+                                    String T_USERIMAGE = js.getString("T_USERIMAGE");
+                                    if (T_USERIMAGE.equals("null")) {
+                                        T_USERIMAGE = "";
+                                    }
+                                    user.setT_USERIMAGE(T_USERIMAGE);
+                                    user.setTUSER_ID(Integer.valueOf(js.getString("TUSER_ID")));
+                                    user.setT_SIGN(js.getInt("T_SIGN"));
+                                    MyApplication.user = user;
+                                    h.sendEmptyMessage(ContentValuse.success);
+                                } else {
                                     h.sendEmptyMessage(ContentValuse.failure);
                                 }
-
-                                @Override
-                                public void onResponse(Call call, Response response) throws IOException {
-                                    if (response.isSuccessful()) {
-                                        String userjson = response.body().string();
-
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(userjson);
-                                            String result = jsonObject.getString("result");
-                                            if (result.equals("02")) {
-                                                JSONObject js = jsonObject.getJSONObject("pd");
-
-                                                User user = new User();
-                                                    String rmb = js.getString("T_RMB");
-                                                if (rmb.equals("null")){
-                                                    user.setT_TRRMB(-1);
-                                                }else {
-                                                    user.setT_TRRMB(Integer.valueOf(rmb));
-                                                }
-
-                                                user.setT_USERPHONE(js.getString("T_USERPHONE"));
-                                              String userName = js.getString("T_USERNAME");
-                                                if ( userName.equals("null")){
-                                                    userName = "";
-                                                }
-                                                user.setT_USERNAME(userName);
-
-                                               String name = js.getString("T_NAME");
-                                                if (name.equals("null")){
-                                                    name = "";
-                                                }
-                                                user.setT_NAME(name);
-                                                String T_USERIMAGE = js.getString("T_USERIMAGE");
-                                                if (T_USERIMAGE.equals("null")){
-                                                    T_USERIMAGE = "";
-                                                }
-                                                user.setT_USERIMAGE(T_USERIMAGE);
-                                                user.setTUSER_ID(Integer.valueOf(js.getString("TUSER_ID")));
-                                                user.setT_SIGN(js.getInt("T_SIGN"));
-                                                MyApplication.user = user;
-                                                h.sendEmptyMessage(ContentValuse.success);
-                                            }else {
-                                                h.sendEmptyMessage(ContentValuse.failure);
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-                            });
-
-
-                        } else {
-                            h.sendEmptyMessage(ContentValuse.failure);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                h.sendEmptyMessage(ContentValuse.failure);
+                            }
                         }
                     }
                 });
-
-
                 break;
             case R.id.tv_yhxy:
 
                 Intent intent = new Intent(getContext(), WebActivity.class);
-                intent.putExtra(ContentValuse.url, Url.url + "/heibike/yhxy.html");
+                intent.putExtra(ContentValuse.url, Url.url + "/yhxy.html");
                 getActivity().startActivity(intent);
 
 

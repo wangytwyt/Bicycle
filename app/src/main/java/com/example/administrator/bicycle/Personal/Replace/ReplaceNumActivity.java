@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.Personal.InformationActivity;
 import com.example.administrator.bicycle.Personal.UpdatePhoneActivity;
 import com.example.administrator.bicycle.R;
@@ -38,7 +39,7 @@ public class ReplaceNumActivity extends Activity {
         tvtitle.setText("手机号");
 
         TextView tvphone = (TextView) findViewById(R.id.tv_phone);
-        tvphone.setText("15243255136");
+        tvphone.setText(MyApplication.user.getT_USERPHONE());
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

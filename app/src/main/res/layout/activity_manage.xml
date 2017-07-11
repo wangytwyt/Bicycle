@@ -319,4 +319,15 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/but_Logout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:background="@mipmap/com_off"
+        android:gravity="center"
+        android:text="退出登录"
+        android:textColor="#ffffff"
+        android:textSize="20dp" />
+
 </LinearLayout>

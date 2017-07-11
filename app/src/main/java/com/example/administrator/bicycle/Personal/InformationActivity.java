@@ -68,8 +68,12 @@ public class InformationActivity extends Activity implements View.OnClickListene
 
             switch (msg.what) {
                 case ContentValuse.success:
-                    InformationActivity.this.finish();
+
+
+                    MyApplication.user=null;
                     Toast.makeText(InformationActivity.this, "退出成功", Toast.LENGTH_SHORT).show();
+                    InformationActivity.this.setResult(1, new Intent());
+                    InformationActivity.this.finish();
                     break;
 
                 case ContentValuse.failure:
@@ -192,7 +196,7 @@ public class InformationActivity extends Activity implements View.OnClickListene
                         String userjson = response.body().string();
                         JSONObject jsonObject = new JSONObject(userjson);
                         String result = jsonObject.getString("result");
-                        if (response.equals("02")) {
+                        if (result.equals("02")) {
                             mhandler.sendEmptyMessage(ContentValuse.success);
                         } else {
                             mhandler.sendEmptyMessage(ContentValuse.failure);

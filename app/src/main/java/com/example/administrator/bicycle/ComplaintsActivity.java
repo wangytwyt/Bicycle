@@ -78,8 +78,8 @@ public class ComplaintsActivity extends Activity {
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("投诉");
 
-        dialog = new CustomProgressDialog(this);
-        dialog.setMessage("提交中...");
+        dialog = CustomProgressDialog.createDialog(this);
+        dialog.setMessage("   提交中...   ");
 
         cbxv = (CheckBoxView) findViewById(R.id.cbxv);
         cbxv.setDataResource(this, R.array.car_fault);
@@ -119,6 +119,7 @@ public class ComplaintsActivity extends Activity {
         map.put("BxId", cbxv.getIds());
         map.put("BIKENO", bicy);
         map.put("note", note);
+        map.put("T_USERPHONE", MyApplication.user.getT_USERPHONE());
         HttpUtils.doPost(Url.insertTs, map, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -132,13 +133,14 @@ public class ComplaintsActivity extends Activity {
                         String userjson = response.body().string();
                         JSONObject jsonObject = new JSONObject(userjson);
                         String result = jsonObject.getString("result");
-                        if (response.equals("02")) {
+                        if (result.equals("02")) {
                             mhandler.sendEmptyMessage(ContentValuse.success);
                         } else {
                             mhandler.sendEmptyMessage(ContentValuse.failure);
                         }
 
                     } catch (Exception e) {
+                        mhandler.sendEmptyMessage(ContentValuse.failure);
                         e.printStackTrace();
                     }
                 } else {

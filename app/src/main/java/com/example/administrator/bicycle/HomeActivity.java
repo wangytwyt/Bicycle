@@ -1,11 +1,13 @@
 package com.example.administrator.bicycle;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.manageactivity.ManageActivity;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.HttpUtils;
@@ -41,7 +44,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends Activity implements View.OnClickListener {
+
+    private final int WT = 1;
+    private final int SL = 2;
+    private final int DY = 3;
 
     LinearLayout one, two, three, four, five, six;
     LinearLayout return1;//标题栏返回
@@ -50,22 +57,32 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView iv_saomakaisuo, tv_weather;
 
-    private TextView tv_city, tv_temperature;
+    private TextView tv_city, tv_temperature, tv_sl, tv_day;
 
     final Handler mhandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case WT:
+                    tv_temperature.setText((String) msg.obj);
+                    typeWearher(msg.arg1);
+                    break;
+                case SL:
+                    tv_sl.setText((String) msg.obj);
+                    break;
+                case DY:
+                    tv_day.setText((String) msg.obj);
+                    break;
+            }
 
-
-            typeWearher(msg.what);
-            tv_temperature.setText((String) msg.obj);
         }
     };
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getSupportActionBar().hide();
+        //   getSupportActionBar().hide();
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -88,7 +105,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tv_temperature = (TextView) findViewById(R.id.tv_temperature);
         iv_saomakaisuo = (ImageView) findViewById(R.id.iv_saomakaisuo);
 
-
+        tv_sl = (TextView) findViewById(R.id.tv_sl);
+        tv_day = (TextView) findViewById(R.id.tv_day);
         one = (LinearLayout) findViewById(R.id.lin_one);
         two = (LinearLayout) findViewById(R.id.lin_two);
         three = (LinearLayout) findViewById(R.id.lin_three);
@@ -104,11 +122,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         iv_saomakaisuo.setOnClickListener(this);
 
         tv_city.setText(MyApplication.city);
-        getsdfd();
+        getWearher();
+        getDay();
+        getSl();
+
     }
 
 
-    private void getsdfd() {
+    private void getWearher() {
         if (!NetWorkStatus.isNetworkAvailable(this)) {
             Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
             return;
@@ -138,7 +159,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         int low = jdaily.getInt("low");
 
                         Message msg = new Message();
-                        msg.what = code_day;
+                        msg.what = WT;
+                        msg.arg1 = code_day;
                         msg.obj = low + "℃/" + high + "℃";
                         mhandler.sendMessage(msg);
                     } catch (Exception e) {
@@ -185,6 +207,78 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
+    }
+
+
+    private void getSl() {
+        if (!NetWorkStatus.isNetworkAvailable(this)) {
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        HttpUtils.doGet(Url.getSL + MyApplication.user.getT_USERPHONE(), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    try {
+                        String userjson = response.body().string();
+                        JSONObject jsonObject = new JSONObject(userjson);
+                        String result = jsonObject.getString("result");
+                        if (result.equals("02")) {
+                            JSONObject jspd = jsonObject.getJSONObject("pd");
+                            int sl = jspd.getInt("T_USERCREDIT");
+                            Message msg = new Message();
+                            msg.what = SL;
+                            msg.obj = sl + "分";
+                            mhandler.sendMessage(msg);
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void getDay() {
+        if (!NetWorkStatus.isNetworkAvailable(this)) {
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        HttpUtils.doGet(Url.getDay + MyApplication.user.getT_USERPHONE(), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    try {
+                        String userjson = response.body().string();
+                        JSONObject jsonObject = new JSONObject(userjson);
+                        String result = jsonObject.getString("result");
+                        if (result.equals("02")) {
+                            JSONObject jspd = jsonObject.getJSONObject("pd");
+                            int day = jspd.getInt("T_DOWNTIME");
+                            Message msg = new Message();
+                            msg.what = DY;
+                            msg.obj = day + "天";
+                            mhandler.sendMessage(msg);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
 
@@ -273,10 +367,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 switch (MyApplication.user.getT_SIGN()) {
                     case 1:
-                        startActivity(new Intent(HomeActivity.this, InformationActivity.class));
+                        startActivityForResult(new Intent(HomeActivity.this, ManageActivity.class), ContentValuse.deleteLogin);
+
                         break;
                     case 2:
-                        startActivity(new Intent(HomeActivity.this, ManageActivity.class));
+                        startActivityForResult(new Intent(HomeActivity.this, InformationActivity.class), ContentValuse.deleteLogin);
+
                         break;
                 }
 
@@ -311,7 +407,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (resultCode == 0) {
             return;
         }
-
+        if (requestCode == ContentValuse.deleteLogin) {
+            this.finish();
+        }
 
     }
 
