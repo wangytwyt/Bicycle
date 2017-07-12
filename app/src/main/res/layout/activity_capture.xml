@@ -48,32 +48,23 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="175dp"
+        android:layout_marginBottom="125dp"
         android:text="@string/scan_text"
-        android:textColor="#ffd400"
+        android:textColor="#ffff00"
         android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/jisu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="130dp"
-        android:background="@mipmap/jisu"
-        android:textStyle="bold" />
 
     <RelativeLayout
         android:id="@+id/capture_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:id="@+id/capture_mask_top"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="170dp"
             android:layout_alignParentTop="true"
             android:background="@drawable/shadow" />
 
@@ -137,12 +128,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="30dp"
             android:layout_marginLeft="70dp"
             android:drawableTop="@mipmap/shoudongshuruchepai"
             android:text="手动输入车牌"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/shanguangdeng"
@@ -150,12 +140,19 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="70dp"
             android:drawableTop="@mipmap/shoudiantong1"
             android:text="     手电筒     "
-            android:textColor="@color/white"
-            android:layout_marginBottom="40dp"
-            android:layout_marginRight="70dp"
-            />
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/logo_er"
+            android:layout_marginBottom="20dp"
+            android:layout_above="@+id/capture_crop_view"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

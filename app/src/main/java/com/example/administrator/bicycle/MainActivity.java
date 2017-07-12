@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     private ImageButton butright;
     private RelativeLayout lay_lift;
-    private ImageView iv_lift;
+    private ImageView iv_lift,iv_wo,iv_liftsao,iv_rightji;
 
     private NaviLatLng naviLatLng;
 
@@ -226,12 +226,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         /*
          * 扫描二维码的按钮
          */
-        code.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toCapture();
-            }
-        });
+        code.setOnClickListener(this);
 
         /*
          * 进入个人中心的点击事件
@@ -515,7 +510,11 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         iv_lift.setOnClickListener(this);
         lay_lift = (RelativeLayout) findViewById(R.id.rl_layout);
         lay_lift.setOnClickListener(this);
-
+        iv_wo= (ImageView) findViewById(R.id.iv_wo);
+        iv_liftsao = (ImageView) findViewById(R.id.iv_liftsao);
+        iv_rightji = (ImageView) findViewById(R.id.iv_rightji);
+        iv_liftsao.setOnClickListener(this);
+        iv_rightji.setOnClickListener(this);
 
         dialog = CustomProgressDialog.createDialog(this);
         dialog.show();
@@ -531,6 +530,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             @Override
             public void onDrawerOpened() {
                 iv_xia.setImageResource(R.mipmap.bicy_background_arrw);
+                iv_liftsao.setVisibility(View.GONE);
+                iv_rightji.setVisibility(View.GONE);
             }
         });
         //这个事件当然就是和上面相对应的事件了。当抽屉完全关闭时触发的事件，我们将ImageButton的图片又变回了最初状态
@@ -538,6 +539,8 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
             @Override
             public void onDrawerClosed() {
                 iv_xia.setImageResource(R.mipmap.bicy_background_up);
+                iv_liftsao.setVisibility(View.VISIBLE);
+                iv_rightji.setVisibility(View.VISIBLE);
             }
 
         });
@@ -577,8 +580,22 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
                 }
 
-
                 break;
+
+            case R.id.iv_liftsao:
+            case R.id.code:
+
+                if (MyApplication.isLogin()) {
+                    toCapture();
+                } else {
+                    startActivity(new Intent(MainActivity.this, RegisteredActivity.class));
+                }
+                break;
+
+
+
+
+            case R.id.iv_rightji:
             case R.id.code_ji:
                 if (MyApplication.isLogin()) {
                     Intent intentji = new Intent(MainActivity.this, KaisuoActivity.class);
@@ -668,6 +685,13 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         PermissionUtils.checkPermissionneedPermissions(this);
 
         addAMapNaviListener();
+
+        if(MyApplication.user != null && MyApplication.user.getT_TRRMB() > 0){
+            iv_wo.setImageResource(R.mipmap.wode_vip);
+        }
+
+
+
 
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();

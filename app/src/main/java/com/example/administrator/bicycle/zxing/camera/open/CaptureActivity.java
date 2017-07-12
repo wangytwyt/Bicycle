@@ -89,7 +89,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
 
     private TextView shanguangdeng;//闪光灯
-    private ImageView jisukaisuo;//极速开锁
     private TextView image_inputNum;//输入铭牌
     private LinearLayout fanhui;//返回
 
@@ -115,20 +114,20 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
         shanguangdeng = (TextView) findViewById(R.id.shanguangdeng);//闪光灯
-        jisukaisuo = (ImageView) findViewById(R.id.jisu);
+
         image_inputNum = (TextView) findViewById(R.id.image_inputNum);
         fanhui = (LinearLayout) findViewById(R.id.btn_return);
 
 
         shanguangdeng.setOnClickListener(this);
-        jisukaisuo.setOnClickListener(this);
+
         image_inputNum.setOnClickListener(this);
         fanhui.setOnClickListener(this);
 
 
         if (bicyInfoToCaptureID != -1) {
             shanguangdeng.setVisibility(View.GONE);
-            jisukaisuo.setVisibility(View.GONE);
+
             image_inputNum.setVisibility(View.GONE);
         }
 
@@ -367,12 +366,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     e.printStackTrace();
                 }
                 break;
-            case R.id.jisu:
-                Intent intent = new Intent(CaptureActivity.this, KaisuoActivity.class);
-                intent.putExtra("jisukaisuo", "jisukaisuo");
-                startActivity(intent);
-                CaptureActivity.this.finish();
-                break;
+
             case R.id.image_inputNum:
                 Intent intenttwo = new Intent(CaptureActivity.this, InputActivity.class);
                 startActivity(intenttwo);
