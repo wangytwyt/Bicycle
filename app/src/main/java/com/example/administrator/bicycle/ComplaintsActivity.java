@@ -105,7 +105,7 @@ public class ComplaintsActivity extends Activity {
     private void commit() {
         String bicy = edt_one.getText().toString().trim();
         String note = edt_two.getText().toString().trim();
-
+         String bxId = cbxv.getIds();
         if (!NetWorkStatus.isNetworkAvailable(this)) {
             Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
             return;
@@ -114,9 +114,13 @@ public class ComplaintsActivity extends Activity {
             Toast.makeText(this, "请扫码输入车号！", Toast.LENGTH_SHORT).show();
             return;
         }
+        if(bxId.equals("")){
+            Toast.makeText(this, "请选择故障类型！", Toast.LENGTH_SHORT).show();
+            return;
+        }
         dialog.show();
         Map<String, String> map = new HashMap<String, String>();
-        map.put("BxId", cbxv.getIds());
+        map.put("BxId", bxId);
         map.put("BIKENO", bicy);
         map.put("note", note);
         map.put("T_USERPHONE", MyApplication.user.getT_USERPHONE());

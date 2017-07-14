@@ -368,14 +368,11 @@ public class HomeActivity extends Activity implements View.OnClickListener {
                 switch (MyApplication.user.getT_SIGN()) {
                     case 1:
                         startActivityForResult(new Intent(HomeActivity.this, ManageActivity.class), ContentValuse.deleteLogin);
-
                         break;
                     case 2:
                         startActivityForResult(new Intent(HomeActivity.this, InformationActivity.class), ContentValuse.deleteLogin);
-
                         break;
                 }
-
 
                 break;
             case R.id.lin_three:

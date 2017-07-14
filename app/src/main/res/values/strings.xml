@@ -8,9 +8,9 @@
     <string name="shanliang_two">每个用户默认100分善良分为起始分数，最低分数为0，分数越高，意味着越符合原则。而善良值越低，意味着该用户有过不恰当的使用行为。</string>
     <string name="shanliang_three">善良分过低时，用车的会员时间亦会受到影响。当善良分低于0分时，该会员年费将增至888元/年。中国用户（含中国注册的国际用户）：88元/年（不必担心，注册时初始善良分为100分，扣分规则查看我的善良分）。</string>
     <string name="shanliang_four">您所有扣分记录都可以在个人中心→我的善良分→负面记录里面看到。</string>
-    <string name="zhaobudaoche_one">当您在app地图上于用车地点附近看到了自行车图标，这说明附近有可用的嘿车。</string>
+    <string name="zhaobudaoche_one">当您在app地图上于用车地点附近看到了自行车图标，这说明附近有可用的嘿车出行单车。</string>
     <string name="zhaobudaoche_two">在定位点找不到单车时，以下方法可帮助找车：</string>
-    <string name="zhaobudaoche_three">点击单车图标，若浮现出照片，说明这辆单车上有一位用户提供的找车帮助，点击照片，可看到停车地点的大图。如果找车帮助信息有用，请点赞，上一位用户获得您的肯定时，会得到善良分。</string>
+    <string name="zhaobudaoche_three">点击单车图标，若浮现出照片，说明这辆单车有上一位用户提供的找车帮助。点击照片，可看到停车地点的大图。如果找车帮助信息有用，请点赞，上一位用户获得您的肯定时，会得到善良分。</string>
     <string name="zhaobudaoche_four">定位受周围环境影响，有时候会有偏移。请环顾定位点四周，马路对面寻找单车。</string>
 
     <string name="prize_one">1：缴纳一年年费的，可以拥有一次抽奖机会，点击开始，将会获赠最少30天，最多90天的免费骑行天数。</string>

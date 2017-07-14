@@ -9,85 +9,196 @@
 
     <include layout="@layout/public_layout_title" />
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="vertical"
-       android:layout_margin="10dp"
-       >
-       <ImageView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:background="@mipmap/saoma" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:text="1.是否已经打开蓝牙设备"
-           android:textColor="#363636"
-           android:textSize="15dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
 
-       <TextView
-           android:id="@+id/textView12"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="5dp"
-           android:text="       若手机蓝牙设备处于关闭状态，则无法连接到智能锁上，请打开蓝牙自动连接智能锁" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="开不了锁"
+                android:textColor="#363636"
+                android:textSize="16dp" />
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:text="2.APP提示我在休息，请换其他嘿车"
-           android:textColor="#363636"
-           android:textSize="15dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="1.请确认是否已经打开手机蓝牙设备"
+                android:textColor="#363636"
+                android:textSize="15dp" />
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="5dp"
-           android:text="       当前提示下，该辆单车可能处于故障中，正在等待维修人员前往维修" />
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="       若手机蓝牙设备处于关闭状态，则无法连接到智能锁上，请打开蓝牙自动连接智能锁，再点击开锁按钮。" />
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:text="3.APP提示请确认您在车旁并再次尝试开锁或提示超时"
-           android:textColor="#363636"
-           android:textSize="15dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="5dp"
-           android:text="       多次尝试仍开锁失败，请描述现象并提交，嘿车出行会因为你的关怀越来越好" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:text="问题补充描述" />
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="200dp"
+                        android:src="@mipmap/splash" />
 
-       <EditText
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="5dp"
-           android:gravity="top|left"
-           android:visibility="gone"
-           android:background="@mipmap/miaoshu" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/cha" />
+                </LinearLayout>
 
-       <Button
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:background="@drawable/marker"
-           android:text="提交"
-           android:visibility="gone"
-           android:textColor="#ffffff"
-           android:textSize="20dp" />
-   </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="200dp"
+                        android:src="@mipmap/splash"
+
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/cha" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="2.APP提示我在休息，请换其他嘿车"
+                android:textColor="#363636"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="       当前提示下，该辆单车可能处于故障中，正在等待维修人员前往维修，请换其他嘿车出行使用。" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="200dp"
+                        android:src="@mipmap/splash" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="200dp"
+                        android:src="@mipmap/splash"
+
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="200dp"
+                        android:src="@mipmap/splash"
+
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="3.App提示请确认您在车旁并再次尝试开锁或提示超时"
+                android:textColor="#363636"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="       多次尝试仍开锁失败，请描述现象并提交，嘿车出行会因为你的关怀越来越好" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/splash" />
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:hint="问题补充描述"
+                android:background="@mipmap/miaoshu"
+                android:gravity="top|left"
+               />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/marker"
+                android:text="提交"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                />
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

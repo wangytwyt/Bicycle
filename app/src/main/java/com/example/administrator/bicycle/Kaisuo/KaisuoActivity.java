@@ -17,6 +17,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Parcel;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,8 +38,10 @@ import com.example.administrator.bicycle.R;
 
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.Dialog;
+import com.example.administrator.bicycle.util.EndTripDialog;
 import com.example.administrator.bicycle.util.Globals;
 
+import com.example.administrator.bicycle.util.TimeUtils;
 import com.luopingelec.permission.PermissionsManager;
 import com.luopingelec.permission.PermissionsResultAction;
 import com.sofi.smartlocker.ble.BleService;
@@ -59,26 +62,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import okhttp3.Cache;
-import okhttp3.Call;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
@@ -86,9 +70,40 @@ public class KaisuoActivity extends AppCompatActivity {
     private final String TAG = "---------------------";
     String url = "https://alabike.luopingelec.com/alabike/ab_mapp";
     private final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 11002;
-    TextView tvDate, text;
-    ProgressBar jindutiao;
+
+    private final int OPEN = 1;
+    private final int CLOSE = 2;
+    private final int UPDATE = 3;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case OPEN:
+                    startTiming();
+                    lock_status.setText("骑行中");
+                    lock_status.setBackgroundResource(R.mipmap.jieshuxingchengqian);
+                    break;
+                case CLOSE:
+                    closeTiming();
+                    lock_status.setText("已结束");
+                    lock_status.setBackgroundResource(R.mipmap.jieshuxingchenghou);
+                    break;
+                case UPDATE:
+                    lock_status.setText("骑行中且密码修改成功");
+                    lock_status.setBackgroundResource(R.mipmap.jieshuxingchengqian);
+                    break;
+            }
+
+
+        }
+    };
+
     String data, str, jisukaisuo, getLock;
+
+    private TextView kai_ticker, lock_status;
 
     private LinearLayout ll_setpassword;
     private EditText et_xiu;
@@ -96,19 +111,13 @@ public class KaisuoActivity extends AppCompatActivity {
     int type = 100;
     int i = 0;
 
-    private String mname,maddress;
+    private String mname, maddress;
 
+    private Handler stepTimeHandler;
+    private Runnable mTicker;
+    long startTime = 0;
+    private EndTripDialog enddialog;
 
-    // protected  ApplicationState mState;
-
-    private AtomicBoolean connect = new AtomicBoolean(false);
-
-    private BluetoothSocket BTSocket;
-    private BluetoothAdapter BTAdapter;
-    private BluetoothDevice device;
-    private double lontitude = 0, latitude = 0;
-
-    private String bi;
     private ServiceConnection mConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -153,24 +162,7 @@ public class KaisuoActivity extends AppCompatActivity {
         @Override
         public void bleGetParams(String batteryVol, String solarVol, boolean open) throws RemoteException {
             LOG.E(TAG, "bleGetParams batteryVol:" + batteryVol + " solarVol:" + solarVol + " open:" + open);
-//            if(open){
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            LOG.E("-------ddd","kaisuo");
-//
-//                            Constants.bleService.openLock("666666");
-//                            //  Constants.bleService.getLockStatus(lontitude, latitude);
-//                        } catch (RemoteException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//
-//                    }
-//                }).start();
-//
-//            }
+
         }
 
         @Override
@@ -184,7 +176,7 @@ public class KaisuoActivity extends AppCompatActivity {
                 connectLock(address);
             }
             if (getLock != null && !getLock.equals("")) {
-                mname =name;
+                mname = name;
                 maddress = address;
                 connectLock(address);
             }
@@ -218,71 +210,8 @@ public class KaisuoActivity extends AppCompatActivity {
 
         @Override
         public void bleCmdError(int cmd, String errorMsg) throws RemoteException {
-            LOG.E(TAG, "bleCmdError :" + cmd + " msg:" + errorMsg);
-            if (errorMsg.equals("内存空间不足")) {
-
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                //查询订单
-//                                Constants.bleService.getLockRecord();
-//
-//                            } catch (RemoteException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }).start();
-
-
-            }
-
-
-            send(errorMsg);
         }
 
-
-//        @Override
-//        public void bleGetBike(String version, String keySerial, String mac, String vol) throws RemoteException {
-//            LOG.E(TAG, "bleGetBike version:" + version + " keySerial:" + keySerial + " mac:" + mac + " vol:" + vol);
-//            if (jisukaisuo != null && !jisukaisuo.equals("")) {
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            Constants.bleService.openLock("666666");
-//                        } catch (RemoteException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }).start();
-//            } else {
-//                try {
-//                    httpPostJson(mac, keySerial, DateToTimestamp(new Date()));
-//                } catch (Exception e) {
-//                }
-//            }
-//
-//
-//        }
-
-//        @Override
-//        public void bleGetRecord(String phone, String bikeTradeNo, String timestamp, String transType,
-//                                 String mackey, String index, String Cap, String Vol) throws RemoteException {
-//            LOG.E(TAG, "bleGetRecord");
-//            bi = bikeTradeNo;
-////            new Thread(new Runnable() {
-////                @Override
-////                public void run() {
-////                    try {
-////                        //删除订单
-////                        Constants.bleService.delLockRecord(bi);
-////                    } catch (RemoteException e) {
-////                        e.printStackTrace();
-////                    }
-////                }
-////            }).start();
-//        }
 
         @Override
         public void bleCmdReply(int cmd) throws RemoteException {
@@ -302,23 +231,19 @@ public class KaisuoActivity extends AppCompatActivity {
                         }
                     }).start();
                     MyApplication.startLocation(KaisuoActivity.this);
-                    send("已关锁");
+
+                    send(CLOSE);
                     break;
                 case VerifyUtil.CMD_OPEN_LOCK://开锁
+                    send(OPEN);
+                    break;
+                case VerifyUtil.CMD_UPDATE_KEY:
+                    send(UPDATE);
                     Intent intent = new Intent();
                     intent.putExtra(ContentValuse.lockname, mname);
                     intent.putExtra(ContentValuse.lockaddress, maddress);
                     setResult(1, intent);
                     KaisuoActivity.this.finish();
-                    send("已开锁");
-                    break;
-                case VerifyUtil.CMD_UPDATE_KEY:
-                    send("密码修改成功");
-//                    Intent intent = new Intent();
-//                    intent.putExtra(ContentValuse.lockname, mname);
-//                    intent.putExtra(ContentValuse.lockaddress, maddress);
-//                    setResult(1, intent);
-//                    KaisuoActivity.this.finish();
 
                     break;
 
@@ -328,11 +253,10 @@ public class KaisuoActivity extends AppCompatActivity {
     };
 
 
-    private void send(String data) {
-        Message msg = h.obtainMessage();
-        msg.what = 123;
-        msg.obj = data;
-        h.sendMessage(msg);
+    private void send(int data) {
+        Message msg = new Message();
+        msg.what = data;
+        mHandler.sendMessage(msg);
     }
 
     private void connectLock(final String address) {
@@ -357,16 +281,25 @@ public class KaisuoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_kaisuo);
         i = 0;
-        tvDate = (TextView) findViewById(R.id.tv_date);
-        text = (TextView) findViewById(R.id.text);
-        jindutiao = (ProgressBar) findViewById(R.id.jindutiao);
+
+        initView();
+
+        getintent();
+
+
+    }
+
+    private void initView() {
         xiu = (EditText) findViewById(R.id.et_xiu);
         ll_setpassword = (LinearLayout) findViewById(R.id.ll_setpassword);
         et_xiu = (EditText) findViewById(R.id.et_xiu);
 
 
+        lock_status = (TextView) findViewById(R.id.lock_status);
+        kai_ticker = (TextView) findViewById(R.id.kai_ticker);
         findViewById(R.id.but_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -388,8 +321,51 @@ public class KaisuoActivity extends AppCompatActivity {
             }
         });
 
-        getintent();
+        findViewById(R.id.tv_endtrip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EndTripDialog.Builder builder = new EndTripDialog.Builder(KaisuoActivity.this);
+                builder.setPositiveButton(new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        //设置你的操作事项
+                        Toast.makeText(KaisuoActivity.this,"哇啊傻傻的发呆",Toast.LENGTH_SHORT).show();
+                    }
+                });
 
+                builder.setNegativeButton(
+                        new android.content.DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                builder.create().show();
+            }
+        });
+    }
+
+    private void startTiming() {
+        stepTimeHandler = new Handler();
+        startTime = System.currentTimeMillis();
+        mTicker = new Runnable() {
+            public void run() {
+                String content = TimeUtils.showTimeCount(System.currentTimeMillis() - startTime);
+                kai_ticker.setText(content);
+
+                long now = SystemClock.uptimeMillis();
+                long next = now + (1000 - now % 1000);
+                stepTimeHandler.postAtTime(mTicker, next);
+            }
+        };
+        //启动计时线程，定时更新
+        mTicker.run();
+    }
+
+    private void closeTiming() {
+        if (stepTimeHandler != null) {
+            stepTimeHandler.removeCallbacks(mTicker);
+        }
 
     }
 
@@ -579,23 +555,6 @@ public class KaisuoActivity extends AppCompatActivity {
         );
     }
 
-
-
-    Handler h = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            if (msg.what == 123) {
-                String str = (String) msg.obj;
-                tvDate.setText(str);
-                jindutiao.setVisibility(View.GONE);
-                text.setVisibility(View.GONE);
-            }
-
-
-        }
-    };
 
     private void stopService() {
         try {

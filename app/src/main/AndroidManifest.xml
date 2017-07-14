@@ -97,6 +97,15 @@
     <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" />
     <uses-permission android:name="com.huawei.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.huawei.launcher.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera" />
 
     <supports-screens
         android:anyDensity="true"
@@ -283,6 +292,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".testActivity" />
+        <activity android:name=".Personal.Guide.CarAlsoActivity" />
+        <activity android:name=".Personal.Guide.RidingRulesActivity"></activity>
     </application>
 
 </manifest>

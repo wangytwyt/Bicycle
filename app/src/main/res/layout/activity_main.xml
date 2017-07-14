@@ -245,13 +245,13 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@mipmap/map_background"
             android:gravity="top">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp">
+                android:layout_height="220dp"
+                android:background="@mipmap/map_background"
+                >
 
                 <ImageView
                     android:id="@+id/location"
@@ -259,6 +259,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="60dp"
                     android:src="@mipmap/dingweiqian" />
 
                 <ImageView
@@ -266,7 +267,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/location"
-                    android:layout_marginBottom="25dp"
+                    android:layout_marginBottom="50dp"
                     android:layout_marginLeft="20dp"
                     android:src="@mipmap/shuaxinqian" />
 
@@ -276,6 +277,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
+                    android:layout_marginBottom="60dp"
                     android:layout_marginRight="20dp"
                     android:src="@mipmap/tousuqian" />
 
@@ -285,7 +287,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/location"
                     android:layout_alignParentRight="true"
-                    android:layout_marginBottom="25dp"
+                    android:layout_marginBottom="50dp"
                     android:layout_marginRight="20dp"
                     android:src="@mipmap/zhushou" />
 
@@ -293,20 +295,20 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/code"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:scaleType="fitXY"
                         android:src="@mipmap/bicy_sao" />
 
                     <ImageView
                         android:id="@+id/code_ji"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:scaleType="fitXY"
                         android:src="@mipmap/bicy_ji" />
                 </LinearLayout>

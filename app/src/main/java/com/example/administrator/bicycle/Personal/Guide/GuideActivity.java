@@ -13,7 +13,7 @@ import com.example.administrator.bicycle.Personal.zhaobudaoche.ZhaobudaocheActiv
 import com.example.administrator.bicycle.R;
 
 public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
-    LinearLayout one, two, three, four, five, six;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,19 +34,31 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
 
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("用户指南");
-        one = (LinearLayout) findViewById(R.id.line_one);
-        two = (LinearLayout) findViewById(R.id.line_two);
-        three = (LinearLayout) findViewById(R.id.line_three);
-        four = (LinearLayout) findViewById(R.id.line_four);
-        five = (LinearLayout) findViewById(R.id.line_five);
-        six = (LinearLayout) findViewById(R.id.line_six);
 
-        one.setOnClickListener(this);
-        two.setOnClickListener(this);
-        three.setOnClickListener(this);
-        four.setOnClickListener(this);
-        five.setOnClickListener(this);
-        six.setOnClickListener(this);
+        findViewById(R.id.bicy_one).setOnClickListener(this);
+        findViewById(R.id.bicy_two).setOnClickListener(this);
+        findViewById(R.id.bicy_three).setOnClickListener(this);
+        findViewById(R.id.bicy_four).setOnClickListener(this);
+        findViewById(R.id.bicy_five).setOnClickListener(this);
+
+        findViewById(R.id.vip_one).setOnClickListener(this);
+        findViewById(R.id.vip_two).setOnClickListener(this);
+        findViewById(R.id.vip_three).setOnClickListener(this);
+
+        findViewById(R.id.name_one).setOnClickListener(this);
+        findViewById(R.id.name_two).setOnClickListener(this);
+        findViewById(R.id.name_three).setOnClickListener(this);
+
+        findViewById(R.id.party).setOnClickListener(this);
+
+        findViewById(R.id.my_one).setOnClickListener(this);
+        findViewById(R.id.my_two).setOnClickListener(this);
+
+        findViewById(R.id.insurance_one).setOnClickListener(this);
+        findViewById(R.id.insurance_two).setOnClickListener(this);
+        findViewById(R.id.insurance_three).setOnClickListener(this);
+
+        findViewById(R.id.line_six).setOnClickListener(this);
     }
 
 
@@ -59,25 +71,79 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.line_one:
+            case R.id.bicy_one:
+              startActivity(new Intent(this,ZhaobudaocheActivity.class));
+                break;
+            case R.id.bicy_two:
                 startActivity(new Intent(GuideActivity.this, CantOpenActivity.class));
                 break;
-            case R.id.line_two:
-                startActivity(new Intent(GuideActivity.this, ReportActivity.class));
-                break;
-            case R.id.line_three:
-                startActivity(new Intent(GuideActivity.this, AnnualFeeActivity.class));
-                break;
-            case R.id.line_four:
+            case R.id.bicy_three:
                 startActivity(new Intent(GuideActivity.this, WeitingActivity.class));
                 break;
-            case R.id.line_five:
-                startActivity(new Intent(GuideActivity.this, ZhaobudaocheActivity.class));
+            case R.id.bicy_four:
+                startActivity(new Intent(GuideActivity.this, CarAlsoActivity.class));
                 break;
-            case R.id.line_six:
-               startActivity(new Intent(GuideActivity.this, AllProblemActivity.class));
+            case  R.id.bicy_five:
+                startActivity(new Intent(GuideActivity.this, RidingRulesActivity.class));
                 break;
 
+
+
+
+            case R.id.vip_one:
+                startActivity(new Intent(GuideActivity.this, AnnualFeeActivity.class));
+                break;
+            case R.id.vip_two:
+
+                break;
+            case R.id.vip_three:
+
+                break;
+
+
+
+            case R.id.name_one:
+
+                break;
+            case R.id.name_two:
+
+                break;
+            case R.id.name_three:
+
+                break;
+
+
+            case R.id.party:
+
+                break;
+
+            case R.id.my_one:
+
+                break;
+
+            case R.id.my_two:
+
+
+                break;
+
+            case R.id.insurance_one:
+
+                break;
+
+            case R.id.insurance_two:
+
+
+                break;
+
+
+            case R.id.insurance_three:
+
+
+                break;
+
+            case R.id.line_six:
+                startActivity(new Intent(GuideActivity.this, AllProblemActivity.class));
+                break;
         }
     }
 }

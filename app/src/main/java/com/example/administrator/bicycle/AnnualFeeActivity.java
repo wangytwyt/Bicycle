@@ -37,8 +37,7 @@ public class AnnualFeeActivity extends Activity {
         tvtitle.setText("充值说明");
 
 
-        TextView text = (TextView) findViewById(R.id.tv_text);
-        text.setText(TextUtiil.setTxt(this,R.raw.annualfee));
+
 
     }
 

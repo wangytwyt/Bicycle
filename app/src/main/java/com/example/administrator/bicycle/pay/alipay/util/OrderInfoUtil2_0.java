@@ -1,6 +1,7 @@
 package com.example.administrator.bicycle.pay.alipay.util;
 
 import com.example.administrator.bicycle.pay.alipay.SignUtils;
+import com.sofi.smartlocker.ble.util.LOG;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -82,7 +83,7 @@ public class OrderInfoUtil2_0 {
 
 		keyValues.put("sign_type", rsa2 ? "RSA2" : "RSA");
 
-		keyValues.put("timestamp", "2016-07-29 16:55:53");
+		keyValues.put("timestamp", "2017-07-13 16:55:53");
 
 		keyValues.put("version", "1.0");
 		
@@ -164,6 +165,9 @@ public class OrderInfoUtil2_0 {
 		authInfo.append(buildKeyValue(tailKey, tailValue, false));
 
 		String oriSign = SignUtils.sign(authInfo.toString(), rsaKey, rsa2);
+
+		LOG.E("-------------",authInfo.toString());
+
 		String encodedSign = "";
 
 		try {
@@ -171,6 +175,7 @@ public class OrderInfoUtil2_0 {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+		LOG.E("----------sign-------",encodedSign);
 		return "sign=" + encodedSign;
 	}
 	

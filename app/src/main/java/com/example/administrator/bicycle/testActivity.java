@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.administrator.bicycle.util.TimeUtils;
+
 public class testActivity extends AppCompatActivity {
 private TextView tv_time;
     @Override
@@ -36,26 +38,6 @@ private TextView tv_time;
 
 
 
-    //时间计数器，最多只能到99小时，如需要更大小时数需要改改方法
-    public String showTimeCount(long time) {
-        if(time >= 360000000){
-            return "00:00:00";
-        }
-        String timeCount = "";
-        long hourc = time/3600000;
-        String hour = "0" + hourc;
-        hour = hour.substring(hour.length()-2, hour.length());
-
-        long minuec = (time-hourc*3600000)/(60000);
-        String minue = "0" + minuec;
-        minue = minue.substring(minue.length()-2, minue.length());
-
-        long secc = (time-hourc*3600000-minuec*60000)/1000;
-        String sec = "0" + secc;
-        sec = sec.substring(sec.length()-2, sec.length());
-        timeCount = hour + ":" + minue + ":" + sec;
-        return timeCount;
-    }
 
     private Handler stepTimeHandler;
     private Runnable mTicker;
@@ -75,7 +57,7 @@ private TextView tv_time;
                 startTime = System.currentTimeMillis();
                 mTicker = new Runnable() {
                     public void run() {
-                        String content = showTimeCount(System.currentTimeMillis() - startTime);
+                        String content = TimeUtils.showTimeCount(System.currentTimeMillis() - startTime);
                         tv_time.setText(content);
 
                         long now = SystemClock.uptimeMillis();

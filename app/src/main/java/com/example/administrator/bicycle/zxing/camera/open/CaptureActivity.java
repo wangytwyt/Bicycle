@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Camera;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +51,7 @@ import com.google.zxing.Result;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.security.Policy;
 
 /**
  * This activity opens the camera and does the actual scanning on a background
@@ -95,6 +97,10 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     private int bicyInfoToCaptureID;//获取车号
 
+
+    private Camera camera;
+
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -114,7 +120,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
         shanguangdeng = (TextView) findViewById(R.id.shanguangdeng);//闪光灯
-
+        shanguangdeng.setSelected(false);
         image_inputNum = (TextView) findViewById(R.id.image_inputNum);
         fanhui = (LinearLayout) findViewById(R.id.btn_return);
 
@@ -236,8 +242,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 Intent intent = new Intent(CaptureActivity.this, KaisuoActivity.class);
                 intent.putExtra("result", resultString);
                 startActivity(intent);
-            }else {
-                Intent intent =  new Intent();
+            } else {
+                Intent intent = new Intent();
                 intent.putExtra(ContentValuse.getbike, resultString);
                 setResult(1, intent);
 
@@ -360,11 +366,17 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.shanguangdeng:
-                try {
-                    cameraManager.openDriver(scanPreview.getHolder());
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+                if (cameraManager.isOpen()) {
+                    shanguangdeng.setSelected(false);
+                    cameraManager.offLight();
+
+                } else {
+                    shanguangdeng.setSelected(true);
+                    cameraManager.openLight();
+
                 }
+
                 break;
 
             case R.id.image_inputNum:

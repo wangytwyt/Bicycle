@@ -1,4 +1,4 @@
-package com.example.administrator.bicycle.Personal.zhaobudaoche;
+package com.example.administrator.bicycle.Personal.Guide;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,17 +6,17 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.R;
-import com.example.administrator.bicycle.util.TextUtiil;
 
-public class ZhaobudaocheActivity extends AppCompatActivity {
+public class CarAlsoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_zhaobudaoche);
+        setContentView(R.layout.activity_car_also);
         initView();
     }
+
     private void initView() {
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,8 +26,6 @@ public class ZhaobudaocheActivity extends AppCompatActivity {
         });
 
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
-        tvtitle.setText("找不到车");
-
-
+        tvtitle.setText("还车规则");
     }
-}
+    }

@@ -142,7 +142,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="30dp"
             android:layout_marginRight="70dp"
-            android:drawableTop="@mipmap/shoudiantong1"
+            android:drawableTop="@drawable/selecter_flash"
             android:text="     手电筒     "
             android:textColor="@color/white" />
 

@@ -264,6 +264,15 @@ public class Dialog {
         pushDialog.show();
     }
 
+
+
+
+
+
+
+
+
+
     public static void showListDialog(Context context, String title, String[] array,
                                       DialogInterface.OnClickListener confirmListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

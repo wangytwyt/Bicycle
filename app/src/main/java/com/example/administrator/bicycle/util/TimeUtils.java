@@ -10,6 +10,31 @@ import java.util.Locale;
  */
 
 public class TimeUtils {
+
+
+    //时间计数器，最多只能到99小时，如需要更大小时数需要改改方法
+    public static String showTimeCount(long time) {
+        if(time >= 360000000){
+            return "00:00:00";
+        }
+        String timeCount = "";
+        long hourc = time/3600000;
+        String hour = "0" + hourc;
+        hour = hour.substring(hour.length()-2, hour.length());
+
+        long minuec = (time-hourc*3600000)/(60000);
+        String minue = "0" + minuec;
+        minue = minue.substring(minue.length()-2, minue.length());
+
+        long secc = (time-hourc*3600000-minuec*60000)/1000;
+        String sec = "0" + secc;
+        sec = sec.substring(sec.length()-2, sec.length());
+        timeCount = hour + ":" + minue + ":" + sec;
+        return timeCount;
+    }
+
+
+
     /**
      * 是否小于12
      * @param sidCard

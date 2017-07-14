@@ -1,5 +1,7 @@
 package com.example.administrator.bicycle.pay.alipay;
 
+import com.sofi.smartlocker.ble.util.LOG;
+
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -19,6 +21,7 @@ public class SignUtils {
 	}
 	
 	public static String sign(String content, String privateKey, boolean rsa2) {
+		LOG.E("----------",content);
 		try {
 			PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(
 					Base64.decode(privateKey));

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.bicycle.Kaisuo.KaisuoActivity;
@@ -15,8 +16,20 @@ public class InputActivity extends AppCompatActivity {
     EditText mingpai;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
+
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        TextView tvtitle = (TextView) findViewById(R.id.tv_title);
+        tvtitle.setText("输入车牌");
+
         mingpai = (EditText) findViewById(R.id.mingpai);
         ImageView go = (ImageView) findViewById(R.id.go);
 

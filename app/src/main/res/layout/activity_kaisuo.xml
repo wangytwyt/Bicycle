@@ -4,75 +4,223 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
     tools:context="com.example.administrator.bicycle.Kaisuo.KaisuoActivity">
 
-    <LinearLayout
-        android:id="@+id/ll_setpassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:visibility="gone"
-        android:orientation="horizontal">
+    <include layout="@layout/public_layout_title" />
 
-        <TextView
-            android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="修改密码:"
-            android:textSize="15dp"
-            />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_xiu"
-            android:layout_width="150dp"
-            android:text="123456"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@mipmap/shurukuang"
-            android:layout_height="40dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@mipmap/kaisuo_background"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/but_set"
-            android:layout_width="60dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:background="@mipmap/info_text_select_off"
-            android:text="确 定" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:text="骑行时间"
+                    android:textColor="#333333"
+                    android:textSize="22sp" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/kai_ticker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="31dp"
+                    android:text="00:00:00"
+                    android:textColor="#333333"
+                    android:textSize="73sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="31dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="本次预约使用嘿币："
+                        android:textColor="#333333"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="0枚"
+                        android:textColor="#333333"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_setpassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="修改密码:"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/et_xiu"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@mipmap/shurukuang"
+                    android:text="123456" />
+
+                <TextView
+                    android:id="@+id/but_set"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/info_text_select_off"
+                    android:gravity="center"
+                    android:text="确 定" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/lock_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="31dp"
+                android:background="@mipmap/jieshuxingchenghou"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="开锁中"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_endtrip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="31dp"
+                android:background="@mipmap/wufajieshuxingcheng"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="无法结束行程？ >"
+                android:textColor="#666666"
+                android:textSize="20sp" />
 
-        <ProgressBar
-            android:id="@+id/jindutiao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="正在开锁，请稍等"
-            android:textColor="#FF000000" />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="20dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="66dp"
+                    android:src="@mipmap/kaisuo_custom_service" />
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:text="如有其他疑问"
+                        android:textColor="#666666"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:text="请随时联系客服"
+                        android:textColor="#666666"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:text="联系客服热线029-87563843"
+                        android:textColor="#666666"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/shield"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="3dp"
+                    android:text="嘿车出行已为您本次骑行购买了"
+                    android:textColor="#666666"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:text="《安全保险》"
+                    android:textColor="#ff7900"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
