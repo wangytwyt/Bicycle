@@ -117,9 +117,10 @@
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
-        android:label="嘿车"
+        android:label="嘿车出行"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="b32898a2ed85367261e3c2920ed6bd05">
@@ -181,7 +182,10 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <!-- 开锁 -->
-        <activity android:name=".Kaisuo.KaisuoActivity" />
+        <activity android:name=".Kaisuo.KaisuoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            />
         <!-- 抽奖 -->
         <activity android:name=".PrizeActivity" />
         <activity
@@ -294,6 +298,27 @@
         <activity android:name=".testActivity" />
         <activity android:name=".Personal.Guide.CarAlsoActivity" />
         <activity android:name=".Personal.Guide.RidingRulesActivity"></activity>
+
+
+        <!-- alipay sdk begin -->
+
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+
+        <!-- alipay sdk end -->
+
     </application>
 
 </manifest>

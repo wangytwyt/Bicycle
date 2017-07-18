@@ -49,19 +49,16 @@ public class XiugaiNameActivity extends Activity {
             switch (msg.what) {
                 case ContentValuse.success:
                     Toast.makeText(XiugaiNameActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
-
                     nameT = name.getText().toString().trim();
 
                     Intent intent = new Intent();
                     intent.putExtra(ContentValuse.nickname, nameT);
-
                     setResult(1, intent);
                     finish();
 
                     break;
 
                 case ContentValuse.failure:
-
                     Toast.makeText(XiugaiNameActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
                     break;
             }

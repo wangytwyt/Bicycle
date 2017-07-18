@@ -68,7 +68,7 @@ public class HttpUtils {
             builder.add(key, mapParams.get(key));
         }
         Request request = new Request.Builder()
-                .header("Content-Type","multipart/form-data")
+                .header("enctype","multipart/form-data")
                 .url(url)
                 .post(builder.build())
                 .build();

@@ -280,7 +280,7 @@ public class QianbaoActivity extends AppCompatActivity {
     /**
      * 支付宝支付业务
      *
-     * @param v
+     * @param
      */
     public void payV2() {
         if (TextUtils.isEmpty(APPID) || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))) {

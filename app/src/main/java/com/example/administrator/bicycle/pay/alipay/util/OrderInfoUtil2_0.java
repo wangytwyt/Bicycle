@@ -1,6 +1,7 @@
 package com.example.administrator.bicycle.pay.alipay.util;
 
 import com.example.administrator.bicycle.pay.alipay.SignUtils;
+import com.example.administrator.bicycle.util.TimeUtils;
 import com.sofi.smartlocker.ble.util.LOG;
 
 import java.io.UnsupportedEncodingException;
@@ -79,11 +80,11 @@ public class OrderInfoUtil2_0 {
 		
 		keyValues.put("charset", "utf-8");
 
-		keyValues.put("method", "alipay.trade.app.pay");
+			keyValues.put("method", "alipay.trade.app.pay");
 
 		keyValues.put("sign_type", rsa2 ? "RSA2" : "RSA");
 
-		keyValues.put("timestamp", "2017-07-13 16:55:53");
+		keyValues.put("timestamp", TimeUtils.getStringDate());
 
 		keyValues.put("version", "1.0");
 		

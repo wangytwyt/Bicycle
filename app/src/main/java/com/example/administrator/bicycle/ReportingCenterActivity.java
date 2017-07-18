@@ -28,6 +28,7 @@ import com.example.administrator.bicycle.util.ImageToByteUtil;
 import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.view.CheckBoxView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -101,7 +102,7 @@ public class ReportingCenterActivity extends com.example.administrator.bicycle.p
         findViewById(R.id.btn_nine).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commit(cbxv.getIds(),ImageToByteUtil.getImageByteList(dataList).get(0),"4515466","");
+                commit(cbxv.getIds(),new File(dataList.get(0)).getName(),dataList.get(0),"4515466","");
             }
         });
     }
@@ -170,29 +171,24 @@ public class ReportingCenterActivity extends com.example.administrator.bicycle.p
 
     }
 
-    private void commit(String ids, String bytes, String bicyId, String note) {
+    private void commit(String ids, String pathName, String fileName, String bicyId, String note) {
         if (!NetWorkStatus.isNetworkAvailable(this)) {
             Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
             return;
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("BxId", ids);
-        map.put("JbPciture", bytes);
-        map.put("T_BIKENO", bicyId);
-        map.put("note", note);
 
-        HttpUtils.doPost(Url.reportingCenter, map, new Callback() {
+
+        HttpUtils.doFile(Url.ReportingCenter + ids + "&T_BIKENO=" + bicyId + "&note=" + note, fileName, fileName, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-            mHandler.sendEmptyMessage(ContentValuse.failure);
+
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-              String sd =  response.body().string();
+
             }
         });
-
     }
 
 

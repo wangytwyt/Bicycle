@@ -92,19 +92,25 @@ public class InformationActivity extends Activity implements View.OnClickListene
         init();
 
 
-        tvNicheng.setText(MyApplication.user.getT_USERNAME());
+
        String name = MyApplication.user.getT_NAME();
         if(name.equals("")){
             tvShiming.setText("未认证");
         }else {
             tvShiming.setText(name);
         }
+        tvNicheng.setText(MyApplication.user.getT_USERNAME());
 
-        tvNum.setText(MyApplication.user.getT_USERPHONE());
 
         if (!MyApplication.user.getT_USERIMAGE().isEmpty()) {
             ImageLoader.getInstance().displayImage(MyApplication.user.getT_USERIMAGE(), iv_img);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        tvNum.setText(MyApplication.user.getT_USERPHONE());
+        super.onResume();
     }
 
     private void init() {
@@ -201,7 +207,6 @@ public class InformationActivity extends Activity implements View.OnClickListene
                         } else {
                             mhandler.sendEmptyMessage(ContentValuse.failure);
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -234,11 +239,9 @@ public class InformationActivity extends Activity implements View.OnClickListene
         if (bitmap != null) {
             iv_img.setImageBitmap(bitmap);
         }
-
         if (resultCode == 0) {
             return;
         }
-
         switch (requestCode) {
             case ContentValuse.requestCodeNickname:
                 String nickname = data.getStringExtra(ContentValuse.nickname);
@@ -252,14 +255,7 @@ public class InformationActivity extends Activity implements View.OnClickListene
                     tvShiming.setText("已认证");
                 }
                 break;
-            case ContentValuse.requestCodePhone:
-
-
-                break;
-
         }
-
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 

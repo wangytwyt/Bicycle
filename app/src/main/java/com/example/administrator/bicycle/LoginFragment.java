@@ -212,8 +212,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 }
                 // 获取用户填写的电话号码
                final String phoneN = edtPhoneNum.getText().toString();
-//                //获取用户填写的验证码
-//                String validation = edtValidation.getText().toString();
+                //获取用户填写的验证码
+                String validation = edtValidation.getText().toString();
 //                if (validation.equals("")) {
 //                    Toast.makeText(getContext(), "验证码为空，请输入验证码！", Toast.LENGTH_SHORT).show();
 //                    return;
@@ -288,8 +288,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 //                                    }
 //                                }
 //                            });
-//
-//
 //                        } else {
 //                            h.sendEmptyMessage(ContentValuse.failure);
 //                        }
@@ -352,16 +350,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 e.printStackTrace();
                                 h.sendEmptyMessage(ContentValuse.failure);
                             }
+                        }else {
+                            h.sendEmptyMessage(ContentValuse.failure);
                         }
                     }
                 });
                 break;
             case R.id.tv_yhxy:
-
                 Intent intent = new Intent(getContext(), WebActivity.class);
                 intent.putExtra(ContentValuse.url, Url.url + "/yhxy.html");
                 getActivity().startActivity(intent);
-
 
                 break;
             case R.id.img_del:

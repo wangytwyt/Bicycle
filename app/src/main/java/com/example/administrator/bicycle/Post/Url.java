@@ -10,7 +10,7 @@ public class Url {
 
 
 
-
+    private final static String bidypath = url + "/tbike/";
 
     public final static String Login = url + "/Lg";
 
@@ -30,9 +30,14 @@ public class Url {
 
     public final static String nicknameUrl = url + "/tuser/upNcByPh.do?";
 
+    public  final  static  String updataPhone = url+"/tuser/upPhByPh.do?TUSER_ID=";
 
 
-    private final static String bidypath = url + "/tbike/";
+    public  final static String ReportingCenter = bidypath+"/JbZx.do?BxId=";
+
+
+
+
     //举报中心
     public final static String reportingCenter = bidypath + "JbZx.do?";
     ///投诉

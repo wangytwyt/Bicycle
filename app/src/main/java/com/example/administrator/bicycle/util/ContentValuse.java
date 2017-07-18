@@ -49,5 +49,6 @@ public class ContentValuse {
 
     public static final int success = 0X11221127;
     public static final int failure = 0X11221128;
+    public static final int other = 0X11221129;
     public static final int deleteLogin = 0X11221100;
 }

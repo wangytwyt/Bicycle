@@ -149,8 +149,7 @@ public class KaisuoActivity extends AppCompatActivity {
         }
     };
 
-
-    IRemoteCallback.Stub mCallback = new IRemoteCallback.Stub() {
+    IRemoteCallback.Stub  mCallback = new IRemoteCallback.Stub() {
 
 
         @Override
@@ -288,7 +287,6 @@ public class KaisuoActivity extends AppCompatActivity {
         initView();
 
         getintent();
-
 
     }
 
@@ -434,7 +432,7 @@ public class KaisuoActivity extends AppCompatActivity {
             } else if (getLock != null && !getLock.equals("")) {
 
                 ll_setpassword.setVisibility(View.VISIBLE);
-
+                findViewById(R.id.tv_endtrip).setVisibility(View.GONE);
                 type = 1;
                 if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
