@@ -34,7 +34,7 @@ public class WebActivity extends AppCompatActivity {
         });
 
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
-        tvtitle.setText("嘿车");
+        tvtitle.setText("嘿车s");
 
         wb = (WebView) findViewById(R.id.wv_web);
 

@@ -68,8 +68,6 @@ import static android.content.Context.BIND_AUTO_CREATE;
 
 public class KaisuoActivity extends AppCompatActivity {
     private final String TAG = "---------------------";
-    String url = "https://alabike.luopingelec.com/alabike/ab_mapp";
-    private final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 11002;
 
     private final int OPEN = 1;
     private final int CLOSE = 2;
@@ -96,8 +94,6 @@ public class KaisuoActivity extends AppCompatActivity {
                     lock_status.setBackgroundResource(R.mipmap.jieshuxingchengqian);
                     break;
             }
-
-
         }
     };
 
@@ -108,15 +104,14 @@ public class KaisuoActivity extends AppCompatActivity {
     private LinearLayout ll_setpassword;
     private EditText et_xiu;
 
-    int type = 100;
-    int i = 0;
+
 
     private String mname, maddress;
 
     private Handler stepTimeHandler;
     private Runnable mTicker;
     long startTime = 0;
-    private EndTripDialog enddialog;
+
 
     private ServiceConnection mConn = new ServiceConnection() {
         @Override
@@ -161,7 +156,6 @@ public class KaisuoActivity extends AppCompatActivity {
         @Override
         public void bleGetParams(String batteryVol, String solarVol, boolean open) throws RemoteException {
             LOG.E(TAG, "bleGetParams batteryVol:" + batteryVol + " solarVol:" + solarVol + " open:" + open);
-
         }
 
         @Override
@@ -180,7 +174,6 @@ public class KaisuoActivity extends AppCompatActivity {
                 connectLock(address);
             }
 
-
         }
 
         @Override
@@ -188,7 +181,8 @@ public class KaisuoActivity extends AppCompatActivity {
             LOG.E(TAG, "bleStatus :" + status + " address :" + address);
             //连接成功失败信息
 
-            if (status) {
+            if (status && MyApplication.islock) {
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -217,7 +211,7 @@ public class KaisuoActivity extends AppCompatActivity {
             LOG.E(TAG, "bleCmdReply :" + cmd);
             switch (cmd) {
                 case VerifyUtil.CMD_CLOSE_BIKE://关锁
-
+                    MyApplication.islock = false;
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -226,7 +220,6 @@ public class KaisuoActivity extends AppCompatActivity {
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     }).start();
                     MyApplication.startLocation(KaisuoActivity.this);
@@ -243,7 +236,6 @@ public class KaisuoActivity extends AppCompatActivity {
                     intent.putExtra(ContentValuse.lockaddress, maddress);
                     setResult(1, intent);
                     KaisuoActivity.this.finish();
-
                     break;
 
             }
@@ -282,7 +274,7 @@ public class KaisuoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_kaisuo);
-        i = 0;
+     MyApplication.islock = true;
 
         initView();
 
@@ -291,6 +283,14 @@ public class KaisuoActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        TextView tvtitle = (TextView) findViewById(R.id.tv_title);
+        tvtitle.setText("骑行界面");
         xiu = (EditText) findViewById(R.id.et_xiu);
         ll_setpassword = (LinearLayout) findViewById(R.id.ll_setpassword);
         et_xiu = (EditText) findViewById(R.id.et_xiu);
@@ -380,7 +380,7 @@ public class KaisuoActivity extends AppCompatActivity {
         try {
             if (str != null && !str.equals("")) {
 
-                type = 0;
+
 
                 if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
@@ -395,7 +395,7 @@ public class KaisuoActivity extends AppCompatActivity {
                     }).start();
                 }
             } else if (jisukaisuo != null && !jisukaisuo.equals("")) {
-                type = 1;
+
                 if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
                         @Override
@@ -414,7 +414,6 @@ public class KaisuoActivity extends AppCompatActivity {
                     }).start();
                 }
             } else if (data != null && !data.equals("")) {
-                type = 0;
                 if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
                         @Override
@@ -430,10 +429,9 @@ public class KaisuoActivity extends AppCompatActivity {
                     }).start();
                 }
             } else if (getLock != null && !getLock.equals("")) {
-
                 ll_setpassword.setVisibility(View.VISIBLE);
                 findViewById(R.id.tv_endtrip).setVisibility(View.GONE);
-                type = 1;
+
                 if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
                         @Override

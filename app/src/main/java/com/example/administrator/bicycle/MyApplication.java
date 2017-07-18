@@ -31,6 +31,9 @@ import cn.bmob.newsmssdk.BmobSMS;
 public class MyApplication extends MobApplication {
     public static NaviLatLng startLatlng = new NaviLatLng();
 
+
+    public  static boolean islock = false;
+
     public static double latitude, longitude;
     public static String city;
     private static AMapLocationClientOption mLocationOption;

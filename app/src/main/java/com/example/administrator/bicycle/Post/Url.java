@@ -37,7 +37,6 @@ public class Url {
 
 
 
-
     //举报中心
     public final static String reportingCenter = bidypath + "JbZx.do?";
     ///投诉
@@ -56,6 +55,23 @@ public class Url {
 //    public final static String repairTime = bidypath + "findBikeByBxtime.do?";
 //    //完成时间
 //    public final static String completeTime = bidypath + "findBikeByYjtime.do?";
+
+
+    private  final static String htmlUrl = url+"/themPages/html/";
+
+    public final static String authentication = htmlUrl+"authentication.html";
+    public final static String activityRule = htmlUrl+"activityRule.html";
+    public final static String cedicalInsurance = htmlUrl+"cedicalInsurance.html";
+    public final static String compensation = htmlUrl+"compensation.html";
+    public final static String danger = htmlUrl+"danger.html";
+    public final static String fail = htmlUrl+"fail.html";
+    public final static String no_unlock = htmlUrl+"no_unlock.html";
+    public final static String publicurl = htmlUrl+"public.html";
+    public final static String recharge = htmlUrl+"recharge.html";
+    public final static String reyurnRule = htmlUrl+"reyurnRule.html";
+    public final static String Safety_insurance = htmlUrl+"Safety_insurance.html";
+    public final static String Vip_refund = htmlUrl+"Vip_refund";
+
 
 
 }

@@ -10,7 +10,10 @@ import android.widget.TextView;
 import com.example.administrator.bicycle.AllProblemActivity;
 import com.example.administrator.bicycle.AnnualFeeActivity;
 import com.example.administrator.bicycle.Personal.zhaobudaoche.ZhaobudaocheActivity;
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.WebActivity;
+import com.example.administrator.bicycle.util.ContentValuse;
 
 public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -95,6 +98,9 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.vip_two:
 
+                Intent intent =  new Intent(GuideActivity.this, WebActivity.class);
+                intent.putExtra(ContentValuse.url,Url.activityRule);
+                startActivity(intent);
                 break;
             case R.id.vip_three:
 

@@ -5,6 +5,10 @@ package com.example.administrator.bicycle.util;
  */
 
 public class ContentValuse {
+
+
+
+
     public static final String dataBase = "database";
     public static final String AppGuide = "appguide";
     public static final String Text = "TEXT";
@@ -16,6 +20,9 @@ public class ContentValuse {
 
     public static final String isSubscribe = "SUBSCRIBE";
     public static final String url = "url";
+
+
+
 
 
     public static final String prize = "prize";
