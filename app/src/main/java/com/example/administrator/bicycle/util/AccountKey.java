@@ -10,5 +10,5 @@ public class AccountKey {
     //聚合 身份证查询
     public static String identityAPPKEY = "de2b95384b5271c741b58722a7412bd2";
 
-
+    public static final String APP_ID = "wx58c5e001e912bf55";
 }

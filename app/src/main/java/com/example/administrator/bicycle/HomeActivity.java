@@ -376,7 +376,8 @@ public class HomeActivity extends Activity implements View.OnClickListener {
 
                 break;
             case R.id.lin_three:
-                startActivity(new Intent(HomeActivity.this, InvitationActivity.class));
+                startActivity(new Intent(HomeActivity.this, RechargeActivity.class));
+
                 break;
             case R.id.lin_four:
                 startActivity(new Intent(HomeActivity.this, GuideActivity.class));
@@ -385,7 +386,7 @@ public class HomeActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(HomeActivity.this, ReportingCenterActivity.class));
                 break;
             case R.id.lin_six:
-                startActivity(new Intent(HomeActivity.this, RechargeActivity.class));
+                startActivity(new Intent(HomeActivity.this, InvitationActivity.class));
                 break;
             case R.id.iv_saomakaisuo:
                 if (PermissionUtils.checkPermissionCamera(this)) {

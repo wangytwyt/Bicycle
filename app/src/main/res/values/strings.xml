@@ -45,6 +45,11 @@
     <string name="load_fail">加载失败</string>
 
 
+    <string name="app_tip">提示</string>
+    <!-- WXPayEntryActivity -->
+    <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+
     <string name="soft_update_no">已经是最新版本</string>
     <string name="soft_update_title">软件更新</string>
     <string name="soft_update_info">检测到新版本，立即更新吗</string>

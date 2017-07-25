@@ -107,6 +107,10 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.hardware.camera" />
 
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -123,7 +127,7 @@
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="b32898a2ed85367261e3c2920ed6bd05">
+            android:value="09ac81f7f277609b886a39c8cca40511">
             //开发者申请的key
         </meta-data>
 
@@ -290,11 +294,29 @@
             android:value="06902eea963b96714aacfb2874944af2" />
         <!-- 微信分享回调 -->
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.example.administrator.bicycle.wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:launchMode="singleTop">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="wx58c5e001e912bf55"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+        <receiver
+            android:name="com.example.administrator.bicycle.pay.wxpay.AppRegister">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
         <activity android:name=".testActivity" />
         <activity android:name=".Personal.Guide.CarAlsoActivity" />
         <activity android:name=".Personal.Guide.RidingRulesActivity"></activity>

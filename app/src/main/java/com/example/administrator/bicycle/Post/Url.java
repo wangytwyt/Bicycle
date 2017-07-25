@@ -57,7 +57,7 @@ public class Url {
 //    public final static String completeTime = bidypath + "findBikeByYjtime.do?";
 
 
-    private  final static String htmlUrl = url+"/themPages/html/";
+    private  final static String htmlUrl = "http://42.51.40.93:120"+"/html/";
 
     public final static String authentication = htmlUrl+"authentication.html";
     public final static String activityRule = htmlUrl+"activityRule.html";
@@ -70,7 +70,7 @@ public class Url {
     public final static String recharge = htmlUrl+"recharge.html";
     public final static String reyurnRule = htmlUrl+"reyurnRule.html";
     public final static String Safety_insurance = htmlUrl+"Safety_insurance.html";
-    public final static String Vip_refund = htmlUrl+"Vip_refund";
+    public final static String Vip_refund = htmlUrl+"Vip_refund.html";
 
 
 

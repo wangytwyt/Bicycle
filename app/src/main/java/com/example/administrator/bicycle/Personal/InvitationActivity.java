@@ -61,6 +61,7 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
         sp.setText("测试分享的文本");
         sp.setImageData(BitmapFactory.decodeResource(this.getResources(),R.mipmap.logo));
         sp.setSite("玩");
+        sp.setVenueDescription("测试分享dddd的文本");
         sp.setSiteUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021");
 
         Platform qzone = ShareSDK.getPlatform(QZone.NAME);
@@ -82,32 +83,6 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
         qzone.share(sp);
     }
 
-
-//    private void showShare() {
-//        OnekeyShare oks = new OnekeyShare();
-////关闭sso授权
-//        oks.disableSSOWhenAuthorize();
-//
-//// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
-//        oks.setTitle("标题");
-//// titleUrl是标题的网络链接，QQ和QQ空间等使用
-//        oks.setTitleUrl("http://sharesdk.cn");
-//// text是分享文本，所有平台都需要这个字段
-//        oks.setText("我是分享文本");
-//// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-////oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
-//// url仅在微信（包括好友和朋友圈）中使用
-//        oks.setUrl("http://sharesdk.cn");
-//// comment是我对这条分享的评论，仅在人人网和QQ空间使用
-//        oks.setComment("我是测试评论文本");
-//// site是分享此内容的网站名称，仅在QQ空间使用
-//        oks.setSite(getString(R.string.app_name));
-//// siteUrl是分享此内容的网站地址，仅在QQ空间使用
-//        oks.setSiteUrl("http://sharesdk.cn");
-//
-//// 启动分享GUI
-//        oks.show(this);
-//    }
 
     @Override
     public void onClick(View v) {
@@ -152,6 +127,7 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void shareWechat(){
+    
         Platform weixin = ShareSDK.getPlatform(Wechat.NAME);
         weixin.setPlatformActionListener(new PlatformActionListener() {
             @Override
@@ -174,7 +150,15 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
 
     private Platform.ShareParams initShareParams() {
         Platform.ShareParams sp = new Platform.ShareParams();
+        sp.setTitle("测试分享的标题");
+        sp.setTitleUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021"); // 标题的超链接
         sp.setText("测试分享的文本");
+        sp.setImageData(BitmapFactory.decodeResource(this.getResources(),R.mipmap.logo));
+        sp.setSite("玩");
+        sp.setUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021");
+        sp.setVenueDescription("测试分享dddd的文本");
+        sp.setSiteUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021");
+        sp.setShareType(Platform.SHARE_WEBPAGE);
         return sp;
     }
 
@@ -226,25 +210,6 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
 // 执行图文分享
         weibo.share(sp);
 
-//        Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
-//        weibo.setPlatformActionListener(new PlatformActionListener() {
-//            @Override
-//            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-//
-//            }
-//
-//            @Override
-//            public void onError(Platform platform, int i, Throwable throwable) {
-//
-//            }
-//
-//            @Override
-//            public void onCancel(Platform platform, int i) {
-//
-//            }
-//        }); // 设置分享事件回调
-//// 执行图文分享
-//        weibo.share(initShareParams());
     }
 }
 

@@ -21,6 +21,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.sofi.smartlocker.ble.interfaces.IRemoteService;
 import com.sofi.smartlocker.ble.util.LOG;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import cn.bmob.newsmssdk.BmobSMS;
 
@@ -47,11 +49,14 @@ public class MyApplication extends MobApplication {
     public static User user ;
 
 
+    public static IWXAPI msgApi;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        
+
 
         //短信验证码初始化
         BmobSMS.initialize(this, AccountKey.Bmob_Application_ID);

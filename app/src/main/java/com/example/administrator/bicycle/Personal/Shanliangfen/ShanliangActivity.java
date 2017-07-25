@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.administrator.bicycle.KindHistoryActivity;
 import com.example.administrator.bicycle.R;
@@ -17,6 +18,17 @@ public class ShanliangActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_shanliang);
+
+
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        TextView tvtitle = (TextView) findViewById(R.id.tv_title);
+        tvtitle.setText("善良分");
 
         guizejiedu = (LinearLayout) findViewById(R.id.line_guizejiedu);
         guizejiedu.setOnClickListener(this);
@@ -31,9 +43,7 @@ public class ShanliangActivity extends AppCompatActivity implements View.OnClick
                 startActivity(new Intent(ShanliangActivity.this,GuizeActivity.class));
                 break;
             case R.id.iv_kindhistory:
-
                 startActivity(new Intent(ShanliangActivity.this,KindHistoryActivity.class));
-
                 break;
         }
     }

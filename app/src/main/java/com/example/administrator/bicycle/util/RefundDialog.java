@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.R;
@@ -118,9 +119,9 @@ public class RefundDialog extends android.app.Dialog{
             } else if (contentView != null) {
                 // if no message set
                 // add the contentView to the dialog body
-                ((LinearLayout) layout.findViewById(R.id.content))
+                ((RelativeLayout) layout.findViewById(R.id.content))
                         .removeAllViews();
-                ((LinearLayout) layout.findViewById(R.id.content))
+                ((RelativeLayout) layout.findViewById(R.id.content))
                         .addView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
             }
             dialog.setContentView(layout);

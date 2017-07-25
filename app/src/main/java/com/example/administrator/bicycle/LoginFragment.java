@@ -134,8 +134,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         edtValidation.addTextChangedListener(watcher);
 
 
-
-
         view.findViewById(R.id.tv_yhxy).setOnClickListener(this);
         return view;
     }
@@ -176,6 +174,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     return;
                 }
 
+                if(MyApplication.city == null){
+                    Toast.makeText(getContext(), "定位失败，请重新定位！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 //发送短信
                 BmobSMS.requestSMSCode(getContext(), PhoneNum, "验证码", new RequestSMSCodeListener() {
                     @Override
@@ -208,6 +211,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_start:
                 if (!NetWorkStatus.isNetworkAvailable(getActivity())) {
                     Toast.makeText(getContext(), "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(MyApplication.city == null){
+                    Toast.makeText(getContext(), "定位失败，请重新定位！", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // 获取用户填写的电话号码

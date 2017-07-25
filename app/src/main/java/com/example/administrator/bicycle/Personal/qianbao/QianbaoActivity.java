@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -25,6 +26,8 @@ import com.example.administrator.bicycle.PrizeDialogActivity;
 import com.example.administrator.bicycle.R;
 import com.example.administrator.bicycle.pay.alipay.PayResult;
 import com.example.administrator.bicycle.pay.alipay.util.OrderInfoUtil2_0;
+import com.example.administrator.bicycle.pay.wxpay.Util;
+import com.example.administrator.bicycle.util.AccountKey;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.CustomProgressDialog;
 import com.example.administrator.bicycle.util.EndTripDialog;
@@ -32,6 +35,9 @@ import com.example.administrator.bicycle.util.HttpUtils;
 import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.RefundDialog;
 import com.sofi.smartlocker.ble.util.LOG;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.json.JSONObject;
 
@@ -118,6 +124,9 @@ public class QianbaoActivity extends AppCompatActivity {
     private static final int SDK_PAY_FLAG = 1;
 
 
+    String url = "http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
+
+    private IWXAPI api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +134,8 @@ public class QianbaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_qianbao);
+
+        api = WXAPIFactory.createWXAPI(this, AccountKey.APP_ID);
         initView();
     }
 
@@ -144,6 +155,7 @@ public class QianbaoActivity extends AppCompatActivity {
 
         tv_rmb = (TextView) findViewById(R.id.tv_rmb);
         tv_heibi = (TextView) findViewById(R.id.tv_heibi);
+
 
 
 //        dialog = CustomProgressDialog.createDialog(this);
@@ -215,7 +227,7 @@ public class QianbaoActivity extends AppCompatActivity {
 
                 if (iv_zhifubao.isSelected()) {
                    payV2();
-                }
+                }else
                 if (iv_weixin.isSelected()) {
                     weixinPay();
                 }
@@ -330,6 +342,40 @@ public class QianbaoActivity extends AppCompatActivity {
     }
 
     private void weixinPay() {
+        try{
+            byte[] buf = Util.httpGet(url);
+            if (buf != null && buf.length > 0) {
+                String content = new String(buf);
+                Log.e("get server pay params:",content);
+                JSONObject json = new JSONObject(content);
+                if(null != json && !json.has("retcode") ){
+                    PayReq req = new PayReq();
+                    //req.appId = "wxf8b4f85f3a794e77";  // 测试用appId
+                    req.appId			= json.getString("appid");
+                    req.partnerId		= json.getString("partnerid");
+                    req.prepayId		= json.getString("prepayid");
+                    req.nonceStr		= json.getString("noncestr");
+                    req.timeStamp		= json.getString("timestamp");
+                    req.packageValue	= json.getString("package");
+                    req.sign			= json.getString("sign");
+                    req.extData			= "app data"; // optional
+                    Toast.makeText(QianbaoActivity.this, "正常调起支付", Toast.LENGTH_SHORT).show();
+                    // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+                    api.sendReq(req);
+                }else{
+                    Log.d("PAY_GET", "返回错误"+json.getString("retmsg"));
+                    Toast.makeText(QianbaoActivity.this, "返回错误"+json.getString("retmsg"), Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Log.d("PAY_GET", "服务器请求错误");
+                Toast.makeText(QianbaoActivity.this, "服务器请求错误", Toast.LENGTH_SHORT).show();
+            }
+        }catch(Exception e){
+            Log.e("PAY_GET", "异常："+e.getMessage());
+            Toast.makeText(QianbaoActivity.this, "异常："+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+
 
     }
 

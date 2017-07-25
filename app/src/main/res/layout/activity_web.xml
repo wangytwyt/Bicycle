@@ -7,18 +7,29 @@
     android:orientation="vertical"
     tools:context="com.example.administrator.bicycle.WebActivity">
 
-    <include  layout="@layout/public_layout_title"/>
+    <include layout="@layout/public_layout_title" />
 
-    <WebView
-        android:id="@+id/wv_web"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </WebView>
+        <WebView
+            android:id="@+id/wv_web"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </WebView>
+
+        <ImageView
+            android:id="@+id/load_failure"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/wangluozhongduan"
+            android:visibility="gone" />
 
 
-
-
+    </RelativeLayout>
 
 
 </LinearLayout>
