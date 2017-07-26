@@ -204,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //设置覆盖物
         setIcon();
 
-        getBluePointLocation();
 
 
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(34.26984294, 108.94729614), 16, 0, 0));
@@ -259,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 msg.what = SETADDRESS;
 
                 LatLonPoint latLonPoint = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getLatLngPoint();
-                toCalculateDistance(latLonPoint, naviLatLng);
+              //  toCalculateDistance(latLonPoint, naviLatLng);
 
                 msg.obj = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
                 mhandler.sendMessage(msg);
@@ -691,8 +690,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         }
 
 
-
-
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
         if (SharedPreUtils.sharedGet(this, ContentValuse.isSubscribe, false)) {
@@ -774,7 +771,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
          * 单路径不需要进行路径选择，直接传入－1即可
          */
         drawRoutes(-1, path);
-        popwindow();
+ //       popwindow();
     }
 
     @Override

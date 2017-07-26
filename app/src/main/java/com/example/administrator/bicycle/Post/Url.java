@@ -60,7 +60,7 @@ public class Url {
     private  final static String htmlUrl = "http://42.51.40.93:120"+"/html/";
 
     public final static String authentication = htmlUrl+"authentication.html";
-    public final static String activityRule = htmlUrl+"activityRule.html";
+    public final static String activity_rule = htmlUrl+"activity_rule.html";
     public final static String cedicalInsurance = htmlUrl+"cedicalInsurance.html";
     public final static String compensation = htmlUrl+"compensation.html";
     public final static String danger = htmlUrl+"danger.html";
@@ -72,6 +72,9 @@ public class Url {
     public final static String Safety_insurance = htmlUrl+"Safety_insurance.html";
     public final static String Vip_refund = htmlUrl+"Vip_refund.html";
 
-
-
+    public final static String contact_service = htmlUrl+"contact_service.html";
+    public final static String noFindCar = htmlUrl+"noFindCar.html";
+    public final static String real_name = htmlUrl+"real_name.html";
+    public final static String recharge_HB = htmlUrl+"recharge_HB.html";
+    public final static String rid_rule = htmlUrl+"rid_rule.html";
 }

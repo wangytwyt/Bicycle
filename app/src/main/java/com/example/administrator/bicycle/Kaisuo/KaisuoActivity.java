@@ -33,9 +33,12 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.example.administrator.bicycle.MainActivity;
 import com.example.administrator.bicycle.MyApplication;
+import com.example.administrator.bicycle.Personal.Guide.GuideActivity;
 import com.example.administrator.bicycle.Post.PostUtil;
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.R;
 
+import com.example.administrator.bicycle.WebActivity;
 import com.example.administrator.bicycle.util.ContentValuse;
 import com.example.administrator.bicycle.util.Dialog;
 import com.example.administrator.bicycle.util.EndTripDialog;
@@ -112,6 +115,8 @@ public class KaisuoActivity extends AppCompatActivity {
     private Runnable mTicker;
     long startTime = 0;
 
+private   String lockkey="123456";
+
 
     private ServiceConnection mConn = new ServiceConnection() {
         @Override
@@ -181,7 +186,7 @@ public class KaisuoActivity extends AppCompatActivity {
             LOG.E(TAG, "bleStatus :" + status + " address :" + address);
             //连接成功失败信息
 
-            if (status && MyApplication.islock) {
+            if (status ) {
 
                 new Thread(new Runnable() {
                     @Override
@@ -189,7 +194,8 @@ public class KaisuoActivity extends AppCompatActivity {
 
 //456842
                         try {
-                            MyApplication.bleService.openLock("123456");
+                            MyApplication.bleService.openLock(lockkey);
+                            lockkey = "487634";
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -274,11 +280,16 @@ public class KaisuoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_kaisuo);
-     MyApplication.islock = true;
+        MyApplication.islock = true;
 
         initView();
 
         getintent();
+        if (MyApplication.bleService != null) {
+            showBleTipDialog();
+        } else {
+            requestLocationPermission();
+        }
 
     }
 
@@ -298,6 +309,16 @@ public class KaisuoActivity extends AppCompatActivity {
 
         lock_status = (TextView) findViewById(R.id.lock_status);
         kai_ticker = (TextView) findViewById(R.id.kai_ticker);
+
+        findViewById(R.id.tv_insurance).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent6 =  new Intent(KaisuoActivity.this, WebActivity.class);
+                intent6.putExtra(ContentValuse.url, Url.Safety_insurance);
+                startActivity(intent6);
+            }
+        });
+
         findViewById(R.id.but_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -458,12 +479,8 @@ public class KaisuoActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+
         super.onResume();
-        if (MyApplication.bleService != null) {
-            showBleTipDialog();
-        } else {
-            requestLocationPermission();
-        }
 
     }
 

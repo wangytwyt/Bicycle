@@ -69,7 +69,11 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bicy_one:
-              startActivity(new Intent(this,ZhaobudaocheActivity.class));
+
+                Intent bicyintent1 =  new Intent(GuideActivity.this, WebActivity.class);
+                bicyintent1.putExtra(ContentValuse.url,Url.noFindCar);
+                startActivity(bicyintent1);
+            //  startActivity(new Intent(this,ZhaobudaocheActivity.class));
                 break;
             case R.id.bicy_two:
 
@@ -89,24 +93,32 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
               //  startActivity(new Intent(GuideActivity.this, CarAlsoActivity.class));
                 break;
             case  R.id.bicy_five:
-                startActivity(new Intent(GuideActivity.this, RidingRulesActivity.class));
+                //reyurnRule
+                Intent bicyintent5 =  new Intent(GuideActivity.this, WebActivity.class);
+                bicyintent5.putExtra(ContentValuse.url,Url.rid_rule);
+                startActivity(bicyintent5);
+              //  startActivity(new Intent(GuideActivity.this, RidingRulesActivity.class));
                 break;
             case R.id.vip_one:
-                startActivity(new Intent(GuideActivity.this, AnnualFeeActivity.class));
+
+                Intent vipbicyintent =  new Intent(GuideActivity.this, WebActivity.class);
+                vipbicyintent.putExtra(ContentValuse.url,Url.recharge);
+                startActivity(vipbicyintent);
+              //  startActivity(new Intent(GuideActivity.this, AnnualFeeActivity.class));
                 break;
             case R.id.vip_two:
                 Intent intent =  new Intent(GuideActivity.this, WebActivity.class);
-                intent.putExtra(ContentValuse.url,Url.Vip_refund);
+                intent.putExtra(ContentValuse.url,Url.recharge_HB);
                 startActivity(intent);
                 break;
             case R.id.vip_three:
                 Intent intent1 =  new Intent(GuideActivity.this, WebActivity.class);
-                intent1.putExtra(ContentValuse.url,Url.Safety_insurance);
+                intent1.putExtra(ContentValuse.url,Url.Vip_refund);
                 startActivity(intent1);
                 break;
             case R.id.name_one:
                 Intent intent2 =  new Intent(GuideActivity.this, WebActivity.class);
-                intent2.putExtra(ContentValuse.url,Url.reyurnRule);
+                intent2.putExtra(ContentValuse.url,Url.real_name);
                 startActivity(intent2);
                 break;
             case R.id.name_two:
@@ -121,32 +133,29 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.party:
                 Intent intent5 =  new Intent(GuideActivity.this, WebActivity.class);
-                intent5.putExtra(ContentValuse.url,Url.activityRule);
+                intent5.putExtra(ContentValuse.url,Url.activity_rule);
                 startActivity(intent5);
                 break;
-
             case R.id.my_one:
                 Intent mintent =  new Intent(GuideActivity.this, WebActivity.class);
-                mintent.putExtra(ContentValuse.url,Url.recharge);
+                mintent.putExtra(ContentValuse.url,Url.publicurl);
                 startActivity(mintent);
                 break;
-
             case R.id.my_two:
-
                 Intent intent6 =  new Intent(GuideActivity.this, WebActivity.class);
-                intent6.putExtra(ContentValuse.url,Url.compensation);
+                intent6.putExtra(ContentValuse.url,Url.contact_service);
                 startActivity(intent6);
                 break;
 
             case R.id.insurance_one:
                 Intent intent7 =  new Intent(GuideActivity.this, WebActivity.class);
-                intent7.putExtra(ContentValuse.url,Url.Safety_insurance);
+                intent7.putExtra(ContentValuse.url,Url.cedicalInsurance);
                 startActivity(intent7);
                 break;
 
             case R.id.insurance_two:
                 Intent intent8 =  new Intent(GuideActivity.this, WebActivity.class);
-                intent8.putExtra(ContentValuse.url,Url.danger);
+                intent8.putExtra(ContentValuse.url,Url.compensation);
                 startActivity(intent8);
 
                 break;
@@ -160,10 +169,7 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.line_six:
-                Intent intent10 =  new Intent(GuideActivity.this, WebActivity.class);
-                intent10.putExtra(ContentValuse.url,Url.publicurl);
-                startActivity(intent10);
-           //     startActivity(new Intent(GuideActivity.this, AllProblemActivity.class));
+             startActivity(new Intent(GuideActivity.this, AllProblemActivity.class));
                 break;
         }
     }

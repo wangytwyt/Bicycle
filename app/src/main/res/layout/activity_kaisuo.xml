@@ -211,6 +211,7 @@
                     android:textColor="#666666"
                     android:textSize="12sp" />
                 <TextView
+                    android:id="@+id/tv_insurance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
