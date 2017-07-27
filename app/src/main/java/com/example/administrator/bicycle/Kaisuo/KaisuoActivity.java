@@ -23,6 +23,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -116,7 +117,7 @@ public class KaisuoActivity extends AppCompatActivity {
     long startTime = 0;
 
 private   String lockkey="123456";
-
+private boolean isfinsh= false;
 
     private ServiceConnection mConn = new ServiceConnection() {
         @Override
@@ -217,7 +218,7 @@ private   String lockkey="123456";
             LOG.E(TAG, "bleCmdReply :" + cmd);
             switch (cmd) {
                 case VerifyUtil.CMD_CLOSE_BIKE://关锁
-                    MyApplication.islock = false;
+                    isfinsh= true;
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -293,13 +294,17 @@ private   String lockkey="123456";
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (isfinsh){
+            finish();
+        }
+        return  false;
+
+    }
+
     private void initView() {
-        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        findViewById(R.id.iv_back).setVisibility(View.GONE);
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("骑行界面");
         xiu = (EditText) findViewById(R.id.et_xiu);
@@ -346,6 +351,7 @@ private   String lockkey="123456";
                 EndTripDialog.Builder builder = new EndTripDialog.Builder(KaisuoActivity.this);
                 builder.setPositiveButton(new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        isfinsh= true;
                         dialog.dismiss();
                         //设置你的操作事项
                         Toast.makeText(KaisuoActivity.this,"哇啊傻傻的发呆",Toast.LENGTH_SHORT).show();

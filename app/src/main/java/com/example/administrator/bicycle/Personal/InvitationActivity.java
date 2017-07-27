@@ -55,14 +55,6 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
 
 
     private void showShareQZone() {
-        Platform.ShareParams sp = new Platform.ShareParams();
-        sp.setTitle("测试分享的标题");
-        sp.setTitleUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021"); // 标题的超链接
-        sp.setText("测试分享的文本");
-        sp.setImageData(BitmapFactory.decodeResource(this.getResources(),R.mipmap.logo));
-        sp.setSite("玩");
-        sp.setVenueDescription("测试分享dddd的文本");
-        sp.setSiteUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021");
 
         Platform qzone = ShareSDK.getPlatform(QZone.NAME);
 // 设置分享事件回调（注：回调放在不能保证在主线程调用，不可以在里面直接处理UI操作）
@@ -80,7 +72,7 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
             }
         });
 // 执行图文分享
-        qzone.share(sp);
+        qzone.share(initShareParams());
     }
 
 
@@ -151,13 +143,13 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
     private Platform.ShareParams initShareParams() {
         Platform.ShareParams sp = new Platform.ShareParams();
         sp.setTitle("测试分享的标题");
-        sp.setTitleUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021"); // 标题的超链接
+        sp.setTitleUrl("http://42.51.40.93:1588/html/share_home.html"); // 标题的超链接
         sp.setText("测试分享的文本");
         sp.setImageData(BitmapFactory.decodeResource(this.getResources(),R.mipmap.logo));
         sp.setSite("玩");
-        sp.setUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021");
+        sp.setUrl("http://42.51.40.93:1588/html/share_home.html");
         sp.setVenueDescription("测试分享dddd的文本");
-        sp.setSiteUrl("http://www.suning.com/?utm_source=union&utm_medium=C&utm_campaign=1025&utm_content=1021");
+        sp.setSiteUrl("http://42.51.40.93:1588/html/share_home.html");
         sp.setShareType(Platform.SHARE_WEBPAGE);
         return sp;
     }

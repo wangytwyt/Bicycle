@@ -213,7 +213,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         mUiSettings = aMap.getUiSettings();//实例化UiSettings类对象
         mUiSettings.setZoomControlsEnabled(false);
 
-
         if (!NetWorkStatus.isNetworkAvailable(this)) {
             dialog.dismiss();
             Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
