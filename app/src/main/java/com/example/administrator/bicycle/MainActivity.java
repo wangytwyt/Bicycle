@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
     private ImageButton butright;
     private RelativeLayout lay_lift;
-    private ImageView iv_lift,iv_wo,iv_liftsao,iv_rightji;
+    private ImageView iv_lift, iv_wo, iv_liftsao, iv_rightji;
 
     private NaviLatLng naviLatLng;
 
@@ -186,9 +186,14 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-//        UpdateManager manager = new UpdateManager(MainActivity.this);
-//        // 检查软件更新
-//        manager.checkUpdate();
+
+        if (NetWorkStatus.isNetworkAvailable(this)) {
+            UpdateManager manager = new UpdateManager(MainActivity.this);
+            // 检查软件更新
+            manager.checkUpdate();
+        } else {
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+        }
 
         //初始化控件
         init();
@@ -203,7 +208,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         //设置覆盖物
         setIcon();
-
 
 
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(34.26984294, 108.94729614), 16, 0, 0));
@@ -257,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 msg.what = SETADDRESS;
 
                 LatLonPoint latLonPoint = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getLatLngPoint();
-              //  toCalculateDistance(latLonPoint, naviLatLng);
+                //  toCalculateDistance(latLonPoint, naviLatLng);
 
                 msg.obj = regeocodeResult.getRegeocodeAddress().getRoads().get(0).getName();
                 mhandler.sendMessage(msg);
@@ -508,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         iv_lift.setOnClickListener(this);
         lay_lift = (RelativeLayout) findViewById(R.id.rl_layout);
         lay_lift.setOnClickListener(this);
-        iv_wo= (ImageView) findViewById(R.id.iv_wo);
+        iv_wo = (ImageView) findViewById(R.id.iv_wo);
         iv_liftsao = (ImageView) findViewById(R.id.iv_liftsao);
         iv_rightji = (ImageView) findViewById(R.id.iv_rightji);
         iv_liftsao.setOnClickListener(this);
@@ -591,8 +595,6 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 break;
 
 
-
-
             case R.id.iv_rightji:
             case R.id.code_ji:
                 if (MyApplication.isLogin()) {
@@ -610,7 +612,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 startActivity(new Intent(MainActivity.this, AssistantActivity.class));
                 break;
             case R.id.suaxin:
-               // startActivity(new Intent(MainActivity.this, PrizeActivity.class));
+                // startActivity(new Intent(MainActivity.this, PrizeActivity.class));
                 startActivity(new Intent(MainActivity.this, testActivity.class));
                 break;
             case R.id.tousu:
@@ -684,7 +686,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
 
         addAMapNaviListener();
 
-        if(MyApplication.user != null && MyApplication.user.getT_TRRMB() > 0){
+        if (MyApplication.user != null && MyApplication.user.getT_TRRMB() > 0) {
             iv_wo.setImageResource(R.mipmap.wode_vip);
         }
 
@@ -770,7 +772,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
          * 单路径不需要进行路径选择，直接传入－1即可
          */
         drawRoutes(-1, path);
- //       popwindow();
+        //       popwindow();
     }
 
     @Override

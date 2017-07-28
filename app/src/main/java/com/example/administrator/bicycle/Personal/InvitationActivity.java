@@ -71,7 +71,7 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
                 //取消分享的回调
             }
         });
-// 执行图文分享
+       // 执行图文分享
         qzone.share(initShareParams());
     }
 
@@ -142,7 +142,7 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
 
     private Platform.ShareParams initShareParams() {
         Platform.ShareParams sp = new Platform.ShareParams();
-        sp.setTitle("测试分享的标题");
+        sp.setTitle("测试分享标题");
         sp.setTitleUrl("http://42.51.40.93:1588/html/share_home.html"); // 标题的超链接
         sp.setText("测试分享的文本");
         sp.setImageData(BitmapFactory.decodeResource(this.getResources(),R.mipmap.logo));
@@ -174,14 +174,10 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
             }
         });
         qq.share(initShareParams());
+
     }
 
     private void weiBoshare() {
-
-        Platform.ShareParams sp = new Platform.ShareParams();
-        sp.setText("测试分享的文本");
-        sp.setImagePath("/mnt/sdcard/测试分享的图片.jpg");
-
         Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
         weibo.setPlatformActionListener(new PlatformActionListener() {
             @Override
@@ -200,7 +196,7 @@ public class InvitationActivity extends AppCompatActivity implements View.OnClic
             }
         }); // 设置分享事件回调
 // 执行图文分享
-        weibo.share(sp);
+        weibo.share(initShareParams());
 
     }
 }

@@ -57,6 +57,7 @@
             android:id="@+id/iv_weixin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:background="@mipmap/weixin" />
 
         <ImageView
@@ -64,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:padding="5dp"
             android:background="@mipmap/qqkongjian" />
 
         <ImageView
@@ -71,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:padding="5dp"
             android:background="@mipmap/qqhaoyou" />
 
         <ImageView
@@ -78,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:padding="5dp"
             android:background="@mipmap/pengyouquan" />
 
         <ImageView
@@ -85,6 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:padding="5dp"
             android:background="@mipmap/weibo" />
     </LinearLayout>
 
