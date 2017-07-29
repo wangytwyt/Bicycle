@@ -13,8 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,31 +53,38 @@
 
         </LinearLayout>
 
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@mipmap/beizhu">
+            android:layout_height="wrap_content">
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
+                android:id="@+id/et_weather"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@mipmap/beizhu"
                 android:hint="备注"
+                android:gravity="left|top"
+                android:padding="5dp"
                 android:textSize="15dp" />
 
+            <TextView
+                android:id="@+id/tv_number"
+                android:layout_below="@+id/et_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="5dp"
+                android:text="0/140" />
 
-        </LinearLayout>
-
+        </RelativeLayout>
 
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:background="@drawable/marker"
             android:text="提交"
-            android:layout_margin="10dp"
             android:textColor="#ffffff"
             android:textSize="20dp" />
 

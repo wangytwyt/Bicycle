@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:background="@mipmap/shurukuang"
                 android:gravity="center"
+                android:layout_gravity="center_vertical"
                 android:hint="请输入铭牌号"
                 android:padding="10dp"
                 android:text="50:8C:B1:86:EF:29"

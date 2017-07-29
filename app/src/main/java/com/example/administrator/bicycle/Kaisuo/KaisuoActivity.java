@@ -32,6 +32,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.navi.model.NaviLatLng;
 import com.example.administrator.bicycle.MainActivity;
 import com.example.administrator.bicycle.MyApplication;
 import com.example.administrator.bicycle.Personal.Guide.GuideActivity;
@@ -45,6 +50,8 @@ import com.example.administrator.bicycle.util.Dialog;
 import com.example.administrator.bicycle.util.EndTripDialog;
 import com.example.administrator.bicycle.util.Globals;
 
+import com.example.administrator.bicycle.util.HttpUtils;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.util.TimeUtils;
 import com.luopingelec.permission.PermissionsManager;
 import com.luopingelec.permission.PermissionsResultAction;
@@ -68,11 +75,16 @@ import java.util.HashMap;
 import java.util.Locale;
 
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
 import static android.content.Context.BIND_AUTO_CREATE;
 
 public class KaisuoActivity extends AppCompatActivity {
     private final String TAG = "---------------------";
 
+    private int LOCK_STATUS;
     private final int OPEN = 1;
     private final int CLOSE = 2;
     private final int UPDATE = 3;
@@ -109,15 +121,18 @@ public class KaisuoActivity extends AppCompatActivity {
     private EditText et_xiu;
 
 
-
     private String mname, maddress;
 
     private Handler stepTimeHandler;
     private Runnable mTicker;
     long startTime = 0;
 
-private   String lockkey="123456";
-private boolean isfinsh= false;
+    private String lockkey = "123456";
+    private boolean isfinsh = false;
+    public static AMapLocationClient mLocationClient = null;
+    private static AMapLocationClientOption mLocationOption;
+
+    private String carId;
 
     private ServiceConnection mConn = new ServiceConnection() {
         @Override
@@ -150,7 +165,7 @@ private boolean isfinsh= false;
         }
     };
 
-    IRemoteCallback.Stub  mCallback = new IRemoteCallback.Stub() {
+    IRemoteCallback.Stub mCallback = new IRemoteCallback.Stub() {
 
 
         @Override
@@ -187,7 +202,7 @@ private boolean isfinsh= false;
             LOG.E(TAG, "bleStatus :" + status + " address :" + address);
             //连接成功失败信息
 
-            if (status ) {
+            if (status) {
 
                 new Thread(new Runnable() {
                     @Override
@@ -218,7 +233,7 @@ private boolean isfinsh= false;
             LOG.E(TAG, "bleCmdReply :" + cmd);
             switch (cmd) {
                 case VerifyUtil.CMD_CLOSE_BIKE://关锁
-                    isfinsh= true;
+                    isfinsh = true;
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -229,14 +244,17 @@ private boolean isfinsh= false;
                             }
                         }
                     }).start();
-                    MyApplication.startLocation(KaisuoActivity.this);
+                    LOCK_STATUS = CLOSE;
+                    startLocation(KaisuoActivity.this);
 
                     send(CLOSE);
                     break;
                 case VerifyUtil.CMD_OPEN_LOCK://开锁
+                    LOCK_STATUS = OPEN;
                     send(OPEN);
                     break;
                 case VerifyUtil.CMD_UPDATE_KEY:
+
                     send(UPDATE);
                     Intent intent = new Intent();
                     intent.putExtra(ContentValuse.lockname, mname);
@@ -249,6 +267,38 @@ private boolean isfinsh= false;
 
         }
     };
+
+
+    private void startCycling(double latitude, double longitude) {
+        if (!NetWorkStatus.isNetworkAvailable(KaisuoActivity.this)) {
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        HttpUtils.doGet(Url.startLock + carId + "&T_USERPHONE="
+                + MyApplication.user.getT_USERPHONE() + "&T_ENDTIME=" + latitude
+                + "&T_ENDAREA=" + longitude, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
+
+
+    }
+
+    private void endCycling(double latitude, double longitude,) {
+        if (!NetWorkStatus.isNetworkAvailable(KaisuoActivity.this)) {
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+    }
 
 
     private void send(int data) {
@@ -286,6 +336,7 @@ private boolean isfinsh= false;
         initView();
 
         getintent();
+
         if (MyApplication.bleService != null) {
             showBleTipDialog();
         } else {
@@ -296,10 +347,10 @@ private boolean isfinsh= false;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (isfinsh){
+        if (isfinsh) {
             finish();
         }
-        return  false;
+        return false;
 
     }
 
@@ -318,7 +369,7 @@ private boolean isfinsh= false;
         findViewById(R.id.tv_insurance).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent6 =  new Intent(KaisuoActivity.this, WebActivity.class);
+                Intent intent6 = new Intent(KaisuoActivity.this, WebActivity.class);
                 intent6.putExtra(ContentValuse.url, Url.Safety_insurance);
                 startActivity(intent6);
             }
@@ -351,10 +402,10 @@ private boolean isfinsh= false;
                 EndTripDialog.Builder builder = new EndTripDialog.Builder(KaisuoActivity.this);
                 builder.setPositiveButton(new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        isfinsh= true;
+                        isfinsh = true;
                         dialog.dismiss();
                         //设置你的操作事项
-                        Toast.makeText(KaisuoActivity.this,"哇啊傻傻的发呆",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(KaisuoActivity.this, "哇啊傻傻的发呆", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -406,7 +457,6 @@ private boolean isfinsh= false;
     private void connectLock(final String str, String jisukaisuo, final String data, String getlock) {
         try {
             if (str != null && !str.equals("")) {
-
 
 
                 if (MyApplication.bleService != null) {
@@ -592,7 +642,63 @@ private boolean isfinsh= false;
     @Override
     protected void onDestroy() {
         Globals.BLE_INIT = true;
+        mLocationClient.onDestroy();
         stopService();
         super.onDestroy();
     }
+
+
+    public void startLocation(Context context) {
+        if (mLocationClient == null) {
+            //初始化定位
+            mLocationClient = new AMapLocationClient(context);
+            //设置定位回调监听
+            mLocationClient.setLocationListener(mLocationListener);
+            //初始化AMapLocationClientOption对象
+            mLocationOption = new AMapLocationClientOption();
+            //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            //获取一次定位结果：
+            //该方法默认为false。
+            mLocationOption.setOnceLocation(true);
+            //获取最近3s内精度最高的一次定位结果：
+            //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+            mLocationOption.setOnceLocationLatest(true);
+            //设置是否允许模拟位置,默认为false，不允许模拟位置
+            mLocationOption.setMockEnable(false);
+            //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+            mLocationOption.setHttpTimeOut(10000);
+            //给定位客户端对象设置定位参数
+            mLocationClient.setLocationOption(mLocationOption);
+            //启动定位
+        }
+        mLocationClient.startLocation();
+    }
+
+
+    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation amapLocation) {
+            if (amapLocation != null) {
+                if (amapLocation.getErrorCode() == 0) {
+                    //可在其中解析amapLocation获取相应内容。获取当前经纬度
+                    double latitude = amapLocation.getLatitude();//精度
+                    double longitude = amapLocation.getLongitude();//维度
+                    if (LOCK_STATUS == OPEN) {
+                        startCycling(latitude, longitude);
+
+                    } else if (LOCK_STATUS == CLOSE) {
+
+                        endCycling(latitude, longitude);
+                    }
+
+                } else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + amapLocation.getErrorCode() + ", errInfo:"
+                            + amapLocation.getErrorInfo());
+                }
+            }
+        }
+    };
 }

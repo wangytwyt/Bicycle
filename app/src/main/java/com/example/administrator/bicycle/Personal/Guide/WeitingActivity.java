@@ -7,8 +7,11 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -32,6 +35,10 @@ public class WeitingActivity extends BaseActivity{
      * 图片上传Adapter
      */
     private UploadImageAdapter adapter;
+
+    private EditText et_weather;
+    private  TextView tv_number;
+    private int num = 140;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +57,41 @@ public class WeitingActivity extends BaseActivity{
 
         TextView tvtitle = (TextView) findViewById(R.id.tv_title);
         tvtitle.setText("举报违停");
+
+        tv_number = (TextView)findViewById(R.id.tv_number);
+        et_weather = (EditText)findViewById(R.id.et_weather);
+
+        et_weather.addTextChangedListener(new TextWatcher(){
+            private CharSequence temp;
+            private int selectionStart;
+            private int selectionEnd;
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int number = num - s.length();
+                tv_number.setText( number+"/140");
+                selectionStart = et_weather.getSelectionStart();
+                selectionEnd = et_weather.getSelectionEnd();
+                if (temp.length() > num) {
+                    s.delete(selectionStart - 1, selectionEnd);
+                    int tempSelection = selectionStart;
+                    et_weather.setText(s);
+                    et_weather.setSelection(tempSelection);//设置光标在最后
+                }
+            }
+
+
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                temp = s;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+        });
 
 
         uploadGridView = (GridView) findViewById(R.id.grid_upload_pictures);

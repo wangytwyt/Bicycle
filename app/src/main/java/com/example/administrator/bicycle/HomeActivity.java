@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +79,8 @@ public class HomeActivity extends Activity implements View.OnClickListener {
         }
     };
 
+    private RelativeLayout rabackground;
+    private  LinearLayout llbackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,9 +89,7 @@ public class HomeActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
         init();
-
         //  getw(MyApplication.latitude, MyApplication.longitude);
     }
 
@@ -100,10 +101,14 @@ public class HomeActivity extends Activity implements View.OnClickListener {
             }
         });
 
+
+        rabackground = (RelativeLayout) findViewById(R.id.rl_background);
+        llbackground = (LinearLayout) findViewById(R.id.ll_background);
         tv_city = (TextView) findViewById(R.id.tv_city);
         tv_weather = (ImageView) findViewById(R.id.tv_weather);
         tv_temperature = (TextView) findViewById(R.id.tv_temperature);
         iv_saomakaisuo = (ImageView) findViewById(R.id.iv_saomakaisuo);
+
 
         tv_sl = (TextView) findViewById(R.id.tv_sl);
         tv_day = (TextView) findViewById(R.id.tv_day);
@@ -113,6 +118,8 @@ public class HomeActivity extends Activity implements View.OnClickListener {
         four = (LinearLayout) findViewById(R.id.lin_four);
         five = (LinearLayout) findViewById(R.id.lin_five);
         six = (LinearLayout) findViewById(R.id.lin_six);
+
+
         one.setOnClickListener(this);
         two.setOnClickListener(this);
         three.setOnClickListener(this);
@@ -122,6 +129,7 @@ public class HomeActivity extends Activity implements View.OnClickListener {
         iv_saomakaisuo.setOnClickListener(this);
 
         tv_city.setText(MyApplication.city);
+
         getWearher();
         getDay();
         getSl();
@@ -181,32 +189,45 @@ public class HomeActivity extends Activity implements View.OnClickListener {
 
         if (type >= 0 && type < 4) { //晴天
             tv_weather.setImageResource(R.drawable.p2);
+            rabackground.setBackgroundResource(R.mipmap.bg_sunny_day);
+            llbackground.setBackgroundResource(R.mipmap.sunny_day);
         } else if (type >= 4 && type < 10) { //多云
             tv_weather.setImageResource(R.drawable.p5);
+            rabackground.setBackgroundResource(R.mipmap.bg_na);
+            llbackground.setBackgroundResource(R.mipmap.bg_na_duoyun);
         } else if (type >= 10 && type < 20) { //雨
             tv_weather.setImageResource(R.drawable.p10);
+            rabackground.setBackgroundResource(R.mipmap.bg_rain_day);
+            llbackground.setBackgroundResource(R.mipmap.rain);
         } else if (type >= 20 && type < 26) { //雪
             tv_weather.setImageResource(R.drawable.p22);
+            rabackground.setBackgroundResource(R.mipmap.bg_snow_day);
+            llbackground.setBackgroundResource(R.mipmap.snow_day);
         } else if (type >= 26 && type < 30) { //沙尘暴
-
+            rabackground.setBackgroundResource(R.mipmap.bg_haze);
+            llbackground.setBackgroundResource(R.mipmap.wumai01);
             tv_weather.setImageResource(R.drawable.p31);
         } else if (type >= 30 && type < 32) { //雾霾
             tv_weather.setImageResource(R.drawable.p30);
-
+            rabackground.setBackgroundResource(R.mipmap.bg_fog_day);
+            llbackground.setBackgroundResource(R.mipmap.bg_fog);
         } else if (type >= 32 && type < 37) { //风
-
+            rabackground.setBackgroundResource(R.mipmap.bg_sunny_day);
+            llbackground.setBackgroundResource(R.mipmap.sunny_day);
             tv_weather.setImageResource(R.drawable.p33);
         } else if (type == 37) { //冷
-
-            tv_weather.setImageResource(R.drawable.p37);
+            rabackground.setBackgroundResource(R.mipmap.bg_sunny_day);
+            rabackground.setBackgroundResource(R.mipmap.bg_snow_day);
+            llbackground.setBackgroundResource(R.mipmap.snow_day);
         } else if (type == 38) { //热
-
+            rabackground.setBackgroundResource(R.mipmap.bg_sunny_day);
+            llbackground.setBackgroundResource(R.mipmap.sunny_day);
             tv_weather.setImageResource(R.drawable.p38);
         } else if (type == 99) { //未知
             tv_weather.setImageResource(R.drawable.p99);
-
+            rabackground.setBackgroundResource(R.mipmap.bg_normal);
+            llbackground.setBackgroundResource(R.mipmap.normal);
         }
-
     }
 
 
@@ -364,7 +385,6 @@ public class HomeActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(HomeActivity.this, TripActivity.class));
                 break;
             case R.id.lin_two:
-
                 switch (MyApplication.user.getT_SIGN()) {
                     case 1:
                         startActivityForResult(new Intent(HomeActivity.this, ManageActivity.class), ContentValuse.deleteLogin);
@@ -373,7 +393,6 @@ public class HomeActivity extends Activity implements View.OnClickListener {
                         startActivityForResult(new Intent(HomeActivity.this, InformationActivity.class), ContentValuse.deleteLogin);
                         break;
                 }
-
                 break;
             case R.id.lin_three:
                 startActivity(new Intent(HomeActivity.this, RechargeActivity.class));

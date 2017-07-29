@@ -33,7 +33,10 @@ public class Url {
     public  final  static  String updataPhone = url+"/tuser/upPhByPh.do?TUSER_ID=";
 
 
-    public  final static String ReportingCenter = bidypath+"/JbZx.do?BxId=";
+    public  final static String ReportingCenter = bidypath+"JbZx.do?BxId=";
+
+    public  final static String startLock = bidypath+"unlock.do?T_BIKENO=";
+    public  final static String endLock = bidypath+"lock.do?T_BIKENO=";
 
 
 

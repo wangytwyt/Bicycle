@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
         //开启地图
         mMapView.onCreate(savedInstanceState);
 
-//设置定位蓝点
+        //设置定位蓝点
         setBluePoint();
         //初始化定位
         initMapAndstartLocation();

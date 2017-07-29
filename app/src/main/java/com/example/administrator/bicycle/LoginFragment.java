@@ -302,7 +302,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 //                });
 
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("T_USERPHONE", "17829173776");
+                map.put("T_USERPHONE", "17749153084");
                 map.put("AREA", MyApplication.city);
                 HttpUtils.doPost(Url.loginUrl, map, new Callback() {
                     @Override

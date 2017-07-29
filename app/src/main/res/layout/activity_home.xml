@@ -29,9 +29,10 @@
 
 
             <RelativeLayout
+                android:id="@+id/rl_background"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@mipmap/bg_fog">
+                android:layout_height="250dp"
+                android:background="@mipmap/bg_normal">
 
 
                 <RelativeLayout
@@ -108,9 +109,10 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/juxing"
+                android:background="@mipmap/normal"
                 android:orientation="horizontal">
 
 
