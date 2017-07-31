@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.R;
-import com.example.administrator.bicycle.update.ParseXmlService;
+
 import com.example.administrator.bicycle.util.HttpUtils;
 import com.sofi.smartlocker.ble.util.LOG;
 

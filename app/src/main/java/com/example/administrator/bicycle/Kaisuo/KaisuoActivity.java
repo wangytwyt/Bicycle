@@ -88,7 +88,7 @@ public class KaisuoActivity extends AppCompatActivity {
     private final int OPEN = 1;
     private final int CLOSE = 2;
     private final int UPDATE = 3;
-
+    private final int FORCECLOSE = 4;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -109,6 +109,16 @@ public class KaisuoActivity extends AppCompatActivity {
                     lock_status.setText("骑行中且密码修改成功");
                     lock_status.setBackgroundResource(R.mipmap.jieshuxingchengqian);
                     break;
+
+                case ContentValuse.success:
+                    Toast.makeText(KaisuoActivity.this, "开锁成功", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case FORCECLOSE:
+
+                    Toast.makeText(KaisuoActivity.this, "关闭成功", Toast.LENGTH_SHORT).show();
+                    break;
+
             }
         }
     };
@@ -244,17 +254,31 @@ public class KaisuoActivity extends AppCompatActivity {
                             }
                         }
                     }).start();
+
                     LOCK_STATUS = CLOSE;
                     startLocation(KaisuoActivity.this);
-
                     send(CLOSE);
                     break;
                 case VerifyUtil.CMD_OPEN_LOCK://开锁
+
                     LOCK_STATUS = OPEN;
+                    startLocation(KaisuoActivity.this);
+
                     send(OPEN);
                     break;
                 case VerifyUtil.CMD_UPDATE_KEY:
-
+                    isfinsh = true;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                MyApplication.bleService.disconnectLock();
+                                MyApplication.bleService.stopBleScan();
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
                     send(UPDATE);
                     Intent intent = new Intent();
                     intent.putExtra(ContentValuse.lockname, mname);
@@ -268,7 +292,9 @@ public class KaisuoActivity extends AppCompatActivity {
         }
     };
 
-
+/*
+ 骑行开始并提交当前坐标
+* */
     private void startCycling(double latitude, double longitude) {
         if (!NetWorkStatus.isNetworkAvailable(KaisuoActivity.this)) {
             Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
@@ -284,19 +310,53 @@ public class KaisuoActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
+                if (response.isSuccessful()) {
+                    try {
+                        String str = response.body().string();
+                        JSONObject jsb = new JSONObject(str);
+                        String result = jsb.getString("result");
+                        if (result.equals("02")) {
+                            send(ContentValuse.success);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
 
     }
-
-    private void endCycling(double latitude, double longitude,) {
+    /*
+    * 骑行结束提交当前坐标
+    * */
+    private void endCycling(double latitude, double longitude,int status) {
         if (!NetWorkStatus.isNetworkAvailable(KaisuoActivity.this)) {
             Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        HttpUtils.doGet(Url.endLock + carId + "&T_USERPHONE="
+                + MyApplication.user.getT_USERPHONE() + "&T_ENDJD=" + latitude + "&T_ENDWD=" + longitude+"&T_NOMAL="+status, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    String str = response.body().string();
+                    JSONObject jsb = new JSONObject(str);
+                    String result = jsb.getString("result");
+                    if (result.equals("02")) {
+                        send(FORCECLOSE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -331,7 +391,6 @@ public class KaisuoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_kaisuo);
-        MyApplication.islock = true;
 
         initView();
 
@@ -405,7 +464,11 @@ public class KaisuoActivity extends AppCompatActivity {
                         isfinsh = true;
                         dialog.dismiss();
                         //设置你的操作事项
-                        Toast.makeText(KaisuoActivity.this, "哇啊傻傻的发呆", Toast.LENGTH_SHORT).show();
+                        LOCK_STATUS = FORCECLOSE;
+                        startLocation(KaisuoActivity.this);
+                        send(CLOSE);
+                        send(FORCECLOSE);
+
                     }
                 });
 
@@ -421,6 +484,8 @@ public class KaisuoActivity extends AppCompatActivity {
         });
     }
 
+    /*骑行计时
+    * */
     private void startTiming() {
         stepTimeHandler = new Handler();
         startTime = System.currentTimeMillis();
@@ -453,7 +518,8 @@ public class KaisuoActivity extends AppCompatActivity {
         getLock = intentt.getStringExtra(ContentValuse.getLock);
     }
 
-
+/*连接锁
+* */
     private void connectLock(final String str, String jisukaisuo, final String data, String getlock) {
         try {
             if (str != null && !str.equals("")) {
@@ -532,13 +598,6 @@ public class KaisuoActivity extends AppCompatActivity {
         }
     }
 
-
-    @Override
-    protected void onResume() {
-
-        super.onResume();
-
-    }
 
     private void initService() {
         Intent intent = new Intent(this, BleService.class);
@@ -647,7 +706,9 @@ public class KaisuoActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
+    /**
+     * 开始定位
+     */
     public void startLocation(Context context) {
         if (mLocationClient == null) {
             //初始化定位
@@ -689,7 +750,9 @@ public class KaisuoActivity extends AppCompatActivity {
 
                     } else if (LOCK_STATUS == CLOSE) {
 
-                        endCycling(latitude, longitude);
+                        endCycling(latitude, longitude,1);
+                    }else if(LOCK_STATUS == FORCECLOSE){
+                        endCycling(latitude, longitude,2);
                     }
 
                 } else {

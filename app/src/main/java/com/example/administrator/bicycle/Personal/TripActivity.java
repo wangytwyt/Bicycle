@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.adapter.TripAdapter;
 import com.example.administrator.bicycle.entity.TripInEntity;
 import com.example.administrator.bicycle.entity.TripOutEntity;
 import com.example.administrator.bicycle.util.TimeUtils;

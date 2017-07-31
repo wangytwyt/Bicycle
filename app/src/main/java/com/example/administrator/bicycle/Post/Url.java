@@ -22,22 +22,26 @@ public class Url {
     public final static String IdentityUrl = Login + "/insertSm.do?";
 
     public final static String getRMB = url + "/tuser/findBPh.do?T_USERPHONE=";
-
+    //善良分
     public final static String getSL = url+"/tuser/findSL.do?T_USERPHONE=";
 
     public final static String getDay = url+"/tuser/findDay.do?T_USERPHONE=";
 
-
+    //昵称
     public final static String nicknameUrl = url + "/tuser/upNcByPh.do?";
-
+//更换电话号
     public  final  static  String updataPhone = url+"/tuser/upPhByPh.do?TUSER_ID=";
 
-
+    //举报中心
     public  final static String ReportingCenter = bidypath+"JbZx.do?BxId=";
 
-    public  final static String startLock = bidypath+"unlock.do?T_BIKENO=";
-    public  final static String endLock = bidypath+"lock.do?T_BIKENO=";
 
+    //开始骑行
+    public  final static String startLock = bidypath+"unlock.do?T_BIKENO=";
+    //结束骑行
+    public  final static String endLock = bidypath+"lock.do?T_BIKENO=";
+//根据车牌号查询锁号和蓝牙地址
+public  final static String getLockInfo = bidypath+"findByBn.do?T_BIKENO=";
 
 
     //举报中心

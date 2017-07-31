@@ -23,6 +23,7 @@ import android.graphics.Camera;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -38,10 +39,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.bicycle.Kaisuo.KaisuoActivity;
+import com.example.administrator.bicycle.Personal.qianbao.QianbaoActivity;
+import com.example.administrator.bicycle.Post.Url;
 import com.example.administrator.bicycle.R;
 
 
 import com.example.administrator.bicycle.util.ContentValuse;
+import com.example.administrator.bicycle.util.CustomProgressDialog;
+import com.example.administrator.bicycle.util.HttpUtils;
+import com.example.administrator.bicycle.util.NetWorkStatus;
 import com.example.administrator.bicycle.zxing.camera.CameraManager;
 import com.example.administrator.bicycle.zxing.decode.DecodeThread;
 import com.example.administrator.bicycle.zxing.utils.BeepManager;
@@ -49,9 +55,15 @@ import com.example.administrator.bicycle.zxing.utils.CaptureActivityHandler;
 import com.example.administrator.bicycle.zxing.utils.InactivityTimer;
 import com.google.zxing.Result;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.security.Policy;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * This activity opens the camera and does the actual scanning on a background
@@ -97,9 +109,26 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     private int bicyInfoToCaptureID;//获取车号
 
-
+    private CustomProgressDialog dialog;
     private Camera camera;
+    private Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+               dialog.dismiss();
+            switch (msg.what) {
+                case ContentValuse.success:
+                    Intent intent = new Intent(CaptureActivity.this, KaisuoActivity.class);
+                    intent.putExtra("result", (String) msg.obj);
+                    startActivity(intent);
+                    break;
 
+                case ContentValuse.failure:
+
+                    Toast.makeText(CaptureActivity.this, "获取信息失败", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -137,6 +166,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             image_inputNum.setVisibility(View.GONE);
         }
 
+
+        dialog = CustomProgressDialog.createDialog(this);
+        dialog.setMessage("  获取中  ");
 
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT,
                 0.9f);
@@ -238,20 +270,70 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (resultString.equals("")) {
             Toast.makeText(CaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
         } else {
+
+
+
+
             if (bicyInfoToCaptureID == -1) {
-                Intent intent = new Intent(CaptureActivity.this, KaisuoActivity.class);
-                intent.putExtra("result", resultString);
-                startActivity(intent);
+                //车号
+                String str = resultString.substring(resultString.length() - 9, resultString.length());
+                getLockInfo(str);
+//                Intent intent = new Intent(CaptureActivity.this, KaisuoActivity.class);
+//                intent.putExtra("result", resultString);
+//                startActivity(intent);
             } else {
                 Intent intent = new Intent();
                 intent.putExtra(ContentValuse.getbike, resultString);
                 setResult(1, intent);
-
             }
 
         }
         CaptureActivity.this.finish();
     }
+
+//获取锁的详细信息
+    private void getLockInfo(String carId) {
+        if (!NetWorkStatus.isNetworkAvailable(CaptureActivity.this)) {
+            Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        dialog.show();
+        HttpUtils.doGet(Url.getLockInfo + carId, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mhandler.sendEmptyMessage(ContentValuse.failure);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    try {
+                        String str = response.body().string();
+                        JSONObject jsb = new JSONObject(str);
+                        String result = jsb.getString("result");
+                        if (result.equals("02")) {
+                            JSONObject jsonObject = jsb.getJSONObject("pd");
+                            String T_BIKEArea = jsonObject.getString("T_BIKEArea");
+                            Message msg = new Message();
+                            msg.obj = T_BIKEArea;
+                            msg.what = ContentValuse.success;
+
+                            mhandler.sendMessage(msg);
+
+                        } else {
+                            mhandler.sendEmptyMessage(ContentValuse.failure);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    mhandler.sendEmptyMessage(ContentValuse.failure);
+                }
+            }
+        });
+
+    }
+
 
     private void initCamera(SurfaceHolder surfaceHolder) {
         if (surfaceHolder == null) {
@@ -374,7 +456,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 } else {
                     shanguangdeng.setSelected(true);
                     cameraManager.openLight();
-
                 }
 
                 break;

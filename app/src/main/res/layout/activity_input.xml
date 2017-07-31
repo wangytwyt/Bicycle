@@ -40,7 +40,7 @@
                 android:layout_gravity="center_vertical"
                 android:hint="请输入铭牌号"
                 android:padding="10dp"
-                android:text="50:8C:B1:86:EF:29"
+                android:text="029123456"
                 android:textCursorDrawable="@mipmap/guangbiao"
                 android:textSize="25dp" />
             <!-- android:text="50:8C:B1:86:EF:29"        D4:36:39:97:23:FA-->
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/input_item" />
+                android:src="@drawable/input_item" />
 
         </LinearLayout>
 

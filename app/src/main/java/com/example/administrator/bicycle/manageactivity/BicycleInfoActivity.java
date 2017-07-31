@@ -80,7 +80,7 @@ public class BicycleInfoActivity extends Activity implements View.OnClickListene
 
         but.setOnClickListener(this);
 
-        dialog = new CustomProgressDialog(this);
+        dialog = CustomProgressDialog.createDialog(this);
     }
 
 

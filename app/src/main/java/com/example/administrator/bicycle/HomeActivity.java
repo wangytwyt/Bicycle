@@ -136,7 +136,7 @@ public class HomeActivity extends Activity implements View.OnClickListener {
 
     }
 
-
+//天气
     private void getWearher() {
         if (!NetWorkStatus.isNetworkAvailable(this)) {
             Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();
@@ -183,7 +183,7 @@ public class HomeActivity extends Activity implements View.OnClickListener {
 
     }
 
-
+//根据天气类型设置背景
     private void typeWearher(int type) {
 
 
@@ -230,7 +230,7 @@ public class HomeActivity extends Activity implements View.OnClickListener {
         }
     }
 
-
+//善良分
     private void getSl() {
         if (!NetWorkStatus.isNetworkAvailable(this)) {
             Toast.makeText(this, "网络不可用，请连接网络！", Toast.LENGTH_SHORT).show();

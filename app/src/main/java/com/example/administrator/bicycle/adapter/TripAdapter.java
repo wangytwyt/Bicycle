@@ -1,4 +1,4 @@
-package com.example.administrator.bicycle.Personal;
+package com.example.administrator.bicycle.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

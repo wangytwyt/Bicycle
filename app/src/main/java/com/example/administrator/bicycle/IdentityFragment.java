@@ -65,8 +65,6 @@ public class IdentityFragment extends Fragment {
             switch (msg.what) {
                 case ContentValuse.success:
                     Toast.makeText(getActivity(), "认证成功", Toast.LENGTH_SHORT).show();
-
-
                     break;
 
                 case ContentValuse.failure:
@@ -186,6 +184,7 @@ public class IdentityFragment extends Fragment {
             public void onFailure(Call call, IOException e) {
                 mhandler.sendEmptyMessage(ContentValuse.failure);
             }
+
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {

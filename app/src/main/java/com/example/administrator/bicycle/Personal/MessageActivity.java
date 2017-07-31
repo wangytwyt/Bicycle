@@ -7,13 +7,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.bicycle.R;
+import com.example.administrator.bicycle.adapter.MessageAdapter;
 import com.example.administrator.bicycle.entity.MessageInEntity;
 import com.example.administrator.bicycle.entity.MessageOutEntity;
-import com.example.administrator.bicycle.entity.TripInEntity;
-import com.example.administrator.bicycle.entity.TripOutEntity;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MessageActivity extends AppCompatActivity {
 
