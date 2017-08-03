@@ -111,7 +111,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     private CustomProgressDialog dialog;
     private Camera camera;
-    private Handler mhandler = new Handler() {
+    private Handler mhandlers = new Handler() {
         @Override
         public void handleMessage(Message msg) {
                dialog.dismiss();
@@ -120,6 +120,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     Intent intent = new Intent(CaptureActivity.this, KaisuoActivity.class);
                     intent.putExtra("result", (String) msg.obj);
                     startActivity(intent);
+                    CaptureActivity.this.finish();
                     break;
 
                 case ContentValuse.failure:
@@ -278,6 +279,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 //车号
                 String str = resultString.substring(resultString.length() - 9, resultString.length());
                 getLockInfo(str);
+
 //                Intent intent = new Intent(CaptureActivity.this, KaisuoActivity.class);
 //                intent.putExtra("result", resultString);
 //                startActivity(intent);
@@ -285,10 +287,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 Intent intent = new Intent();
                 intent.putExtra(ContentValuse.getbike, resultString);
                 setResult(1, intent);
+                CaptureActivity.this.finish();
             }
 
         }
-        CaptureActivity.this.finish();
+
     }
 
 //获取锁的详细信息
@@ -301,7 +304,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         HttpUtils.doGet(Url.getLockInfo + carId, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                mhandler.sendEmptyMessage(ContentValuse.failure);
+                mhandlers.sendEmptyMessage(ContentValuse.failure);
             }
 
             @Override
@@ -318,16 +321,16 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                             msg.obj = T_BIKEArea;
                             msg.what = ContentValuse.success;
 
-                            mhandler.sendMessage(msg);
+                            mhandlers.sendMessage(msg);
 
                         } else {
-                            mhandler.sendEmptyMessage(ContentValuse.failure);
+                            mhandlers.sendEmptyMessage(ContentValuse.failure);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    mhandler.sendEmptyMessage(ContentValuse.failure);
+                    mhandlers.sendEmptyMessage(ContentValuse.failure);
                 }
             }
         });

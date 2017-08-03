@@ -35,7 +35,6 @@ public class PrizeActivity extends Activity {
             setText(msg);
             if (!israndom) {
                 timer.cancel();
-
                 Intent intent = new Intent(PrizeActivity.this, PrizeDialogActivity.class);
                 intent.putExtra(ContentValuse.prize, day);
                 PrizeActivity.this.startActivityForResult(intent, ContentValuse.prizeResult);
@@ -81,11 +80,8 @@ public class PrizeActivity extends Activity {
                 butstart.setEnabled(true);
                 butend.setEnabled(false);
                 israndom = false;
-
-
             }
         });
-
     }
 
 
@@ -118,8 +114,6 @@ public class PrizeActivity extends Activity {
         if (requestCode == ContentValuse.prizeResult) {
            finish();
         }
-
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

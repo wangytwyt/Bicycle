@@ -43,8 +43,7 @@ public class MyApplication extends MobApplication {
 
     //声明AMapLocationClient类对象 29.810044 102.684203
     public static AMapLocationClient mLocationClient = null;
-    //声明定位回调监听器
-    public static String road;
+
 
     public static User user ;
 

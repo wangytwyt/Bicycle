@@ -3,7 +3,7 @@
     package="com.luopingelec.permission.test" >
 
     <uses-sdk
-        android:minSdkVersion="19"
+        android:minSdkVersion="16"
         android:targetSdkVersion="25" />
 
     <instrumentation

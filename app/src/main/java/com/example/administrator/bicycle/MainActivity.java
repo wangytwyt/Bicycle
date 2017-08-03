@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                     break;
 
                 case LOCATION:
+                    location.setVisibility(View.VISIBLE);
                     CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(startLatlng.getLatitude(), startLatlng.getLongitude()), 15, 0, 0));
                     aMap.moveCamera(mCameraUpdate);//把缩放级别放进摄像机
                     dialog.dismiss();
@@ -572,10 +573,12 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.location:
-//                dialog.show();
+//
                 if (!NetWorkStatus.isNetworkAvailable(this)) {
                     Toast.makeText(this, "网络不可用，请设置网络！", Toast.LENGTH_SHORT).show();
                 } else {
+                    dialog.show();
+                    location.setVisibility(View.GONE);
                     //设置定位蓝点
                     setBluePoint();
                     initMapAndstartLocation();
@@ -719,6 +722,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
     public AMapLocationListener mLocationListener = new AMapLocationListener() {
         @Override
         public void onLocationChanged(AMapLocation amapLocation) {
+
             if (amapLocation != null) {
                 if (amapLocation.getErrorCode() == 0) {
                     //可在其中解析amapLocation获取相应内容。获取当前经纬度
@@ -745,7 +749,7 @@ public class MainActivity extends AppCompatActivity implements RouteSearch.OnRou
                 } else {
                     dialog.dismiss();
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    Toast.makeText(MainActivity.this, "定位失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "定位失败,请重新定位", Toast.LENGTH_SHORT).show();
                     Log.e("AmapError", "location Error, ErrCode:"
                             + amapLocation.getErrorCode() + ", errInfo:"
                             + amapLocation.getErrorInfo());

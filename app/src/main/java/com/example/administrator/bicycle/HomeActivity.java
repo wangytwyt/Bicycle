@@ -204,21 +204,21 @@ public class HomeActivity extends Activity implements View.OnClickListener {
             rabackground.setBackgroundResource(R.mipmap.bg_snow_day);
             llbackground.setBackgroundResource(R.mipmap.snow_day);
         } else if (type >= 26 && type < 30) { //沙尘暴
-            rabackground.setBackgroundResource(R.mipmap.bg_haze);
-            llbackground.setBackgroundResource(R.mipmap.wumai01);
+            rabackground.setBackgroundResource(R.mipmap.bg_sunny_day);
+            llbackground.setBackgroundResource(R.mipmap.sunny_day);
             tv_weather.setImageResource(R.drawable.p31);
         } else if (type >= 30 && type < 32) { //雾霾
             tv_weather.setImageResource(R.drawable.p30);
-            rabackground.setBackgroundResource(R.mipmap.bg_fog_day);
-            llbackground.setBackgroundResource(R.mipmap.bg_fog);
+            rabackground.setBackgroundResource(R.mipmap.bg_haze);
+            llbackground.setBackgroundResource(R.mipmap.wumai01);
         } else if (type >= 32 && type < 37) { //风
             rabackground.setBackgroundResource(R.mipmap.bg_sunny_day);
             llbackground.setBackgroundResource(R.mipmap.sunny_day);
             tv_weather.setImageResource(R.drawable.p33);
         } else if (type == 37) { //冷
-            rabackground.setBackgroundResource(R.mipmap.bg_sunny_day);
-            rabackground.setBackgroundResource(R.mipmap.bg_snow_day);
-            llbackground.setBackgroundResource(R.mipmap.snow_day);
+            tv_weather.setImageResource(R.drawable.p37);
+            rabackground.setBackgroundResource(R.mipmap.bg_fog_day);
+            llbackground.setBackgroundResource(R.mipmap.bg_fog);
         } else if (type == 38) { //热
             rabackground.setBackgroundResource(R.mipmap.bg_sunny_day);
             llbackground.setBackgroundResource(R.mipmap.sunny_day);

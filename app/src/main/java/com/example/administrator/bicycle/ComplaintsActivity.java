@@ -43,13 +43,11 @@ public class ComplaintsActivity extends Activity {
             dialog.dismiss();
             switch (msg.what) {
                 case ContentValuse.success:
-
                     Toast.makeText(ComplaintsActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                     ComplaintsActivity.this.finish();
                     break;
 
                 case ContentValuse.failure:
-
                     Toast.makeText(ComplaintsActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
                     break;
             }

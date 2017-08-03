@@ -152,9 +152,7 @@ public class KaisuoActivity extends AppCompatActivity {
                 MyApplication.bleService = IRemoteService.Stub.asInterface(service);
                 //  Constants.bleService.startBleScan();
                 MyApplication.bleService.registerCallback(mCallback);
-
                 connectLock(str, jisukaisuo, data, getLock);
-
                 MyApplication.bleService.setHighMode();
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -218,9 +216,10 @@ public class KaisuoActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-//456842
+//456842 D4:36:39:97:23:FA
                         try {
                             MyApplication.bleService.openLock(lockkey);
+
                             lockkey = "487634";
                         } catch (RemoteException e) {
                             e.printStackTrace();
@@ -260,7 +259,6 @@ public class KaisuoActivity extends AppCompatActivity {
                     send(CLOSE);
                     break;
                 case VerifyUtil.CMD_OPEN_LOCK://开锁
-
                     LOCK_STATUS = OPEN;
                     startLocation(KaisuoActivity.this);
 
@@ -273,7 +271,6 @@ public class KaisuoActivity extends AppCompatActivity {
                         public void run() {
                             try {
                                 MyApplication.bleService.disconnectLock();
-                                MyApplication.bleService.stopBleScan();
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
@@ -422,6 +419,8 @@ public class KaisuoActivity extends AppCompatActivity {
         et_xiu = (EditText) findViewById(R.id.et_xiu);
 
 
+
+
         lock_status = (TextView) findViewById(R.id.lock_status);
         kai_ticker = (TextView) findViewById(R.id.kai_ticker);
 
@@ -523,7 +522,7 @@ public class KaisuoActivity extends AppCompatActivity {
     private void connectLock(final String str, String jisukaisuo, final String data, String getlock) {
         try {
             if (str != null && !str.equals("")) {
-
+                carId = str;
 
                 if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
@@ -557,6 +556,7 @@ public class KaisuoActivity extends AppCompatActivity {
                     }).start();
                 }
             } else if (data != null && !data.equals("")) {
+                carId = data;
                 if (MyApplication.bleService != null) {
                     new Thread(new Runnable() {
                         @Override
@@ -613,7 +613,8 @@ public class KaisuoActivity extends AppCompatActivity {
                     Dialog.showBleDialog(this, R.string.ble_tip, bleListener, bleNeverListener, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            KaisuoActivity.this.finish();
+                          KaisuoActivity.this.finish();
+                       //     Toast.makeText(KaisuoActivity.this,"蓝牙未打开，请打开蓝牙！",Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
                     });
@@ -658,8 +659,10 @@ public class KaisuoActivity extends AppCompatActivity {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             Globals.BLE_INIT = false;
-            KaisuoActivity.this.finish();
             dialog.cancel();
+            KaisuoActivity.this.finish();
+
+
 
         }
     };
@@ -701,6 +704,7 @@ public class KaisuoActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         Globals.BLE_INIT = true;
+
         mLocationClient.onDestroy();
         stopService();
         super.onDestroy();
@@ -747,9 +751,7 @@ public class KaisuoActivity extends AppCompatActivity {
                     double longitude = amapLocation.getLongitude();//维度
                     if (LOCK_STATUS == OPEN) {
                         startCycling(latitude, longitude);
-
                     } else if (LOCK_STATUS == CLOSE) {
-
                         endCycling(latitude, longitude,1);
                     }else if(LOCK_STATUS == FORCECLOSE){
                         endCycling(latitude, longitude,2);

@@ -199,7 +199,8 @@
             android:name=".PrizeDialogActivity"
             android:theme="@style/DialogTransparent" />
         <!-- 手动输入车铭牌号 -->
-        <activity android:name=".zxing.camera.open.InputActivity" />
+        <activity android:name=".zxing.camera.open.InputActivity"
+            />
         <!-- 搜索 -->
         <activity android:name=".SouSuoActivity" />
         <!-- 修改名字 -->

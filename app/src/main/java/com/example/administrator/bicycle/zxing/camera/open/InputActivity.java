@@ -1,11 +1,13 @@
 package com.example.administrator.bicycle.zxing.camera.open;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,9 +38,10 @@ public class InputActivity extends AppCompatActivity {
             dialog.dismiss();
             switch (msg.what) {
                 case ContentValuse.success:
+                    String data = (String) msg.obj;
                     Intent intent = new Intent(InputActivity.this, KaisuoActivity.class);
-                    intent.putExtra("data", (String) msg.obj);
-                    startActivity(intent);
+                    intent.putExtra("data", data);
+                    InputActivity.this.startActivity(intent);
                     break;
 
                 case ContentValuse.failure:
@@ -52,6 +55,7 @@ public class InputActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
+      //  this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_input);
 
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
@@ -75,7 +79,6 @@ public class InputActivity extends AppCompatActivity {
 
                 if (data != null && !data.equals("")) {
                     getLockInfo(data);
-
                 } else {
                     Toast.makeText(InputActivity.this, "请输入正确的铭牌号", Toast.LENGTH_SHORT).show();
                 }
@@ -123,5 +126,35 @@ public class InputActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
